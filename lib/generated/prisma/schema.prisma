@@ -1,0 +1,380 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================
+// ENUMS
+// =============================
+enum DocumentType {
+  cpf
+  cnpj
+}
+
+enum AddressType {
+  alameda
+  avenida
+  estrada
+  loteamento
+  praça
+  quadra
+  rodovia
+  rua
+  travessa
+}
+
+enum State {
+  AC
+  AL
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MG
+  MS
+  MT
+  PA
+  PB
+  PE
+  PI
+  PR
+  RJ
+  RN
+  RO
+  RR
+  RS
+  SC
+  SE
+  SP
+  TO
+}
+
+enum Status {
+  active
+  inactive
+}
+
+enum AccountType {
+  corrente
+  poupanca
+}
+
+enum PixKeyType {
+  cpf
+  email
+  phone
+  random
+}
+
+enum OperationNature {
+  imune
+  isento
+  tributacao_no_municipio
+  tributacao_fora_do_municipio
+  exigibilidade_suspensa_judicial
+  exigibilidade_suspensa_administrativa
+}
+
+enum YesNo {
+  sim
+  nao
+}
+
+enum Role {
+  ADMIN
+  PROFESSIONAL
+}
+
+enum InvoiceStatus {
+  regular
+  cancelada
+  pendente_de_cancelamento
+}
+
+enum AccountsReceivableStatus {
+  pending
+  partially_paid
+  paid
+  overdue
+  cancelled
+}
+
+enum AccountsPayableStatus {
+  pending
+  partially_paid
+  paid
+  overdue
+  cancelled
+}
+
+// =============================
+// MODELS
+// =============================
+
+model Company {
+  id                     String       @id @default(uuid())
+  code                   String
+  document               String
+  document_type          DocumentType
+  name                   String
+  fantasy_name           String?
+  address_type           AddressType?
+  street                 String?
+  number                 String?
+  complement             String?
+  neighborhood           String?
+  city                   String?
+  cep                    String?
+  state                  State?
+  state_registration     String?
+  municipal_registration String?
+  ddd                    String?
+  phone                  String?
+  email                  String?
+  constitution_date      DateTime?
+  status                 Status       @default(active)
+
+  professionals       Professional[]
+  clients             Client[]
+  invoices            Invoice[]
+  accounts_receivable AccountsReceivable[]
+  accounts_payable    AccountsPayable[]
+
+  @@map("companies")
+}
+
+model Professional {
+  id                   String       @id @default(uuid())
+  company              Company      @relation(fields: [companyId], references: [id])
+  companyId            String
+  code                 String
+  clerkUserId          String?      @unique
+  name                 String
+  cpf                  String       @unique
+  registration_number  String?
+  specialty            Specialty?   @relation(fields: [specialtyId], references: [id])
+  specialtyId          String?
+  phone                String?
+  birthday             DateTime?
+  email                String?      @unique
+  bank                 String?
+  agency               String?
+  account              String?
+  account_type         AccountType?
+  pix_key_type         PixKeyType?
+  pix_key              String?
+  address_type         AddressType?
+  street               String?
+  number               String?
+  complement           String?
+  neighborhood         String?
+  city                 String?
+  cep                  String?
+  state                State?
+  admin_fee_percentage Float        @default(0)
+  status               Status       @default(active)
+
+  invoiceServiceItems InvoiceServiceItem[]
+  accounts_payable    AccountsPayable[]
+
+  @@map("professionals")
+}
+
+model Client {
+  id                        String       @id @default(uuid())
+  company                   Company      @relation(fields: [companyId], references: [id])
+  companyId                 String
+  code                      String
+  document                  String
+  document_type             DocumentType
+  name                      String
+  fantasy_name              String?
+  address_type              AddressType?
+  street                    String?
+  number                    String?
+  complement                String?
+  neighborhood              String?
+  city                      String?
+  cep                       String?
+  state                     State?
+  state_registration        String?
+  municipal_registration    String?
+  ddd                       String?
+  phone                     String?
+  email                     String?
+  is_simple_national_optant Boolean      @default(false)
+  status                    Status       @default(active)
+
+  contacts            ClientContact[]
+  invoices            Invoice[]
+  accounts_receivable AccountsReceivable[]
+
+  @@map("clients")
+}
+
+model ClientContact {
+  id       String  @id @default(uuid())
+  client   Client  @relation(fields: [clientId], references: [id])
+  clientId String
+  name     String
+  phone    String?
+  email    String?
+
+  @@map("client_contacts")
+}
+
+model Invoice {
+  id                  String          @id @default(cuid())
+  company             Company         @relation(fields: [companyId], references: [id])
+  companyId           String
+  client              Client          @relation(fields: [client_id], references: [id])
+  client_id           String
+  invoice_number      String
+  issue_date          DateTime
+  tax_retained        Boolean         @default(false)
+  operation_nature    OperationNature
+  service_code        String
+  service_description String?
+  service_location    String
+
+  service_items InvoiceServiceItem[]
+  retentions    Retentions?
+
+  is_substitute     YesNo   @default(nao)
+  substitute_number String?
+
+  from_rps   YesNo     @default(nao)
+  rps_number String?
+  rps_date   DateTime?
+
+  base_amount      Float
+  tax_rate         Float
+  iss_amount       Float
+  total_amount     Float
+  total_retentions Float
+
+  observations String?
+  status       InvoiceStatus @default(regular)
+  locked       Boolean?
+
+  accounts_receivable AccountsReceivable?
+  accounts_payable    AccountsPayable[]
+}
+
+model InvoiceServiceItem {
+  id                String       @id @default(cuid())
+  invoice           Invoice      @relation(fields: [invoice_id], references: [id])
+  invoice_id        String
+  professional      Professional @relation(fields: [professional_id], references: [id])
+  professional_id   String
+  professional_name String?
+  service_value     Float
+  description       String
+  sequence          Int?
+}
+
+model Retentions {
+  id                          String @id @default(cuid())
+  invoice_id                  String @unique
+  inss_percentage             Float  @default(0)
+  inss                        Float  @default(0)
+  irpj_percentage             Float  @default(0)
+  irpj                        Float  @default(0)
+  csll_percentage             Float  @default(0)
+  csll                        Float  @default(0)
+  cofins_percentage           Float  @default(0)
+  cofins                      Float  @default(0)
+  pis_pasep_percentage        Float  @default(0)
+  pis_pasep                   Float  @default(0)
+  other_retentions_percentage Float  @default(0)
+  other_retentions            Float  @default(0)
+
+  invoice Invoice @relation(fields: [invoice_id], references: [id])
+}
+
+model AccountsReceivable {
+  id           String                   @id @default(cuid())
+  company      Company                  @relation(fields: [companyId], references: [id])
+  companyId    String
+  invoice      Invoice?                 @relation(fields: [invoice_id], references: [id])
+  invoice_id   String?                  @unique
+  client       Client?                  @relation(fields: [client_id], references: [id])
+  client_id    String?
+  document     String?
+  description  String
+  amount       Float
+  due_date     DateTime
+  payment_date DateTime?
+  status       AccountsReceivableStatus @default(pending)
+
+  installments PaymentInstallment[]
+}
+
+model AccountsPayable {
+  id                   String                @id @default(cuid())
+  company              Company               @relation(fields: [companyId], references: [id])
+  companyId            String
+  invoice              Invoice?              @relation(fields: [invoice_id], references: [id])
+  invoice_id           String?
+  professional         Professional?         @relation(fields: [professional_id], references: [id])
+  professional_id      String?
+  document             String?
+  description          String
+  gross_amount         Float?
+  admin_fee_percentage Float?
+  admin_fee_amount     Float?
+  amount               Float
+  due_date             DateTime
+  payment_date         DateTime?
+  status               AccountsPayableStatus @default(pending)
+
+  installments PaymentPayableInstallment[]
+}
+
+model PaymentInstallment {
+  id                     String             @id @default(cuid())
+  accounts_receivable    AccountsReceivable @relation(fields: [accounts_receivable_id], references: [id])
+  accounts_receivable_id String
+  payment_date           DateTime
+  amount_paid            Float
+}
+
+model PaymentPayableInstallment {
+  id                  String          @id @default(cuid())
+  accounts_payable    AccountsPayable @relation(fields: [accounts_payable_id], references: [id])
+  accounts_payable_id String
+  payment_date        DateTime
+  amount_paid         Float
+}
+
+model Specialty {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  professionals Professional[]
+
+  @@map("specialties")
+}
+
+model Service {
+  id          String @id @default(uuid())
+  code        Int
+  description String
+
+  @@map("services")
+}
