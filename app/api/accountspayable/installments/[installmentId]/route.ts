@@ -3,12 +3,13 @@ import db from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { installmentId: string } }
+  context: any
 ) {
+  const { params } = context;
   const { installmentId } = params;
 
   try {
-    // Busca o installment para descobrir o receivable relacionado
+    // Busca o installment para descobrir o payable relacionado
     const installment = await db.paymentPayableInstallment.findUnique({
       where: { id: installmentId },
     });
@@ -28,16 +29,17 @@ export async function DELETE(
     });
 
     // Recalcula os installments restantes
-    const remainingInstallments = await db.paymentPayableInstallment.findMany({
-      where: { accounts_payable_id: payableId },
-    });
+    const remainingInstallments =
+      await db.paymentPayableInstallment.findMany({
+        where: { accounts_payable_id: payableId },
+      });
 
     const totalPaid = remainingInstallments.reduce(
       (sum, i) => sum + i.amount_paid,
       0
     );
 
-    // Busca o receivable com invoice associada
+    // Busca o payable com invoice associada
     const payable = await db.accountsPayable.findUnique({
       where: { id: payableId },
       include: { invoice: true },
@@ -55,16 +57,16 @@ export async function DELETE(
 
     if (totalPaid === 0) status = "pending";
     else if (totalPaid < payable.amount) status = "partially_paid";
-    else if (totalPaid >= payable.amount) status = "paid";
+    else status = "paid";
 
-    // Atualiza o receivable
+    // Atualiza o payable
     await db.accountsPayable.update({
       where: { id: payableId },
       data: { status },
     });
 
     return NextResponse.json({
-      message: "Installment deletado, status e invoice atualizados",
+      message: "Installment deletado, status atualizado",
       status,
       totalPaid,
     });

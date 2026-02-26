@@ -3,8 +3,9 @@ import db from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { installmentId: string } }
+  context: any
 ) {
+  const { params } = context;
   const { installmentId } = params;
 
   try {

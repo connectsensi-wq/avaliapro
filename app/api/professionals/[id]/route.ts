@@ -4,11 +4,13 @@ import db from "@/lib/db";
 // PUT /api/professionals/[id]
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
+  const { params } = context;
+  const { id } = params;
+
   try {
     const data = await req.json();
-    const id = params.id;
 
     // Converte birthday para Date, se existir
     if (data.birthday) {
@@ -24,7 +26,7 @@ export async function PUT(
         ...data,
       },
       include: {
-        specialty: true, // só para retornar junto
+        specialty: true,
       },
     });
 
@@ -38,15 +40,17 @@ export async function PUT(
   }
 }
 
-
 // DELETE /api/professionals/[id]
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
+  const { params } = context;
+  const { id } = params;
+
   try {
     await db.professional.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

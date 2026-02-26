@@ -4,18 +4,21 @@ import { NextResponse } from "next/server";
 // PUT - Bloqueia (bane) um usuário Clerk
 export async function PUT(
   req: Request,
-  { params }: {params: { id: string } }
+  context: any
 ) {
-  try {
-    // Acessamos params.id diretamente, como no seu PUT, evitando o aviso.
-    const clerkUserId = params.id; 
+  const { params } = context;
+  const { id: clerkUserId } = params;
 
+  try {
     if (!clerkUserId) {
-      return NextResponse.json({ error: "ClerkId é obrigatório" }, { status: 400 });
+      return NextResponse.json(
+        { error: "ClerkId é obrigatório" },
+        { status: 400 }
+      );
     }
 
     const client = await clerkClient();
-    
+
     // Bloqueia a conta no Clerk
     await client.users.banUser(clerkUserId);
 
@@ -25,16 +28,16 @@ export async function PUT(
     );
   } catch (error: any) {
     console.error("Erro ao bloquear usuário no Clerk:", error);
-    
-    const status = error.status || 500; 
+
+    const status = error?.status || 500;
 
     return NextResponse.json(
-      { 
+      {
         error: error?.message || "Erro ao bloquear conta no Clerk",
-        clerkError: error.clerkError,
-        clerkTraceId: error.clerkTraceId,
+        clerkError: error?.clerkError,
+        clerkTraceId: error?.clerkTraceId,
       },
-      { status: status }
+      { status }
     );
   }
 }

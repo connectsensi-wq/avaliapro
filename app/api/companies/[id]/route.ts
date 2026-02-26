@@ -1,16 +1,19 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db"; // ajuste o caminho conforme seu projeto
+import db from "@/lib/db";
 
 // Atualizar empresa (PUT)
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
+  const { params } = context;
+  const { id } = params;
+
   try {
     const body = await req.json();
 
     const company = await db.company.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         code: body.code,
         document: body.document,
@@ -50,11 +53,14 @@ export async function PUT(
 // Deletar empresa (DELETE)
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
+  const { params } = context;
+  const { id } = params;
+
   try {
     await db.company.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json(

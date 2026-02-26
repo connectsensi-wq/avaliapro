@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db"; // seu prisma client singleton
+import db from "@/lib/db";
 
-// PUT - atualizar  cliente
+// PUT - atualizar cliente
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: any
 ) {
+  const { params } = context;
+  const { id } = params;
+
   try {
     const data = await req.json();
-    const id = params.id;
 
     // Converter datas se vierem como string
     if (data.constitution_date) {
@@ -17,17 +19,17 @@ export async function PUT(
 
     // Preparar dados para atualizar contatos
     const contactsData = data.contacts || [];
-    delete data.contacts; // remove para não causar conflito no update do client
+    delete data.contacts;
 
     const client = await db.client.update({
       where: { id },
       data: {
         ...data,
         contacts: {
-          // Apaga contatos que vieram com uma flag 'delete: true'
-          deleteMany: contactsData.filter((c: any) => c.delete).map((c: any) => ({ id: c.id })),
+          deleteMany: contactsData
+            .filter((c: any) => c.delete)
+            .map((c: any) => ({ id: c.id })),
 
-          // Atualiza contatos existentes (devem ter id)
           update: contactsData
             .filter((c: any) => c.id && !c.delete)
             .map((c: any) => ({
@@ -39,7 +41,6 @@ export async function PUT(
               },
             })),
 
-          // Cria novos contatos (não possuem id)
           create: contactsData
             .filter((c: any) => !c.id && !c.delete)
             .map((c: any) => ({
@@ -49,7 +50,7 @@ export async function PUT(
             })),
         },
       },
-      include: { contacts: true }, // retorna os contatos atualizados
+      include: { contacts: true },
     });
 
     return NextResponse.json(client);
@@ -60,11 +61,18 @@ export async function PUT(
 }
 
 // DELETE - remover cliente
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: Request,
+  context: any
+) {
+  const { params } = context;
+  const { id } = params;
+
   try {
     await db.client.delete({
-      where: { id: params.id },
+      where: { id },
     });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Erro ao excluir cliente:", error);
