@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 
-interface Params {
-  params: { id: string }
-}
-
-export async function PUT(req: Request, { params }: Params) {
+export async function PUT(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const body = await req.json();
 
@@ -13,23 +12,37 @@ export async function PUT(req: Request, { params }: Params) {
       where: { id: params.id },
       data: {
         status: body.status,
-        payment_date: body.payment_date ? new Date(body.payment_date) : undefined,
-      }
+        payment_date: body.payment_date
+          ? new Date(body.payment_date)
+          : undefined,
+      },
     });
 
     return NextResponse.json(updatedAccount);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Erro ao atualizar conta a pagar" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao atualizar conta a pagar" },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(req: Request, { params }: Params) {
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   try {
-    await db.accountsPayable.delete({ where: { id: params.id } });
+    await db.accountsPayable.delete({
+      where: { id: params.id },
+    });
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Erro ao deletar conta a pagar" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao deletar conta a pagar" },
+      { status: 500 }
+    );
   }
 }
