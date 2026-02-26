@@ -86,12 +86,12 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
         rps_number: invoice?.rps_number || "",
         rps_date: invoice?.rps_date || "",
         // Retenções (presumindo que estão no nível raiz ou dentro de 'retentions' em 'invoice')
-        inss_percentage: invoice?.retentions?.inss_percentage || 0,
-        irpj_percentage: invoice?.retentions?.irpj_percentage || 1.5,
-        csll_percentage: invoice?.retentions?.csll_percentage || 1,
-        cofins_percentage: invoice?.retentions?.cofins_percentage || 3,
-        pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage || 0.65,
-        other_retentions_percentage: invoice?.retentions?.other_retentions_percentage || 0,
+        inss_percentage: invoice?.retentions?.inss_percentage ?? 0,
+        irpj_percentage: invoice?.retentions?.irpj_percentage ?? 1.5,
+        csll_percentage: invoice?.retentions?.csll_percentage ?? 1,
+        cofins_percentage: invoice?.retentions?.cofins_percentage ?? 3,
+        pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
+        other_retentions_percentage: invoice?.retentions?.other_retentions_percentage ?? 0,
         tax_rate: invoice?.tax_rate || 2,
         observations: invoice?.observations || "",
         locked: invoice?.locked || false, 
@@ -122,7 +122,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
         setSelectedClient(client || null); // Atualiza o estado do cliente selecionado
         
         // Define as retenções conforme o tipo de documento
-        if (client?.document_type === "cpf") {
+        if (client?.document_type === "cpf" || client?.is_simple_national_optant === true) {
             setFormData(prevData => ({
                 ...prevData,
                 client_id: clientId,
@@ -136,11 +136,11 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
             setFormData(prevData => ({
                 ...prevData,
                 client_id: clientId,
-                inss_percentage: invoice?.retentions?.inss_percentage || 0,
-                irpj_percentage: invoice?.retentions?.irpj_percentage || 1.5,
-                csll_percentage: invoice?.retentions?.csll_percentage || 1,
-                cofins_percentage: invoice?.retentions?.cofins_percentage || 3,
-                pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage || 0.65,
+                inss_percentage: invoice?.retentions?.inss_percentage ?? 0,
+                irpj_percentage: invoice?.retentions?.irpj_percentage ?? 1.5,
+                csll_percentage: invoice?.retentions?.csll_percentage ?? 1,
+                cofins_percentage: invoice?.retentions?.cofins_percentage ?? 3,
+            pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
             }));
         }
     };
