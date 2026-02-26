@@ -43,7 +43,7 @@ export interface Professional {
   neighborhood?: string | null;
   city?: string | null;
   state?: State | null;
-  cep?: String | null;
+  cep?: string | null;
 
   admin_fee_percentage: number;
   status: Status;
