@@ -329,7 +329,7 @@ export default function InvoicesPage() {
                 <div key={invoice.id} className="p-4 hover:bg-slate-50 transition-colors">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center shrink-0">
                         <InvoicePrintMulti 
                           invoice={invoice}
                           professionals={professionals}
@@ -366,7 +366,7 @@ export default function InvoicesPage() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-2 ml-4 flex-shrink-0">
+                    <div className="flex gap-2 ml-4 shrink-0">
                       <Button
                         variant="outline"
                         size="sm"
