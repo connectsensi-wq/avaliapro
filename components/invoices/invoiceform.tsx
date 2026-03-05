@@ -88,9 +88,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
         // Retenções (presumindo que estão no nível raiz ou dentro de 'retentions' em 'invoice')
         inss_percentage: invoice?.retentions?.inss_percentage ?? 0,
         irpj_percentage: invoice?.retentions?.irpj_percentage ?? 1.5,
-        csll_percentage: invoice?.retentions?.csll_percentage ?? 0,
-        cofins_percentage: invoice?.retentions?.cofins_percentage ?? 0,
-        pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0,
+        csll_percentage: invoice?.retentions?.csll_percentage ?? 1,
+        cofins_percentage: invoice?.retentions?.cofins_percentage ?? 3,
+        pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
         other_retentions_percentage: invoice?.retentions?.other_retentions_percentage ?? 4.65,
         tax_rate: invoice?.tax_rate || 2,
         observations: invoice?.observations || "",
@@ -139,9 +139,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 client_id: clientId,
                 inss_percentage: invoice?.retentions?.inss_percentage ?? 0,
                 irpj_percentage: invoice?.retentions?.irpj_percentage ?? 1.5,
-                csll_percentage: invoice?.retentions?.csll_percentage ?? 0,
-                cofins_percentage: invoice?.retentions?.cofins_percentage ?? 0,
-                pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0,
+                csll_percentage: invoice?.retentions?.csll_percentage ?? 1,
+                cofins_percentage: invoice?.retentions?.cofins_percentage ?? 3,
+                pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
                 other_retentions_percentage: invoice?.retentions?.other_retentions_percentage ?? 4.65,
             }));
         }
@@ -225,15 +225,13 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                calculateRetention(formData.irpj_percentage) +
                calculateRetention(formData.csll_percentage) +
                calculateRetention(formData.cofins_percentage) +
-               calculateRetention(formData.pis_pasep_percentage) +
-               calculateRetention(formData.other_retentions_percentage);
+               calculateRetention(formData.pis_pasep_percentage) ;
     }, [
         formData.inss_percentage, 
         formData.irpj_percentage, 
         formData.csll_percentage, 
         formData.cofins_percentage, 
         formData.pis_pasep_percentage, 
-        formData.other_retentions_percentage,
         getTotalServiceValue
     ]);
 
