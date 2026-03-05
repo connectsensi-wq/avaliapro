@@ -138,7 +138,7 @@ export default function InvoicePrintMulti({
                         <th style="width:14%; text-align:center;">CSLL</th>
                         <th style="width:14%; text-align:center;">COFINS</th>
                         <th style="width:14%; text-align:center;">PIS</th>
-                        <th style="width:15%; text-align:center;">Outras Retenções</th>
+                        <th style="width:15%; text-align:center;">PIS/COFINS/CSLL</th>
                         <th style="width:15%; text-align:right;">Valor Bruto</th>
                       </tr>
                       <tr>
