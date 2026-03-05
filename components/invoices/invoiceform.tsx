@@ -91,7 +91,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
         csll_percentage: invoice?.retentions?.csll_percentage ?? 1,
         cofins_percentage: invoice?.retentions?.cofins_percentage ?? 3,
         pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
-        other_retentions_percentage: invoice?.retentions?.other_retentions_percentage ?? 0,
+        other_retentions_percentage: invoice?.retentions?.other_retentions_percentage ?? 4.65,
         tax_rate: invoice?.tax_rate || 2,
         observations: invoice?.observations || "",
         locked: invoice?.locked || false, 
@@ -131,6 +131,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 csll_percentage: 0,
                 cofins_percentage: 0,
                 pis_pasep_percentage: 0,
+                other_retentions_percentage: 0,
             }));
         } else {
             setFormData(prevData => ({
@@ -140,7 +141,8 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 irpj_percentage: invoice?.retentions?.irpj_percentage ?? 1.5,
                 csll_percentage: invoice?.retentions?.csll_percentage ?? 1,
                 cofins_percentage: invoice?.retentions?.cofins_percentage ?? 3,
-            pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
+                pis_pasep_percentage: invoice?.retentions?.pis_pasep_percentage ?? 0.65,
+                other_retentions_percentage: invoice?.retentions?.other_retentions_percentage ?? 4.65,
             }));
         }
     };
@@ -796,7 +798,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                         </div>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label>Outras Retenções (%)</Label>
+                                        <Label>PIS/COFINS/CSLL (%)</Label>
                                         <Input
                                             type="number"
                                             step="0.01"
