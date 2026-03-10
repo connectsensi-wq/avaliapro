@@ -259,6 +259,15 @@ export default function AccountsPayablePage() {
 
       <div className="space-y-4">
         {isLoading ? <p>Carregando...</p> : filteredAccounts.map(acc => {
+          const receivable = acc.invoice?.accounts_receivable;
+          const clientPaid = receivable?.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0;
+          const receivableAmount = receivable?.amount || 0;
+          let receivableStatus = "pending";
+
+          if (clientPaid === 0) receivableStatus = "pending";
+          else if (clientPaid < receivableAmount) receivableStatus = "partial";
+          else receivableStatus = "paid";
+        
           const totalPaid = acc.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0
           const remainingAmount = acc.amount - totalPaid;
           const status = statusConfig[acc.status] || {label: 'Desconhecido', color: 'bg-gray-200'};
@@ -270,12 +279,25 @@ export default function AccountsPayablePage() {
                   <div className="grid grid-cols-[75%_25%]">
                     <p className="text-md text-slate-500">
                       NFS-e: {acc.document} - Emissão: {formatDate(acc.due_date)} - {acc.client_name}
-                    </p>
+                    </p>                  
                     <div className="flex items-center justify-center">
                       <Badge className={`min-w-[100px] text-center ${status.color}`}>{status.label}</Badge>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
+                  </div>                    
+                  <div className="flex items-center gap-2">
+                    {receivable && (
+                      <>
+                        {receivableStatus === "paid" && (
+                          <span className="w-3 h-3 rounded-full bg-green-500"/>
+                        )}
+                        {receivableStatus === "partial" && (
+                          <span className="w-3 h-3 rounded-full bg-yellow-500"/>
+                        )}
+                        {receivableStatus === "pending" && (
+                          <span className="w-3 h-3 rounded-full bg-red-500"/>
+                        )}
+                      </>
+                    )}
                     <h3 className="font-semibold">{acc.professional_name}</h3>
                   </div>
                   <div className="text-sm mt-2 border-t pt-3">

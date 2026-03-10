@@ -9,26 +9,83 @@ export async function GET(req: Request) {
 
     if (!companyId) {
       return NextResponse.json(
-        { error: "companyId é obrigatório" }, 
+        { error: "companyId é obrigatório" },
         { status: 400 }
       );
     }
 
-    const accounts = await db.accountsPayable.findMany({
-      where: { companyId },
+    // 1️⃣ contas pendentes onde o cliente já pagou
+    const paidClientAccounts = await db.accountsPayable.findMany({
+      where: {
+        companyId,
+        status: "pending",
+        invoice: {
+          accounts_receivable: {
+            installments: {
+              some: {}
+            }
+          }
+        }
+      },
       include: {
         company: true,
-        invoice: {include:{client:true}},
+        invoice: {
+          include: {
+            client: true,
+            accounts_receivable: {
+              include: {
+                installments: true
+              }
+            }
+          }
+        },
+        installments: true,
+        professional: true,
+      }
+    });
+
+    // 2️⃣ restante das contas
+    const otherAccounts = await db.accountsPayable.findMany({
+      where: {
+        companyId,
+        id: {
+          notIn: paidClientAccounts.map(acc => acc.id)
+        }
+      },
+      include: {
+        company: true,
+        invoice: {
+          include: {
+            client: true,
+            accounts_receivable: {
+              include: {
+                installments: true
+              }
+            }
+          }
+        },
         installments: true,
         professional: true,
       },
-        orderBy: { due_date: "desc" }
+      orderBy: {
+        due_date: "desc"
+      }
     });
 
+    // 3️⃣ juntar os dois resultados
+    const accounts = [
+      ...paidClientAccounts,
+      ...otherAccounts
+    ];
+
     return NextResponse.json({ accounts }, { status: 200 });
+
   } catch (error) {
-    console.error("GET /accountsReceivable error:", error);
-    return NextResponse.json({ error: "Erro ao buscar contas a pagar" }, { status: 500 });
+    console.error("GET /accountsPayable error:", error);
+    return NextResponse.json(
+      { error: "Erro ao buscar contas a pagar" },
+      { status: 500 }
+    );
   }
 }
 
