@@ -321,6 +321,9 @@ model AccountsReceivable {
   payment_date  DateTime?
   status        AccountsReceivableStatus  @default(pending)
 
+  discount             Float?
+  observations         String?
+
   installments  PaymentInstallment[]
 }
 
@@ -351,6 +354,9 @@ model PaymentInstallment {
   accounts_receivable_id String
   payment_date           DateTime
   amount_paid            Float
+
+  discount             Float?
+  observations         String?
 }
 
 model PaymentPayableInstallment {
@@ -359,6 +365,9 @@ model PaymentPayableInstallment {
   accounts_payable_id  String
   payment_date         DateTime
   amount_paid          Float
+
+  discount             Float?
+  observations         String?
 }
 
 model Specialty {

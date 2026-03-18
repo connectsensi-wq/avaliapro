@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 
+// GET
 // GET: listar todas as accountsPayable
 export async function GET(req: Request) {
   try {
@@ -89,56 +90,121 @@ export async function GET(req: Request) {
   }
 }
 
+// POST
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    
-    console.log(`Dados Carregados no /POST`, body)
-    const { accounts_payable_id, amount_paid, payment_date } = body
 
-    if (!accounts_payable_id || !amount_paid || !payment_date) {
-      return NextResponse.json({ error: "Campos obrigatórios faltando" }, { status: 400 })
+    let {
+      accounts_payable_id,
+      amount_paid,
+      payment_date,
+      discount,
+      observations
+    } = body;
+
+    // 🔒 Normalização
+    amount_paid = Number(amount_paid);
+    discount = Number(discount || 0);
+
+    if (!accounts_payable_id || !payment_date) {
+      return NextResponse.json(
+        { error: "Campos obrigatórios faltando" },
+        { status: 400 }
+      );
     }
 
-    // Cria a parcela
-    const installment = await db.paymentPayableInstallment.create({
-      data: {
-        accounts_payable_id,
-        amount_paid,
-        payment_date: new Date(payment_date),
-      },
-    })
+    if (isNaN(amount_paid) || amount_paid <= 0) {
+      return NextResponse.json(
+        { error: "Valor pago inválido" },
+        { status: 400 }
+      );
+    }
 
-    // Busca o Payable com parcelas e invoice
-    const payable = await db.accountsPayable.findUnique({
-      where: { id: accounts_payable_id },
-      include: { installments: true, invoice: true },
-    })
+    if (isNaN(discount) || discount < 0) {
+      return NextResponse.json(
+        { error: "Desconto inválido" },
+        { status: 400 }
+      );
+    }
 
-    if (payable) {
-      const totalPaid = payable.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0
-      let newStatus: "pending" | "partially_paid" | "paid" | "overdue" | "cancelled" = "pending"
+    const result = await db.$transaction(async (tx) => {
 
-      if (totalPaid === 0) {
-        newStatus = "pending"
-      } else if (totalPaid < payable.amount) {
-        newStatus = "partially_paid"
-      } else if (totalPaid >= payable.amount) {
-        newStatus = "paid"
+      const payable = await tx.accountsPayable.findUnique({
+        where: { id: accounts_payable_id },
+        include: { installments: true },
+      });
+
+      if (!payable) {
+        throw new Error("Conta a pagar não encontrada");
       }
 
-      await db.accountsPayable.update({
-        where: { id: accounts_payable_id },
-        data: { 
-          status: newStatus,
-          payment_date: newStatus === "paid" ? new Date(payment_date) : null,
-        },
-      })
-    }
+      const totalPaidSoFar =
+        payable.installments?.reduce(
+          (sum, i) => sum + i.amount_paid + (i.discount || 0),
+          0
+        ) || 0;
 
-    return NextResponse.json(installment, { status: 201 });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Erro ao criar contas a pagar" }, { status: 500 });
+      const round = (v: number) => Number(v.toFixed(2));
+
+      const newTotal = round(amount_paid + discount);
+      const newTotalPaid = round(totalPaidSoFar + newTotal);
+      const totalAmount = round(payable.amount);
+
+      // 🚫 BLOQUEIO DE EXCESSO
+      if (newTotalPaid > payable.amount) {
+        throw new Error(
+          `Pagamento excede o valor total. Restante: ${payable.amount - totalPaidSoFar}`
+        );
+      }
+
+      // 💾 cria parcela
+      const installment = await tx.paymentPayableInstallment.create({
+        data: {
+          accounts_payable_id,
+          amount_paid,
+          payment_date: new Date(payment_date),
+          discount,
+          observations: observations || null,
+        },
+      });
+
+      // 🔢 status
+      let newStatus: "pending" | "partially_paid" | "paid" = "pending";
+
+      if (newTotalPaid === 0) {
+        newStatus = "pending";
+      } else if (newTotalPaid < totalAmount) {
+        newStatus = "partially_paid";
+      } else {
+        newStatus = "paid";
+      }
+
+      // 📅 última data válida
+      const latestPaymentDate =
+        newStatus === "paid"
+          ? new Date(payment_date)
+          : payable.payment_date;
+
+      await tx.accountsPayable.update({
+        where: { id: accounts_payable_id },
+        data: {
+          status: newStatus,
+          payment_date: latestPaymentDate,
+        },
+      });
+
+      return installment;
+    });
+
+    return NextResponse.json(result, { status: 201 });
+
+  } catch (err: any) {
+    console.error("POST /accountsPayable error:", err);
+
+    return NextResponse.json(
+      { error: err.message || "Erro ao criar pagamento" },
+      { status: 500 }
+    );
   }
 }

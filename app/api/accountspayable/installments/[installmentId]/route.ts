@@ -3,77 +3,91 @@ import db from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  context: any
+  context: { params: { installmentId: string } }
 ) {
-  const { params } = context;
-  const { installmentId } = params;
+  const { installmentId } = context.params;
 
   try {
-    // Busca o installment para descobrir o payable relacionado
-    const installment = await db.paymentPayableInstallment.findUnique({
-      where: { id: installmentId },
-    });
+    const result = await db.$transaction(async (tx) => {
 
-    if (!installment) {
-      return NextResponse.json(
-        { error: "Installment não encontrado" },
-        { status: 404 }
-      );
-    }
-
-    const payableId = installment.accounts_payable_id;
-
-    // Deleta o installment
-    await db.paymentPayableInstallment.delete({
-      where: { id: installmentId },
-    });
-
-    // Recalcula os installments restantes
-    const remainingInstallments =
-      await db.paymentPayableInstallment.findMany({
-        where: { accounts_payable_id: payableId },
+      // 🔍 busca installment
+      const installment = await tx.paymentPayableInstallment.findUnique({
+        where: { id: installmentId },
       });
 
-    const totalPaid = remainingInstallments.reduce(
-      (sum, i) => sum + i.amount_paid,
-      0
-    );
+      if (!installment) {
+        throw new Error("Installment não encontrado");
+      }
 
-    // Busca o payable com invoice associada
-    const payable = await db.accountsPayable.findUnique({
-      where: { id: payableId },
-      include: { invoice: true },
+      const payableId = installment.accounts_payable_id;
+
+      // 🗑️ deleta
+      await tx.paymentPayableInstallment.delete({
+        where: { id: installmentId },
+      });
+
+      // 🔄 busca restantes ORDENADO
+      const remainingInstallments =
+        await tx.paymentPayableInstallment.findMany({
+          where: { accounts_payable_id: payableId },
+          orderBy: { payment_date: "asc" },
+        });
+
+      const totalPaid =
+        remainingInstallments.reduce(
+          (sum, i) => sum + i.amount_paid + (i.discount || 0),
+          0
+        ) || 0;
+
+      // 📄 busca payable
+      const payable = await tx.accountsPayable.findUnique({
+        where: { id: payableId },
+      });
+
+      if (!payable) {
+        throw new Error("Conta a pagar não encontrada");
+      }
+
+      // 🔢 status
+      let status: "pending" | "partially_paid" | "paid" = "pending";
+
+      if (totalPaid === 0) {
+        status = "pending";
+      } else if (totalPaid < payable.amount) {
+        status = "partially_paid";
+      } else {
+        status = "paid";
+      }
+
+      // 📅 última data válida
+      const lastPayment =
+        remainingInstallments.length > 0
+          ? remainingInstallments[remainingInstallments.length - 1].payment_date
+          : null;
+
+      // 🧾 atualiza payable
+      await tx.accountsPayable.update({
+        where: { id: payableId },
+        data: {
+          status,
+          payment_date: lastPayment,
+        },
+      });
+
+      return {
+        message: "Installment deletado com sucesso",
+        status,
+        totalPaid,
+      };
     });
 
-    if (!payable) {
-      return NextResponse.json(
-        { error: "Receivable não encontrado" },
-        { status: 404 }
-      );
-    }
+    return NextResponse.json(result);
 
-    // Define o novo status
-    let status: "pending" | "partially_paid" | "paid" = "pending";
+  } catch (error: any) {
+    console.error("DELETE payable installment error:", error);
 
-    if (totalPaid === 0) status = "pending";
-    else if (totalPaid < payable.amount) status = "partially_paid";
-    else status = "paid";
-
-    // Atualiza o payable
-    await db.accountsPayable.update({
-      where: { id: payableId },
-      data: { status },
-    });
-
-    return NextResponse.json({
-      message: "Installment deletado, status atualizado",
-      status,
-      totalPaid,
-    });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Erro ao deletar installment" },
+      { error: error.message || "Erro ao deletar installment" },
       { status: 500 }
     );
   }

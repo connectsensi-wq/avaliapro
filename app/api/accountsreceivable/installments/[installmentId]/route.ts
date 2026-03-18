@@ -3,84 +3,101 @@ import db from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  context: any
+  context: { params: { installmentId: string } }
 ) {
-  const { params } = context;
-  const { installmentId } = params;
+  const { installmentId } = context.params;
 
   try {
-    // Busca o installment para descobrir o receivable relacionado
-    const installment = await db.paymentInstallment.findUnique({
-      where: { id: installmentId },
-    });
+    const result = await db.$transaction(async (tx) => {
 
-    if (!installment) {
-      return NextResponse.json(
-        { error: "Installment não encontrado" },
-        { status: 404 }
-      );
-    }
-
-    const receivableId = installment.accounts_receivable_id;
-
-    // Deleta o installment
-    await db.paymentInstallment.delete({
-      where: { id: installmentId },
-    });
-
-    // Recalcula os installments restantes
-    const remainingInstallments = await db.paymentInstallment.findMany({
-      where: { accounts_receivable_id: receivableId },
-    });
-
-    const totalPaid = remainingInstallments.reduce(
-      (sum, i) => sum + i.amount_paid,
-      0
-    );
-
-    // Busca o receivable com invoice associada
-    const receivable = await db.accountsReceivable.findUnique({
-      where: { id: receivableId },
-      include: { invoice: true },
-    });
-
-    if (!receivable) {
-      return NextResponse.json(
-        { error: "Receivable não encontrado" },
-        { status: 404 }
-      );
-    }
-
-    // Define o novo status
-    let status: "pending" | "partially_paid" | "paid" = "pending";
-
-    if (totalPaid === 0) status = "pending";
-    else if (totalPaid < receivable.amount) status = "partially_paid";
-    else if (totalPaid >= receivable.amount) status = "paid";
-
-    // Atualiza o receivable
-    await db.accountsReceivable.update({
-      where: { id: receivableId },
-      data: { status },
-    });
-
-    // 🔓 Se não restar nenhum installment → desbloqueia invoice
-    if (remainingInstallments.length === 0 && receivable.invoice_id) {
-      await db.invoice.update({
-        where: { id: receivable.invoice_id },
-        data: { locked: false },
+      // 🔍 busca installment
+      const installment = await tx.paymentInstallment.findUnique({
+        where: { id: installmentId },
       });
-    }
 
-    return NextResponse.json({
-      message: "Installment deletado, status e invoice atualizados",
-      status,
-      totalPaid,
+      if (!installment) {
+        throw new Error("Installment não encontrado");
+      }
+
+      const receivableId = installment.accounts_receivable_id;
+
+      // 🗑️ deleta
+      await tx.paymentInstallment.delete({
+        where: { id: installmentId },
+      });
+
+      // 🔄 busca restantes ORDENADO
+      const remainingInstallments = await tx.paymentInstallment.findMany({
+        where: { accounts_receivable_id: receivableId },
+        orderBy: { payment_date: "asc" },
+      });
+
+      const totalPaid =
+        remainingInstallments.reduce(
+          (sum, i) => sum + i.amount_paid + (i.discount || 0),
+          0
+        ) || 0;
+
+      // 📄 busca receivable
+      const receivable = await tx.accountsReceivable.findUnique({
+        where: { id: receivableId },
+        include: { invoice: true },
+      });
+
+      if (!receivable) {
+        throw new Error("Receivable não encontrado");
+      }
+
+      // 🔢 status
+      let status: "pending" | "partially_paid" | "paid" = "pending";
+
+      if (totalPaid === 0) {
+        status = "pending";
+      } else if (totalPaid < receivable.amount) {
+        status = "partially_paid";
+      } else {
+        status = "paid";
+      }
+
+      // 📅 recalcula última data de pagamento
+      const lastPayment =
+        remainingInstallments.length > 0
+          ? remainingInstallments[remainingInstallments.length - 1].payment_date
+          : null;
+
+      // 🧾 atualiza receivable
+      await tx.accountsReceivable.update({
+        where: { id: receivableId },
+        data: {
+          status,
+          payment_date: lastPayment,
+        },
+      });
+
+      // 🔒/🔓 controle da invoice
+      if (receivable.invoice_id) {
+        const shouldLock = remainingInstallments.length > 0;
+
+        await tx.invoice.update({
+          where: { id: receivable.invoice_id },
+          data: { locked: shouldLock },
+        });
+      }
+
+      return {
+        message: "Installment deletado com sucesso",
+        status,
+        totalPaid,
+      };
     });
-  } catch (error) {
-    console.error(error);
+
+    return NextResponse.json(result);
+
+  } catch (error: any) {
+    console.error("DELETE installment error:", error);
+
     return NextResponse.json(
-      { error: "Erro ao deletar installment" },
+      { error: error.message || "Erro ao deletar installment" },
       { status: 500 }
     );
   }

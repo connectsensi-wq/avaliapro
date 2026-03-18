@@ -1,12 +1,11 @@
-import { NextResponse } from "next/server";
-import db from "@/lib/db";
+  import { NextResponse } from "next/server";
+  import db from "@/lib/db";
 
-// GET: listar todas as accountsPayable
+  // GET: listar todas as accountsPayable
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const companyId = searchParams.get("companyId");
-
     if (!companyId) {
       return NextResponse.json(
         { error: "companyId é obrigatório" },
@@ -24,7 +23,7 @@ export async function GET(req: Request) {
       },
         orderBy: { due_date: "desc" }
     });
-
+    
     return NextResponse.json(accounts_receivable);
   } catch (error) {
     console.error("GET /accountsReceivable error:", error);
@@ -35,61 +34,128 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
-    const { accounts_receivable_id, amount_paid, payment_date } = body
+    const body = await req.json();
 
-    if (!accounts_receivable_id || !amount_paid || !payment_date) {
-      return NextResponse.json({ error: "Campos obrigatórios faltando" }, { status: 400 })
+    let {
+      accounts_receivable_id,
+      amount_paid,
+      payment_date,
+      discount,
+      observations
+    } = body;
+
+    // 🔒 Normalização
+    amount_paid = Number(amount_paid);
+    discount = Number(discount || 0);
+
+    if (!accounts_receivable_id || !payment_date) {
+      return NextResponse.json(
+        { error: "Campos obrigatórios faltando" },
+        { status: 400 }
+      );
     }
 
-    // Cria a parcela
-    const installment = await db.paymentInstallment.create({
-      data: {
-        accounts_receivable_id,
-        amount_paid,
-        payment_date: new Date(payment_date),
-      },
-    })
+    if (isNaN(amount_paid) || amount_paid <= 0) {
+      return NextResponse.json(
+        { error: "Valor pago inválido" },
+        { status: 400 }
+      );
+    }
 
-    // Busca o receivable com parcelas e invoice
-    const receivable = await db.accountsReceivable.findUnique({
-      where: { id: accounts_receivable_id },
-      include: { installments: true, invoice: true },
-    })
+    if (isNaN(discount) || discount < 0) {
+      return NextResponse.json(
+        { error: "Desconto inválido" },
+        { status: 400 }
+      );
+    }
 
-    if (receivable) {
-      const totalPaid = receivable.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0
-      let newStatus: "pending" | "partially_paid" | "paid" | "overdue" | "cancelled" = "pending"
+    // 🔄 TRANSACTION (CRÍTICO)
+    const result = await db.$transaction(async (tx) => {
 
-      if (totalPaid === 0) {
-        newStatus = "pending"
-      } else if (totalPaid < receivable.amount) {
-        newStatus = "partially_paid"
-      } else if (totalPaid >= receivable.amount) {
-        newStatus = "paid"
+      const receivable = await tx.accountsReceivable.findUnique({
+        where: { id: accounts_receivable_id },
+        include: { installments: true, invoice: true },
+      });
+
+      if (!receivable) {
+        throw new Error("Receivable não encontrado");
       }
 
-      await db.accountsReceivable.update({
-        where: { id: accounts_receivable_id },
-        data: { 
-          status: newStatus,
-          payment_date: newStatus === "paid" ? new Date(payment_date) : null,
-        },
-      })
+      const totalPaidSoFar =
+        receivable.installments?.reduce(
+          (sum, i) => sum + i.amount_paid + (i.discount || 0),
+          0
+        ) || 0;
 
-      // 🔒 Bloqueia a nota já no primeiro pagamento
+      const round = (value: number) => Number(value.toFixed(2));
+            
+      const newTotal = round(amount_paid + discount);
+      const newTotalPaid = round(totalPaidSoFar + newTotal);
+      const totalAmount = round(receivable.amount);
+
+      // 🚫 BLOQUEIO FINANCEIRO
+      if (newTotalPaid > receivable.amount) {
+        throw new Error(
+          `Pagamento excede o saldo. Restante: ${receivable.amount - totalPaidSoFar}`
+        );
+      }
+
+      // ✅ cria parcela
+      const installment = await tx.paymentInstallment.create({
+        data: {
+          accounts_receivable_id,
+          amount_paid,
+          payment_date: new Date(payment_date),
+          discount,
+          observations: observations || null,
+        },
+      });
+
+      // 🔢 calcula novo status
+      let newStatus: "pending" | "partially_paid" | "paid" = "pending";
+
+      if (newTotalPaid === 0) {
+        newStatus = "pending";
+      } else if (newTotalPaid < totalAmount) {
+        newStatus = "partially_paid";
+      } else {
+        newStatus = "paid";
+      }
+
+      // 📅 última data de pagamento
+      const latestPaymentDate =
+        newStatus === "paid"
+          ? new Date(payment_date)
+          : receivable.payment_date;
+
+      await tx.accountsReceivable.update({
+        where: { id: accounts_receivable_id },
+        data: {
+          status: newStatus,
+          payment_date: latestPaymentDate,
+        },
+      });
+
+      // 🔒 trava invoice se houver pagamento
       if (receivable.invoice_id) {
-        await db.invoice.update({
+        await tx.invoice.update({
           where: { id: receivable.invoice_id },
           data: { locked: true },
-        })
+        });
       }
-    }
 
-    return NextResponse.json(installment, { status: 201 })
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json({ error: "Erro ao criar pagamento" }, { status: 500 })
+      return installment;
+    });
+
+    return NextResponse.json(result, { status: 201 });
+
+  } catch (error: any) {
+    console.error("POST /accountsReceivable error:", error);
+
+    return NextResponse.json(
+      { error: error.message || "Erro ao criar pagamento" },
+      { status: 500 }
+    );
   }
 }
 

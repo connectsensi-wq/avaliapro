@@ -46,7 +46,7 @@ export default function HistoryDialog({
 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
-      <DialogContent className="max-w-lg w-full py-2">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>
             Histórico de Pagamentos - NFS-e {receivable.document}
@@ -54,7 +54,7 @@ export default function HistoryDialog({
           <DialogDescription>
             Valor Total: R$ {toBRLDecimal(receivable.amount.toFixed(2))}
           </DialogDescription>
-        </DialogHeader>
+        </DialogHeader> 
 
         {installments.length > 0 ? (
           // CONTÊINER ROLÁVEL ADICIONADO AQUI
@@ -64,15 +64,20 @@ export default function HistoryDialog({
                 key={inst.id}
                 className="grid grid-cols-5 gap-4 border rounded-lg bg-slate-50 min-w-0"
               >
-                <div className="p-3 col-span-4 break-words">
-                  <p>
-                    <strong>Data:</strong>{" "}
-                    {formatDate(inst.payment_date)}
-                  </p>
-                  <p>
-                    <strong>Valor Pago:</strong> R${" "}
-                    {toBRLDecimal(inst.amount_paid.toFixed(2))}
-                  </p>
+                <div className="p-3 col-span-4 wrap-break-words">
+                  <p><strong>Data:</strong>{" "}{formatDate(inst.payment_date)}</p>
+                  <p><strong>Valor Recebido:</strong> R${" "}{toBRLDecimal(inst.amount_paid.toFixed(2))}</p>
+                    {Number(inst.discount) > 0 && (
+                      <p>
+                        <strong>Desconto:</strong> R$ {toBRLDecimal(inst.discount?.toFixed(2))}
+                      </p>
+                    )}
+                    
+                    {inst.observations && (
+                      <p className="text-slate-600">
+                        <strong>Obs:</strong> {inst.observations}
+                      </p>
+                    )}
                 </div>
                 <div className="col-span-1 flex justify-center mt-4 mr-4">
                   <Button

@@ -11561,10 +11561,12 @@ export namespace Prisma {
 
   export type AccountsReceivableAvgAggregateOutputType = {
     amount: number | null
+    discount: number | null
   }
 
   export type AccountsReceivableSumAggregateOutputType = {
     amount: number | null
+    discount: number | null
   }
 
   export type AccountsReceivableMinAggregateOutputType = {
@@ -11578,6 +11580,8 @@ export namespace Prisma {
     due_date: Date | null
     payment_date: Date | null
     status: $Enums.AccountsReceivableStatus | null
+    discount: number | null
+    observations: string | null
   }
 
   export type AccountsReceivableMaxAggregateOutputType = {
@@ -11591,6 +11595,8 @@ export namespace Prisma {
     due_date: Date | null
     payment_date: Date | null
     status: $Enums.AccountsReceivableStatus | null
+    discount: number | null
+    observations: string | null
   }
 
   export type AccountsReceivableCountAggregateOutputType = {
@@ -11604,16 +11610,20 @@ export namespace Prisma {
     due_date: number
     payment_date: number
     status: number
+    discount: number
+    observations: number
     _all: number
   }
 
 
   export type AccountsReceivableAvgAggregateInputType = {
     amount?: true
+    discount?: true
   }
 
   export type AccountsReceivableSumAggregateInputType = {
     amount?: true
+    discount?: true
   }
 
   export type AccountsReceivableMinAggregateInputType = {
@@ -11627,6 +11637,8 @@ export namespace Prisma {
     due_date?: true
     payment_date?: true
     status?: true
+    discount?: true
+    observations?: true
   }
 
   export type AccountsReceivableMaxAggregateInputType = {
@@ -11640,6 +11652,8 @@ export namespace Prisma {
     due_date?: true
     payment_date?: true
     status?: true
+    discount?: true
+    observations?: true
   }
 
   export type AccountsReceivableCountAggregateInputType = {
@@ -11653,6 +11667,8 @@ export namespace Prisma {
     due_date?: true
     payment_date?: true
     status?: true
+    discount?: true
+    observations?: true
     _all?: true
   }
 
@@ -11753,6 +11769,8 @@ export namespace Prisma {
     due_date: Date
     payment_date: Date | null
     status: $Enums.AccountsReceivableStatus
+    discount: number | null
+    observations: string | null
     _count: AccountsReceivableCountAggregateOutputType | null
     _avg: AccountsReceivableAvgAggregateOutputType | null
     _sum: AccountsReceivableSumAggregateOutputType | null
@@ -11785,6 +11803,8 @@ export namespace Prisma {
     due_date?: boolean
     payment_date?: boolean
     status?: boolean
+    discount?: boolean
+    observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     invoice?: boolean | AccountsReceivable$invoiceArgs<ExtArgs>
     client?: boolean | AccountsReceivable$clientArgs<ExtArgs>
@@ -11803,6 +11823,8 @@ export namespace Prisma {
     due_date?: boolean
     payment_date?: boolean
     status?: boolean
+    discount?: boolean
+    observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     invoice?: boolean | AccountsReceivable$invoiceArgs<ExtArgs>
     client?: boolean | AccountsReceivable$clientArgs<ExtArgs>
@@ -11819,6 +11841,8 @@ export namespace Prisma {
     due_date?: boolean
     payment_date?: boolean
     status?: boolean
+    discount?: boolean
+    observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     invoice?: boolean | AccountsReceivable$invoiceArgs<ExtArgs>
     client?: boolean | AccountsReceivable$clientArgs<ExtArgs>
@@ -11835,9 +11859,11 @@ export namespace Prisma {
     due_date?: boolean
     payment_date?: boolean
     status?: boolean
+    discount?: boolean
+    observations?: boolean
   }
 
-  export type AccountsReceivableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "invoice_id" | "client_id" | "document" | "description" | "amount" | "due_date" | "payment_date" | "status", ExtArgs["result"]["accountsReceivable"]>
+  export type AccountsReceivableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "invoice_id" | "client_id" | "document" | "description" | "amount" | "due_date" | "payment_date" | "status" | "discount" | "observations", ExtArgs["result"]["accountsReceivable"]>
   export type AccountsReceivableInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     invoice?: boolean | AccountsReceivable$invoiceArgs<ExtArgs>
@@ -11875,6 +11901,8 @@ export namespace Prisma {
       due_date: Date
       payment_date: Date | null
       status: $Enums.AccountsReceivableStatus
+      discount: number | null
+      observations: string | null
     }, ExtArgs["result"]["accountsReceivable"]>
     composites: {}
   }
@@ -12312,6 +12340,8 @@ export namespace Prisma {
     readonly due_date: FieldRef<"AccountsReceivable", 'DateTime'>
     readonly payment_date: FieldRef<"AccountsReceivable", 'DateTime'>
     readonly status: FieldRef<"AccountsReceivable", 'AccountsReceivableStatus'>
+    readonly discount: FieldRef<"AccountsReceivable", 'Float'>
+    readonly observations: FieldRef<"AccountsReceivable", 'String'>
   }
     
 
@@ -14094,10 +14124,12 @@ export namespace Prisma {
 
   export type PaymentInstallmentAvgAggregateOutputType = {
     amount_paid: number | null
+    discount: number | null
   }
 
   export type PaymentInstallmentSumAggregateOutputType = {
     amount_paid: number | null
+    discount: number | null
   }
 
   export type PaymentInstallmentMinAggregateOutputType = {
@@ -14105,6 +14137,8 @@ export namespace Prisma {
     accounts_receivable_id: string | null
     payment_date: Date | null
     amount_paid: number | null
+    discount: number | null
+    observations: string | null
   }
 
   export type PaymentInstallmentMaxAggregateOutputType = {
@@ -14112,6 +14146,8 @@ export namespace Prisma {
     accounts_receivable_id: string | null
     payment_date: Date | null
     amount_paid: number | null
+    discount: number | null
+    observations: string | null
   }
 
   export type PaymentInstallmentCountAggregateOutputType = {
@@ -14119,16 +14155,20 @@ export namespace Prisma {
     accounts_receivable_id: number
     payment_date: number
     amount_paid: number
+    discount: number
+    observations: number
     _all: number
   }
 
 
   export type PaymentInstallmentAvgAggregateInputType = {
     amount_paid?: true
+    discount?: true
   }
 
   export type PaymentInstallmentSumAggregateInputType = {
     amount_paid?: true
+    discount?: true
   }
 
   export type PaymentInstallmentMinAggregateInputType = {
@@ -14136,6 +14176,8 @@ export namespace Prisma {
     accounts_receivable_id?: true
     payment_date?: true
     amount_paid?: true
+    discount?: true
+    observations?: true
   }
 
   export type PaymentInstallmentMaxAggregateInputType = {
@@ -14143,6 +14185,8 @@ export namespace Prisma {
     accounts_receivable_id?: true
     payment_date?: true
     amount_paid?: true
+    discount?: true
+    observations?: true
   }
 
   export type PaymentInstallmentCountAggregateInputType = {
@@ -14150,6 +14194,8 @@ export namespace Prisma {
     accounts_receivable_id?: true
     payment_date?: true
     amount_paid?: true
+    discount?: true
+    observations?: true
     _all?: true
   }
 
@@ -14244,6 +14290,8 @@ export namespace Prisma {
     accounts_receivable_id: string
     payment_date: Date
     amount_paid: number
+    discount: number | null
+    observations: string | null
     _count: PaymentInstallmentCountAggregateOutputType | null
     _avg: PaymentInstallmentAvgAggregateOutputType | null
     _sum: PaymentInstallmentSumAggregateOutputType | null
@@ -14270,6 +14318,8 @@ export namespace Prisma {
     accounts_receivable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -14278,6 +14328,8 @@ export namespace Prisma {
     accounts_receivable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -14286,6 +14338,8 @@ export namespace Prisma {
     accounts_receivable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -14294,9 +14348,11 @@ export namespace Prisma {
     accounts_receivable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
   }
 
-  export type PaymentInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_receivable_id" | "payment_date" | "amount_paid", ExtArgs["result"]["paymentInstallment"]>
+  export type PaymentInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_receivable_id" | "payment_date" | "amount_paid" | "discount" | "observations", ExtArgs["result"]["paymentInstallment"]>
   export type PaymentInstallmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }
@@ -14317,6 +14373,8 @@ export namespace Prisma {
       accounts_receivable_id: string
       payment_date: Date
       amount_paid: number
+      discount: number | null
+      observations: string | null
     }, ExtArgs["result"]["paymentInstallment"]>
     composites: {}
   }
@@ -14745,6 +14803,8 @@ export namespace Prisma {
     readonly accounts_receivable_id: FieldRef<"PaymentInstallment", 'String'>
     readonly payment_date: FieldRef<"PaymentInstallment", 'DateTime'>
     readonly amount_paid: FieldRef<"PaymentInstallment", 'Float'>
+    readonly discount: FieldRef<"PaymentInstallment", 'Float'>
+    readonly observations: FieldRef<"PaymentInstallment", 'String'>
   }
     
 
@@ -15173,10 +15233,12 @@ export namespace Prisma {
 
   export type PaymentPayableInstallmentAvgAggregateOutputType = {
     amount_paid: number | null
+    discount: number | null
   }
 
   export type PaymentPayableInstallmentSumAggregateOutputType = {
     amount_paid: number | null
+    discount: number | null
   }
 
   export type PaymentPayableInstallmentMinAggregateOutputType = {
@@ -15184,6 +15246,8 @@ export namespace Prisma {
     accounts_payable_id: string | null
     payment_date: Date | null
     amount_paid: number | null
+    discount: number | null
+    observations: string | null
   }
 
   export type PaymentPayableInstallmentMaxAggregateOutputType = {
@@ -15191,6 +15255,8 @@ export namespace Prisma {
     accounts_payable_id: string | null
     payment_date: Date | null
     amount_paid: number | null
+    discount: number | null
+    observations: string | null
   }
 
   export type PaymentPayableInstallmentCountAggregateOutputType = {
@@ -15198,16 +15264,20 @@ export namespace Prisma {
     accounts_payable_id: number
     payment_date: number
     amount_paid: number
+    discount: number
+    observations: number
     _all: number
   }
 
 
   export type PaymentPayableInstallmentAvgAggregateInputType = {
     amount_paid?: true
+    discount?: true
   }
 
   export type PaymentPayableInstallmentSumAggregateInputType = {
     amount_paid?: true
+    discount?: true
   }
 
   export type PaymentPayableInstallmentMinAggregateInputType = {
@@ -15215,6 +15285,8 @@ export namespace Prisma {
     accounts_payable_id?: true
     payment_date?: true
     amount_paid?: true
+    discount?: true
+    observations?: true
   }
 
   export type PaymentPayableInstallmentMaxAggregateInputType = {
@@ -15222,6 +15294,8 @@ export namespace Prisma {
     accounts_payable_id?: true
     payment_date?: true
     amount_paid?: true
+    discount?: true
+    observations?: true
   }
 
   export type PaymentPayableInstallmentCountAggregateInputType = {
@@ -15229,6 +15303,8 @@ export namespace Prisma {
     accounts_payable_id?: true
     payment_date?: true
     amount_paid?: true
+    discount?: true
+    observations?: true
     _all?: true
   }
 
@@ -15323,6 +15399,8 @@ export namespace Prisma {
     accounts_payable_id: string
     payment_date: Date
     amount_paid: number
+    discount: number | null
+    observations: string | null
     _count: PaymentPayableInstallmentCountAggregateOutputType | null
     _avg: PaymentPayableInstallmentAvgAggregateOutputType | null
     _sum: PaymentPayableInstallmentSumAggregateOutputType | null
@@ -15349,6 +15427,8 @@ export namespace Prisma {
     accounts_payable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentPayableInstallment"]>
 
@@ -15357,6 +15437,8 @@ export namespace Prisma {
     accounts_payable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentPayableInstallment"]>
 
@@ -15365,6 +15447,8 @@ export namespace Prisma {
     accounts_payable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentPayableInstallment"]>
 
@@ -15373,9 +15457,11 @@ export namespace Prisma {
     accounts_payable_id?: boolean
     payment_date?: boolean
     amount_paid?: boolean
+    discount?: boolean
+    observations?: boolean
   }
 
-  export type PaymentPayableInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_payable_id" | "payment_date" | "amount_paid", ExtArgs["result"]["paymentPayableInstallment"]>
+  export type PaymentPayableInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_payable_id" | "payment_date" | "amount_paid" | "discount" | "observations", ExtArgs["result"]["paymentPayableInstallment"]>
   export type PaymentPayableInstallmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }
@@ -15396,6 +15482,8 @@ export namespace Prisma {
       accounts_payable_id: string
       payment_date: Date
       amount_paid: number
+      discount: number | null
+      observations: string | null
     }, ExtArgs["result"]["paymentPayableInstallment"]>
     composites: {}
   }
@@ -15824,6 +15912,8 @@ export namespace Prisma {
     readonly accounts_payable_id: FieldRef<"PaymentPayableInstallment", 'String'>
     readonly payment_date: FieldRef<"PaymentPayableInstallment", 'DateTime'>
     readonly amount_paid: FieldRef<"PaymentPayableInstallment", 'Float'>
+    readonly discount: FieldRef<"PaymentPayableInstallment", 'Float'>
+    readonly observations: FieldRef<"PaymentPayableInstallment", 'String'>
   }
     
 
@@ -18470,7 +18560,9 @@ export namespace Prisma {
     amount: 'amount',
     due_date: 'due_date',
     payment_date: 'payment_date',
-    status: 'status'
+    status: 'status',
+    discount: 'discount',
+    observations: 'observations'
   };
 
   export type AccountsReceivableScalarFieldEnum = (typeof AccountsReceivableScalarFieldEnum)[keyof typeof AccountsReceivableScalarFieldEnum]
@@ -18499,7 +18591,9 @@ export namespace Prisma {
     id: 'id',
     accounts_receivable_id: 'accounts_receivable_id',
     payment_date: 'payment_date',
-    amount_paid: 'amount_paid'
+    amount_paid: 'amount_paid',
+    discount: 'discount',
+    observations: 'observations'
   };
 
   export type PaymentInstallmentScalarFieldEnum = (typeof PaymentInstallmentScalarFieldEnum)[keyof typeof PaymentInstallmentScalarFieldEnum]
@@ -18509,7 +18603,9 @@ export namespace Prisma {
     id: 'id',
     accounts_payable_id: 'accounts_payable_id',
     payment_date: 'payment_date',
-    amount_paid: 'amount_paid'
+    amount_paid: 'amount_paid',
+    discount: 'discount',
+    observations: 'observations'
   };
 
   export type PaymentPayableInstallmentScalarFieldEnum = (typeof PaymentPayableInstallmentScalarFieldEnum)[keyof typeof PaymentPayableInstallmentScalarFieldEnum]
@@ -19657,6 +19753,8 @@ export namespace Prisma {
     due_date?: DateTimeFilter<"AccountsReceivable"> | Date | string
     payment_date?: DateTimeNullableFilter<"AccountsReceivable"> | Date | string | null
     status?: EnumAccountsReceivableStatusFilter<"AccountsReceivable"> | $Enums.AccountsReceivableStatus
+    discount?: FloatNullableFilter<"AccountsReceivable"> | number | null
+    observations?: StringNullableFilter<"AccountsReceivable"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     invoice?: XOR<InvoiceNullableScalarRelationFilter, InvoiceWhereInput> | null
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
@@ -19674,6 +19772,8 @@ export namespace Prisma {
     due_date?: SortOrder
     payment_date?: SortOrderInput | SortOrder
     status?: SortOrder
+    discount?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     invoice?: InvoiceOrderByWithRelationInput
     client?: ClientOrderByWithRelationInput
@@ -19694,6 +19794,8 @@ export namespace Prisma {
     due_date?: DateTimeFilter<"AccountsReceivable"> | Date | string
     payment_date?: DateTimeNullableFilter<"AccountsReceivable"> | Date | string | null
     status?: EnumAccountsReceivableStatusFilter<"AccountsReceivable"> | $Enums.AccountsReceivableStatus
+    discount?: FloatNullableFilter<"AccountsReceivable"> | number | null
+    observations?: StringNullableFilter<"AccountsReceivable"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     invoice?: XOR<InvoiceNullableScalarRelationFilter, InvoiceWhereInput> | null
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
@@ -19711,6 +19813,8 @@ export namespace Prisma {
     due_date?: SortOrder
     payment_date?: SortOrderInput | SortOrder
     status?: SortOrder
+    discount?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
     _count?: AccountsReceivableCountOrderByAggregateInput
     _avg?: AccountsReceivableAvgOrderByAggregateInput
     _max?: AccountsReceivableMaxOrderByAggregateInput
@@ -19732,6 +19836,8 @@ export namespace Prisma {
     due_date?: DateTimeWithAggregatesFilter<"AccountsReceivable"> | Date | string
     payment_date?: DateTimeNullableWithAggregatesFilter<"AccountsReceivable"> | Date | string | null
     status?: EnumAccountsReceivableStatusWithAggregatesFilter<"AccountsReceivable"> | $Enums.AccountsReceivableStatus
+    discount?: FloatNullableWithAggregatesFilter<"AccountsReceivable"> | number | null
+    observations?: StringNullableWithAggregatesFilter<"AccountsReceivable"> | string | null
   }
 
   export type AccountsPayableWhereInput = {
@@ -19848,6 +19954,8 @@ export namespace Prisma {
     accounts_receivable_id?: StringFilter<"PaymentInstallment"> | string
     payment_date?: DateTimeFilter<"PaymentInstallment"> | Date | string
     amount_paid?: FloatFilter<"PaymentInstallment"> | number
+    discount?: FloatNullableFilter<"PaymentInstallment"> | number | null
+    observations?: StringNullableFilter<"PaymentInstallment"> | string | null
     accounts_receivable?: XOR<AccountsReceivableScalarRelationFilter, AccountsReceivableWhereInput>
   }
 
@@ -19856,6 +19964,8 @@ export namespace Prisma {
     accounts_receivable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
     accounts_receivable?: AccountsReceivableOrderByWithRelationInput
   }
 
@@ -19867,6 +19977,8 @@ export namespace Prisma {
     accounts_receivable_id?: StringFilter<"PaymentInstallment"> | string
     payment_date?: DateTimeFilter<"PaymentInstallment"> | Date | string
     amount_paid?: FloatFilter<"PaymentInstallment"> | number
+    discount?: FloatNullableFilter<"PaymentInstallment"> | number | null
+    observations?: StringNullableFilter<"PaymentInstallment"> | string | null
     accounts_receivable?: XOR<AccountsReceivableScalarRelationFilter, AccountsReceivableWhereInput>
   }, "id">
 
@@ -19875,6 +19987,8 @@ export namespace Prisma {
     accounts_receivable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
     _count?: PaymentInstallmentCountOrderByAggregateInput
     _avg?: PaymentInstallmentAvgOrderByAggregateInput
     _max?: PaymentInstallmentMaxOrderByAggregateInput
@@ -19890,6 +20004,8 @@ export namespace Prisma {
     accounts_receivable_id?: StringWithAggregatesFilter<"PaymentInstallment"> | string
     payment_date?: DateTimeWithAggregatesFilter<"PaymentInstallment"> | Date | string
     amount_paid?: FloatWithAggregatesFilter<"PaymentInstallment"> | number
+    discount?: FloatNullableWithAggregatesFilter<"PaymentInstallment"> | number | null
+    observations?: StringNullableWithAggregatesFilter<"PaymentInstallment"> | string | null
   }
 
   export type PaymentPayableInstallmentWhereInput = {
@@ -19900,6 +20016,8 @@ export namespace Prisma {
     accounts_payable_id?: StringFilter<"PaymentPayableInstallment"> | string
     payment_date?: DateTimeFilter<"PaymentPayableInstallment"> | Date | string
     amount_paid?: FloatFilter<"PaymentPayableInstallment"> | number
+    discount?: FloatNullableFilter<"PaymentPayableInstallment"> | number | null
+    observations?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
     accounts_payable?: XOR<AccountsPayableScalarRelationFilter, AccountsPayableWhereInput>
   }
 
@@ -19908,6 +20026,8 @@ export namespace Prisma {
     accounts_payable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
     accounts_payable?: AccountsPayableOrderByWithRelationInput
   }
 
@@ -19919,6 +20039,8 @@ export namespace Prisma {
     accounts_payable_id?: StringFilter<"PaymentPayableInstallment"> | string
     payment_date?: DateTimeFilter<"PaymentPayableInstallment"> | Date | string
     amount_paid?: FloatFilter<"PaymentPayableInstallment"> | number
+    discount?: FloatNullableFilter<"PaymentPayableInstallment"> | number | null
+    observations?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
     accounts_payable?: XOR<AccountsPayableScalarRelationFilter, AccountsPayableWhereInput>
   }, "id">
 
@@ -19927,6 +20049,8 @@ export namespace Prisma {
     accounts_payable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
     _count?: PaymentPayableInstallmentCountOrderByAggregateInput
     _avg?: PaymentPayableInstallmentAvgOrderByAggregateInput
     _max?: PaymentPayableInstallmentMaxOrderByAggregateInput
@@ -19942,6 +20066,8 @@ export namespace Prisma {
     accounts_payable_id?: StringWithAggregatesFilter<"PaymentPayableInstallment"> | string
     payment_date?: DateTimeWithAggregatesFilter<"PaymentPayableInstallment"> | Date | string
     amount_paid?: FloatWithAggregatesFilter<"PaymentPayableInstallment"> | number
+    discount?: FloatNullableWithAggregatesFilter<"PaymentPayableInstallment"> | number | null
+    observations?: StringNullableWithAggregatesFilter<"PaymentPayableInstallment"> | string | null
   }
 
   export type SpecialtyWhereInput = {
@@ -21068,6 +21194,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutAccounts_receivableInput
     invoice?: InvoiceCreateNestedOneWithoutAccounts_receivableInput
     client?: ClientCreateNestedOneWithoutAccounts_receivableInput
@@ -21085,6 +21213,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     installments?: PaymentInstallmentUncheckedCreateNestedManyWithoutAccounts_receivableInput
   }
 
@@ -21096,6 +21226,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutAccounts_receivableNestedInput
     invoice?: InvoiceUpdateOneWithoutAccounts_receivableNestedInput
     client?: ClientUpdateOneWithoutAccounts_receivableNestedInput
@@ -21113,6 +21245,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: PaymentInstallmentUncheckedUpdateManyWithoutAccounts_receivableNestedInput
   }
 
@@ -21127,6 +21261,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
   }
 
   export type AccountsReceivableUpdateManyMutationInput = {
@@ -21137,6 +21273,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountsReceivableUncheckedUpdateManyInput = {
@@ -21150,6 +21288,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountsPayableCreateInput = {
@@ -21269,6 +21409,8 @@ export namespace Prisma {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
     accounts_receivable: AccountsReceivableCreateNestedOneWithoutInstallmentsInput
   }
 
@@ -21277,12 +21419,16 @@ export namespace Prisma {
     accounts_receivable_id: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentInstallmentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     accounts_receivable?: AccountsReceivableUpdateOneRequiredWithoutInstallmentsNestedInput
   }
 
@@ -21291,6 +21437,8 @@ export namespace Prisma {
     accounts_receivable_id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentInstallmentCreateManyInput = {
@@ -21298,12 +21446,16 @@ export namespace Prisma {
     accounts_receivable_id: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentInstallmentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentInstallmentUncheckedUpdateManyInput = {
@@ -21311,12 +21463,16 @@ export namespace Prisma {
     accounts_receivable_id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentPayableInstallmentCreateInput = {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
     accounts_payable: AccountsPayableCreateNestedOneWithoutInstallmentsInput
   }
 
@@ -21325,12 +21481,16 @@ export namespace Prisma {
     accounts_payable_id: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentPayableInstallmentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     accounts_payable?: AccountsPayableUpdateOneRequiredWithoutInstallmentsNestedInput
   }
 
@@ -21339,6 +21499,8 @@ export namespace Prisma {
     accounts_payable_id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentPayableInstallmentCreateManyInput = {
@@ -21346,12 +21508,16 @@ export namespace Prisma {
     accounts_payable_id: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentPayableInstallmentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedUpdateManyInput = {
@@ -21359,6 +21525,8 @@ export namespace Prisma {
     accounts_payable_id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SpecialtyCreateInput = {
@@ -22399,6 +22567,17 @@ export namespace Prisma {
     not?: NestedEnumAccountsReceivableStatusFilter<$PrismaModel> | $Enums.AccountsReceivableStatus
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type InvoiceNullableScalarRelationFilter = {
     is?: InvoiceWhereInput | null
     isNot?: InvoiceWhereInput | null
@@ -22430,10 +22609,13 @@ export namespace Prisma {
     due_date?: SortOrder
     payment_date?: SortOrder
     status?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type AccountsReceivableAvgOrderByAggregateInput = {
     amount?: SortOrder
+    discount?: SortOrder
   }
 
   export type AccountsReceivableMaxOrderByAggregateInput = {
@@ -22447,6 +22629,8 @@ export namespace Prisma {
     due_date?: SortOrder
     payment_date?: SortOrder
     status?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type AccountsReceivableMinOrderByAggregateInput = {
@@ -22460,10 +22644,13 @@ export namespace Prisma {
     due_date?: SortOrder
     payment_date?: SortOrder
     status?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type AccountsReceivableSumOrderByAggregateInput = {
     amount?: SortOrder
+    discount?: SortOrder
   }
 
   export type EnumAccountsReceivableStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -22476,7 +22663,7 @@ export namespace Prisma {
     _max?: NestedEnumAccountsReceivableStatusFilter<$PrismaModel>
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -22484,7 +22671,12 @@ export namespace Prisma {
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumAccountsPayableStatusFilter<$PrismaModel = never> = {
@@ -22571,22 +22763,6 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
   export type EnumAccountsPayableStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.AccountsPayableStatus | EnumAccountsPayableStatusFieldRefInput<$PrismaModel>
     in?: $Enums.AccountsPayableStatus[] | ListEnumAccountsPayableStatusFieldRefInput<$PrismaModel>
@@ -22607,10 +22783,13 @@ export namespace Prisma {
     accounts_receivable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type PaymentInstallmentAvgOrderByAggregateInput = {
     amount_paid?: SortOrder
+    discount?: SortOrder
   }
 
   export type PaymentInstallmentMaxOrderByAggregateInput = {
@@ -22618,6 +22797,8 @@ export namespace Prisma {
     accounts_receivable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type PaymentInstallmentMinOrderByAggregateInput = {
@@ -22625,10 +22806,13 @@ export namespace Prisma {
     accounts_receivable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type PaymentInstallmentSumOrderByAggregateInput = {
     amount_paid?: SortOrder
+    discount?: SortOrder
   }
 
   export type AccountsPayableScalarRelationFilter = {
@@ -22641,10 +22825,13 @@ export namespace Prisma {
     accounts_payable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type PaymentPayableInstallmentAvgOrderByAggregateInput = {
     amount_paid?: SortOrder
+    discount?: SortOrder
   }
 
   export type PaymentPayableInstallmentMaxOrderByAggregateInput = {
@@ -22652,6 +22839,8 @@ export namespace Prisma {
     accounts_payable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type PaymentPayableInstallmentMinOrderByAggregateInput = {
@@ -22659,10 +22848,13 @@ export namespace Prisma {
     accounts_payable_id?: SortOrder
     payment_date?: SortOrder
     amount_paid?: SortOrder
+    discount?: SortOrder
+    observations?: SortOrder
   }
 
   export type PaymentPayableInstallmentSumOrderByAggregateInput = {
     amount_paid?: SortOrder
+    discount?: SortOrder
   }
 
   export type SpecialtyCountOrderByAggregateInput = {
@@ -23544,6 +23736,14 @@ export namespace Prisma {
     set?: $Enums.AccountsReceivableStatus
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type CompanyUpdateOneRequiredWithoutAccounts_receivableNestedInput = {
     create?: XOR<CompanyCreateWithoutAccounts_receivableInput, CompanyUncheckedCreateWithoutAccounts_receivableInput>
     connectOrCreate?: CompanyCreateOrConnectWithoutAccounts_receivableInput
@@ -23630,14 +23830,6 @@ export namespace Prisma {
     connectOrCreate?: PaymentPayableInstallmentCreateOrConnectWithoutAccounts_payableInput | PaymentPayableInstallmentCreateOrConnectWithoutAccounts_payableInput[]
     createMany?: PaymentPayableInstallmentCreateManyAccounts_payableInputEnvelope
     connect?: PaymentPayableInstallmentWhereUniqueInput | PaymentPayableInstallmentWhereUniqueInput[]
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type EnumAccountsPayableStatusFieldUpdateOperationsInput = {
@@ -24162,13 +24354,6 @@ export namespace Prisma {
     _max?: NestedEnumAccountsReceivableStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumAccountsPayableStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.AccountsPayableStatus | EnumAccountsPayableStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.AccountsPayableStatus[] | ListEnumAccountsPayableStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.AccountsPayableStatus[] | ListEnumAccountsPayableStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumAccountsPayableStatusFilter<$PrismaModel> | $Enums.AccountsPayableStatus
-  }
-
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -24183,6 +24368,13 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAccountsPayableStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AccountsPayableStatus | EnumAccountsPayableStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AccountsPayableStatus[] | ListEnumAccountsPayableStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AccountsPayableStatus[] | ListEnumAccountsPayableStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAccountsPayableStatusFilter<$PrismaModel> | $Enums.AccountsPayableStatus
   }
 
   export type NestedEnumAccountsPayableStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -24423,6 +24615,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     invoice?: InvoiceCreateNestedOneWithoutAccounts_receivableInput
     client?: ClientCreateNestedOneWithoutAccounts_receivableInput
     installments?: PaymentInstallmentCreateNestedManyWithoutAccounts_receivableInput
@@ -24438,6 +24632,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     installments?: PaymentInstallmentUncheckedCreateNestedManyWithoutAccounts_receivableInput
   }
 
@@ -24661,6 +24857,8 @@ export namespace Prisma {
     due_date?: DateTimeFilter<"AccountsReceivable"> | Date | string
     payment_date?: DateTimeNullableFilter<"AccountsReceivable"> | Date | string | null
     status?: EnumAccountsReceivableStatusFilter<"AccountsReceivable"> | $Enums.AccountsReceivableStatus
+    discount?: FloatNullableFilter<"AccountsReceivable"> | number | null
+    observations?: StringNullableFilter<"AccountsReceivable"> | string | null
   }
 
   export type AccountsPayableUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -25142,6 +25340,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutAccounts_receivableInput
     invoice?: InvoiceCreateNestedOneWithoutAccounts_receivableInput
     installments?: PaymentInstallmentCreateNestedManyWithoutAccounts_receivableInput
@@ -25157,6 +25357,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     installments?: PaymentInstallmentUncheckedCreateNestedManyWithoutAccounts_receivableInput
   }
 
@@ -25613,6 +25815,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutAccounts_receivableInput
     client?: ClientCreateNestedOneWithoutAccounts_receivableInput
     installments?: PaymentInstallmentCreateNestedManyWithoutAccounts_receivableInput
@@ -25628,6 +25832,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     installments?: PaymentInstallmentUncheckedCreateNestedManyWithoutAccounts_receivableInput
   }
 
@@ -25888,6 +26094,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutAccounts_receivableNestedInput
     client?: ClientUpdateOneWithoutAccounts_receivableNestedInput
     installments?: PaymentInstallmentUpdateManyWithoutAccounts_receivableNestedInput
@@ -25903,6 +26111,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: PaymentInstallmentUncheckedUpdateManyWithoutAccounts_receivableNestedInput
   }
 
@@ -26513,12 +26723,16 @@ export namespace Prisma {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentInstallmentUncheckedCreateWithoutAccounts_receivableInput = {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentInstallmentCreateOrConnectWithoutAccounts_receivableInput = {
@@ -26756,6 +26970,8 @@ export namespace Prisma {
     accounts_receivable_id?: StringFilter<"PaymentInstallment"> | string
     payment_date?: DateTimeFilter<"PaymentInstallment"> | Date | string
     amount_paid?: FloatFilter<"PaymentInstallment"> | number
+    discount?: FloatNullableFilter<"PaymentInstallment"> | number | null
+    observations?: StringNullableFilter<"PaymentInstallment"> | string | null
   }
 
   export type CompanyCreateWithoutAccounts_payableInput = {
@@ -26953,12 +27169,16 @@ export namespace Prisma {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentPayableInstallmentUncheckedCreateWithoutAccounts_payableInput = {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentPayableInstallmentCreateOrConnectWithoutAccounts_payableInput = {
@@ -27204,6 +27424,8 @@ export namespace Prisma {
     accounts_payable_id?: StringFilter<"PaymentPayableInstallment"> | string
     payment_date?: DateTimeFilter<"PaymentPayableInstallment"> | Date | string
     amount_paid?: FloatFilter<"PaymentPayableInstallment"> | number
+    discount?: FloatNullableFilter<"PaymentPayableInstallment"> | number | null
+    observations?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
   }
 
   export type AccountsReceivableCreateWithoutInstallmentsInput = {
@@ -27214,6 +27436,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutAccounts_receivableInput
     invoice?: InvoiceCreateNestedOneWithoutAccounts_receivableInput
     client?: ClientCreateNestedOneWithoutAccounts_receivableInput
@@ -27230,6 +27454,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
   }
 
   export type AccountsReceivableCreateOrConnectWithoutInstallmentsInput = {
@@ -27256,6 +27482,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutAccounts_receivableNestedInput
     invoice?: InvoiceUpdateOneWithoutAccounts_receivableNestedInput
     client?: ClientUpdateOneWithoutAccounts_receivableNestedInput
@@ -27272,6 +27500,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountsPayableCreateWithoutInstallmentsInput = {
@@ -27530,6 +27760,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
   }
 
   export type AccountsPayableCreateManyCompanyInput = {
@@ -27807,6 +28039,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     invoice?: InvoiceUpdateOneWithoutAccounts_receivableNestedInput
     client?: ClientUpdateOneWithoutAccounts_receivableNestedInput
     installments?: PaymentInstallmentUpdateManyWithoutAccounts_receivableNestedInput
@@ -27822,6 +28056,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: PaymentInstallmentUncheckedUpdateManyWithoutAccounts_receivableNestedInput
   }
 
@@ -27835,6 +28071,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountsPayableUpdateWithoutCompanyInput = {
@@ -28024,6 +28262,8 @@ export namespace Prisma {
     due_date: Date | string
     payment_date?: Date | string | null
     status?: $Enums.AccountsReceivableStatus
+    discount?: number | null
+    observations?: string | null
   }
 
   export type ClientContactUpdateWithoutClientInput = {
@@ -28138,6 +28378,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutAccounts_receivableNestedInput
     invoice?: InvoiceUpdateOneWithoutAccounts_receivableNestedInput
     installments?: PaymentInstallmentUpdateManyWithoutAccounts_receivableNestedInput
@@ -28153,6 +28395,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: PaymentInstallmentUncheckedUpdateManyWithoutAccounts_receivableNestedInput
   }
 
@@ -28166,6 +28410,8 @@ export namespace Prisma {
     due_date?: DateTimeFieldUpdateOperationsInput | Date | string
     payment_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumAccountsReceivableStatusFieldUpdateOperationsInput | $Enums.AccountsReceivableStatus
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type InvoiceServiceItemCreateManyInvoiceInput = {
@@ -28270,48 +28516,64 @@ export namespace Prisma {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentInstallmentUpdateWithoutAccounts_receivableInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentInstallmentUncheckedUpdateWithoutAccounts_receivableInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentInstallmentUncheckedUpdateManyWithoutAccounts_receivableInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentPayableInstallmentCreateManyAccounts_payableInput = {
     id?: string
     payment_date: Date | string
     amount_paid: number
+    discount?: number | null
+    observations?: string | null
   }
 
   export type PaymentPayableInstallmentUpdateWithoutAccounts_payableInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedUpdateWithoutAccounts_payableInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedUpdateManyWithoutAccounts_payableInput = {
     id?: StringFieldUpdateOperationsInput | string
     payment_date?: DateTimeFieldUpdateOperationsInput | Date | string
     amount_paid?: FloatFieldUpdateOperationsInput | number
+    discount?: NullableFloatFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProfessionalCreateManySpecialtyInput = {

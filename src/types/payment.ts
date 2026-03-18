@@ -47,6 +47,8 @@ export interface PaymentInstallment {
   accounts_receivable_id: string
   payment_date: string
   amount_paid: number
+  discount?: number
+  observations?: string
 }
 
 export interface PaymentPayableInstallment {
@@ -54,4 +56,6 @@ export interface PaymentPayableInstallment {
   accounts_payable_id: string
   payment_date: string
   amount_paid: number
+  discount?: number
+  observations?: string
 }

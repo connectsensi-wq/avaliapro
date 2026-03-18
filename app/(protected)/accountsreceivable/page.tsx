@@ -1,18 +1,17 @@
 "use client"
 
-import React, { useEffect, useState, useCallback } from "react"
-import ReceivableForm from "@/components/receivable/receivableform"
-import HistoryDialog from "@/components/receivable/historydialog"
+import React, { useEffect, useState, useCallback } from "react";
+import ReceivableForm from "@/components/receivable/receivableform";
+import HistoryDialog from "@/components/receivable/historydialog";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { DollarSign, History, Search, Lock, RotateCcw, ArrowDownFromLine } from "lucide-react"
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { DollarSign, History, Search, Lock, RotateCcw, ArrowDownFromLine } from "lucide-react";
+import { format } from "date-fns";
 import { AccountsReceivable } from "@/src/types/payment"
 import { Client } from "@/src/types/client"
 import { AccountsReceivableStatus } from "@/src/types/enums"
@@ -166,7 +165,9 @@ export default function AccountsReceivablePage() {
       "Status da Conta",
       "Parcela N",
       "Data de Baixa (Parcela)",
-      "Valor Pago (R$)",
+      "Valor Recebido (R$)",
+      "Desconto (R$)",
+      "Observações"
     ];
 
       // "Achata" as contas com suas parcelas
@@ -182,6 +183,8 @@ export default function AccountsReceivablePage() {
             "", // sem parcela
             "",
             toBRLDecimal(acc.amount.toFixed(2)),
+            "", // desconto
+            ""  // observações
           ].join(";"),
         ];
       }
@@ -196,6 +199,8 @@ export default function AccountsReceivablePage() {
           index + 1,
           formatDate(inst.payment_date),
           toBRLDecimal(inst.amount_paid?.toFixed(2) || "0.00"),
+          toBRLDecimal((inst.discount || 0).toFixed(2)),
+          inst.observations || ""
         ].join(";");
       });
     });
@@ -223,7 +228,7 @@ export default function AccountsReceivablePage() {
 
       <div className="flex flex-wrap items-center gap-4">
         {/* Campo de busca */}
-        <div className="relative flex-1 min-w-[250px] ">
+        <div className="relative flex-1 min-w-62.5">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
           <Input
             placeholder="Buscar por cliente, valor, status ou documento..."
@@ -239,14 +244,14 @@ export default function AccountsReceivablePage() {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-[150px]"
+            className="w-37.5"
           />
           <span className="text-slate-500">até</span>
           <Input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-[150px]"
+            className="w-37.5"
           />
         </div>
 
@@ -264,7 +269,16 @@ export default function AccountsReceivablePage() {
       <div className="space-y-4">
         {isLoading ? <p>Carregando...</p> : filteredAccounts.map(acc => {
           const totalPaid = acc.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0
-          const remainingAmount = acc.amount - totalPaid
+          const totalDiscount = acc.installments?.reduce(
+            (sum, i) => sum + (i.discount || 0),
+            0
+          ) || 0
+          
+          const round = (v: number) => Number(v.toFixed(2));
+          const remainingAmount = round(
+            round(acc.amount) - round(totalPaid) - round(totalDiscount)
+          );
+          
           const status = statusConfig[acc.status] || { label: "Desconhecido", color: "bg-gray-200" }
 
           return (
@@ -276,7 +290,7 @@ export default function AccountsReceivablePage() {
                       NFS-e: {acc.document} - Emissão: {formatDate(acc.due_date)}
                     </p>
                     <div className="flex items-center justify-center">
-                      <Badge className={`min-w-[100px] text-center ${status.color}`}>{status.label}</Badge>
+                      <Badge className={`min-w-25 text-center ${status.color}`}>{status.label}</Badge>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
@@ -286,6 +300,8 @@ export default function AccountsReceivablePage() {
                     <span>Total: R$ {toBRLDecimal(acc.amount.toFixed(2))}</span>
                     <span className="mx-2">|</span>
                     <span className="text-green-600">Recebido: R$ {toBRLDecimal(totalPaid.toFixed(2))}</span>
+                    <span className="mx-2">|</span>
+                    <span className="text-blue-600">Descontos: R$ {toBRLDecimal(totalDiscount.toFixed(2))}</span>
                     <span className="mx-2">|</span>
                     <span className="text-red-600">Restante: R$ {toBRLDecimal(remainingAmount.toFixed(2))}</span>
                   </div>
@@ -329,7 +345,12 @@ export default function AccountsReceivablePage() {
             </DialogHeader>
             <ReceivableForm
               receivable={selectedReceivable}
-              remainingAmount={selectedReceivable.amount - (selectedReceivable.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0)}
+              remainingAmount={selectedReceivable.amount - (
+                selectedReceivable.installments?.reduce(
+                  (sum, i) => sum + i.amount_paid + (i.discount || 0),
+                  0
+                ) || 0
+              )}
               onSave={handleSavePayment}
               onCancel={() => setShowPaymentForm(false)}
             />
@@ -352,7 +373,7 @@ export default function AccountsReceivablePage() {
         className="bg-green-600 hover:bg-green-700 text-white"
       >
         <ArrowDownFromLine className="w-4 h-4 mr-2" />
-        Exportar Excel
+        Exportar CSV
       </Button>
     </div>
   )

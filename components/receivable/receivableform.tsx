@@ -9,7 +9,7 @@ import { AccountsReceivable, PaymentInstallment } from "@/src/types/payment"
 interface PaymentFormProps {
   receivable: AccountsReceivable
   remainingAmount: number
-  onSave: (payment: Omit<PaymentInstallment, "id">) => Promise<void> | void
+  onSave: (data: Omit<PaymentInstallment, "id">) => Promise<void> | void;
   onCancel: () => void
 }
 
@@ -18,7 +18,9 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
   const [amount, setAmount] = useState<number>(remainingAmount)
   const [paymentDate, setPaymentDate] = useState<string>(new Date().toISOString().split("T")[0])
   const [error, setError] = useState("")
-
+  const [discount, setDiscount] = useState<number>(0)
+  const [observations, setObservations] = useState<string>("")
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSaving) return; // previne duplo clique
@@ -31,6 +33,17 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
       setError(`O valor não pode ser maior que o saldo restante de R$ ${remainingAmount.toFixed(2)}.`)
       return;
     }
+    if (discount < 0) {
+      setError("O desconto não pode ser negativo.")
+      return;
+    }
+
+    const totalWithDiscount = amount + discount;
+
+    if (totalWithDiscount > remainingAmount) {
+    setError(`Total (valor + desconto) de R$ ${totalWithDiscount.toFixed(2)} excede o saldo de R$ ${remainingAmount.toFixed(2)}.`);
+      return;
+    }
 
     setIsSaving(true)
     setError("")
@@ -38,11 +51,13 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
       await onSave({
         accounts_receivable_id: receivable.id!,
         amount_paid: amount,
-        payment_date: paymentDate
+        payment_date: paymentDate,
+        discount,
+        observations
       })
     } catch (err) {
       console.error(err)
-      setError("Ocorreu um erro ao registrar o pagamento. Tente novamente.")
+      setError("Ocorreu um erro ao registrar o recebimento. Tente novamente.")
     } finally {
       setIsSaving(false)
     }
@@ -52,7 +67,7 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
 
-      <div className="space-y-2">
+      <div className="grid grid-cols-2 items-center gap-2">
         <label htmlFor="paymentDate">Data do Pagamento</label>
         <Input
           id="paymentDate"
@@ -60,11 +75,12 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
           value={paymentDate}
           onChange={(e) => setPaymentDate(e.target.value)}
           required
+          className="justify-self-end w-37.5"
         />
       </div>
 
-      <div className="space-y-2">
-        <label htmlFor="amount">Valor Recebido</label>
+      <div className="grid grid-cols-2 gap-2 space-y-2">
+        <label htmlFor="amount">Valor Recebido R$</label>
         <Input
           id="amount"
           type="number"
@@ -72,6 +88,24 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
           value={amount.toFixed(2)}
           onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
           required
+        />
+        <label htmlFor="discount">- Desconto R$</label>
+        <Input
+          id="discount"
+          type="number"
+          step="0.01"
+          value={discount.toFixed(2)}
+          onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="observations">Observações</label>
+        <Input
+          id="observations"
+          type="text"
+          value={observations}
+          onChange={(e) => setObservations(e.target.value)}
         />
       </div>
 
