@@ -3,9 +3,9 @@ import db from "@/lib/db";
 
 export async function DELETE(
   req: Request,
-  context: { params: { installmentId: string } }
+  context: { params: Promise<{ installmentId: string }> }
 ) {
-  const { installmentId } = context.params;
+  const { installmentId } = await context.params;
 
   try {
     const result = await db.$transaction(async (tx) => {
