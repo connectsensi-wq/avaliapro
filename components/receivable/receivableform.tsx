@@ -88,6 +88,7 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
           value={amount.toFixed(2)}
           onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
           required
+          className="text-right"
         />
         <label htmlFor="discount">- Desconto R$</label>
         <Input
@@ -96,6 +97,7 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
           step="0.01"
           value={discount.toFixed(2)}
           onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+          className="text-right"
         />
       </div>
 
