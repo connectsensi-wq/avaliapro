@@ -8,8 +8,14 @@ export async function PUT(
 ) {
   const { id } = await context.params;
 
+  const round2 = (value: number): number => {
+    return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+  };
+
   try {
     const body = await req.json();
+
+    const sanitizeNumber = (value: any) => round2(Number(value) || 0);
 
     console.log("Dados Carregados no PUT", body);
 
@@ -27,17 +33,17 @@ export async function PUT(
         is_substitute: body.is_substitute,
         substitute_number: body.substitute_number,
         from_rps: body.from_rps,
-        total_amount: body.total_amount,
+        total_amount: sanitizeNumber(body.total_amount),
         rps_number: body.rps_number,
         rps_date: body.rps_date
           ? new Date(body.rps_date)
           : null,
-        tax_rate: body.tax_rate,
+        tax_rate: sanitizeNumber(body.tax_rate),
         observations: body.observations,
         locked: body.locked,
-        base_amount: body.base_amount,
-        iss_amount: body.iss_amount,
-        total_retentions: body.total_retentions,
+        base_amount: sanitizeNumber(body.base_amount),
+        iss_amount: sanitizeNumber(body.iss_amount),
+        total_retentions: sanitizeNumber(body.total_retentions),
 
         // relacionamento client
         client: body.client_id
@@ -57,7 +63,7 @@ export async function PUT(
                 (item: any, index: number) => ({
                   professional_id: item.professional_id,
                   professional_name: item.professional_name,
-                  service_value: item.service_value,
+                  service_value: sanitizeNumber(item.service_value),
                   description: item.description,
                   sequence: index + 1,
                 })
@@ -71,45 +77,44 @@ export async function PUT(
               upsert: {
                 create: {
                   inss_percentage:
-                    body.retentions.inss_percentage,
+                    sanitizeNumber(body.retentions.inss_percentage),
                   irpj_percentage:
-                    body.retentions.irpj_percentage,
+                    sanitizeNumber(body.retentions.irpj_percentage),
                   csll_percentage:
-                    body.retentions.csll_percentage,
+                    sanitizeNumber(body.retentions.csll_percentage),
                   cofins_percentage:
-                    body.retentions.cofins_percentage,
+                    sanitizeNumber(body.retentions.cofins_percentage),
                   pis_pasep_percentage:
-                    body.retentions.pis_pasep_percentage,
+                    sanitizeNumber(body.retentions.pis_pasep_percentage),
                   other_retentions_percentage:
-                    body.retentions.other_retentions_percentage,
-                  inss: body.retentions.inss,
-                  irpj: body.retentions.irpj,
-                  csll: body.retentions.csll,
-                  cofins: body.retentions.cofins,
-                  pis_pasep: body.retentions.pis_pasep,
+                    sanitizeNumber(body.retentions.other_retentions_percentage),
+                  inss: sanitizeNumber(body.retentions.inss),
+                  irpj: sanitizeNumber(body.retentions.irpj),
+                  csll: sanitizeNumber(body.retentions.csll),
+                  cofins: sanitizeNumber(body.retentions.cofins),
+                  pis_pasep: sanitizeNumber(body.retentions.pis_pasep),
                   other_retentions:
-                    body.retentions.other_retentions,
+                    sanitizeNumber(body.retentions.other_retentions),
                 },
                 update: {
                   inss_percentage:
-                    body.retentions.inss_percentage,
+                    sanitizeNumber(body.retentions.inss_percentage),
                   irpj_percentage:
-                    body.retentions.irpj_percentage,
+                    sanitizeNumber(body.retentions.irpj_percentage),
                   csll_percentage:
-                    body.retentions.csll_percentage,
+                    sanitizeNumber(body.retentions.csll_percentage),
                   cofins_percentage:
-                    body.retentions.cofins_percentage,
+                    sanitizeNumber(body.retentions.cofins_percentage),
                   pis_pasep_percentage:
-                    body.retentions.pis_pasep_percentage,
+                    sanitizeNumber(body.retentions.pis_pasep_percentage),
                   other_retentions_percentage:
-                    body.retentions.other_retentions_percentage,
-                  inss: body.retentions.inss,
-                  irpj: body.retentions.irpj,
-                  csll: body.retentions.csll,
-                  cofins: body.retentions.cofins,
-                  pis_pasep: body.retentions.pis_pasep,
+                    sanitizeNumber(body.retentions.other_retentions_percentage),
+                  inss: sanitizeNumber(body.retentions.inss),
+                  irpj: sanitizeNumber(body.retentions.irpj),
+                  cofins: sanitizeNumber(body.retentions.cofins),
+                  pis_pasep: sanitizeNumber(body.retentions.pis_pasep),
                   other_retentions:
-                    body.retentions.other_retentions,
+                    sanitizeNumber(body.retentions.other_retentions),
                 },
               },
             }
@@ -122,7 +127,7 @@ export async function PUT(
                 create: {
                   description:
                     body.accounts_receivable.description,
-                  amount: body.accounts_receivable.amount,
+                  amount: sanitizeNumber(body.accounts_receivable.amount),
                   due_date: new Date(
                     body.accounts_receivable.due_date
                   ),
@@ -140,7 +145,7 @@ export async function PUT(
                 update: {
                   description:
                     body.accounts_receivable.description,
-                  amount: body.accounts_receivable.amount,
+                  amount: sanitizeNumber(body.accounts_receivable.amount),
                   due_date: new Date(
                     body.accounts_receivable.due_date
                   ),
@@ -177,12 +182,12 @@ export async function PUT(
                   },
                   document: item.document,
                   description: item.description,
-                  gross_amount: item.gross_amount,
+                  gross_amount: sanitizeNumber(item.gross_amount),
                   admin_fee_percentage:
-                    item.admin_fee_percentage,
+                    sanitizeNumber(item.admin_fee_percentage),
                   admin_fee_amount:
-                    item.admin_fee_amount,
-                  amount: item.amount,
+                    sanitizeNumber(item.admin_fee_amount),
+                  amount: sanitizeNumber(item.amount),
                   due_date: new Date(item.due_date),
                   status: item.status,
                 })

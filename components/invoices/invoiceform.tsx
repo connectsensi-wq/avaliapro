@@ -18,7 +18,7 @@ import { Professional } from "@/src/types/professional";
 import { Service } from "@/src/types/entities";
 import {  OperationNature, YesNo } from "@/src/types/enums";
 import { AccountsPayable } from "@/src/types/payment";
-import { falseTruetoSimNao, formatDocument, operationNatures, states, toBRLDecimal, toInputDate, toYesNoEnum, yesNoToSimNao } from "@/lib/utils";
+import { falseTruetoSimNao, formatDocument, operationNatures, round2, states, toBRLDecimal, toInputDate, toYesNoEnum, yesNoToSimNao } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface InvoiceFormState {
@@ -26,7 +26,7 @@ interface InvoiceFormState {
     issue_date: string;
     client_id: string;
     tax_retained: boolean;
-    operation_nature: string;
+    operation_nature: string; 
     service_code: string;
     service_location: string;
     service_items: InvoiceServiceItem[];
@@ -208,24 +208,24 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
 
     // Funções de Cálculo usando useMemo para performance
     const getTotalServiceValue = useMemo(() => {
-        return formData.service_items.reduce((total, item) => total + (item.service_value || 0), 0);
+        return round2(formData.service_items.reduce((total, item) => total + (item.service_value || 0), 0));
     }, [formData.service_items]);
 
     const calculateRetention = (percentage: number): number => {
-        return (getTotalServiceValue * (percentage || 0)) / 100;
+        return round2((getTotalServiceValue * (percentage || 0)) / 100);
     };
 
     const calculateISS = useMemo(() => {
         const rate = formData.tax_rate / 100;
-        return getTotalServiceValue * rate;
+        return round2(getTotalServiceValue * rate);
     }, [getTotalServiceValue, formData.tax_rate]);
 
     const getTotalRetentions = useMemo(() => {
-        return calculateRetention(formData.inss_percentage) +
+        return round2(calculateRetention(formData.inss_percentage) +
                calculateRetention(formData.irpj_percentage) +
                calculateRetention(formData.csll_percentage) +
                calculateRetention(formData.cofins_percentage) +
-               calculateRetention(formData.pis_pasep_percentage) ;
+               calculateRetention(formData.pis_pasep_percentage)) ;
     }, [
         formData.inss_percentage, 
         formData.irpj_percentage, 
@@ -239,17 +239,17 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
     const accountsPayable = formData.service_items.map(item => {
         const professional = professionals.find(p => p.id === item.professional_id);
         const adminFeePercentage = professional?.admin_fee_percentage || 0;
-        const adminFeeAmount = (item.service_value * adminFeePercentage) / 100;
-        const netAmount = item.service_value - adminFeeAmount;
+        const adminFeeAmount = round2((item.service_value * adminFeePercentage) / 100);
+        const netAmount = round2(item.service_value - adminFeeAmount);
 
         return {
           professional_id: item.professional_id,
           document: formData.invoice_number,
           description: `Pagamento ao profissional ${item.professional_name} - NFS-e ${formData.invoice_number}`,
-          gross_amount: item.service_value,
-          admin_fee_percentage: adminFeePercentage,
+          gross_amount: round2(item.service_value),
+          admin_fee_percentage: round2(adminFeePercentage),
           admin_fee_amount: adminFeeAmount,
-          amount: netAmount,
+          amount: round2(netAmount),
           due_date: new Date(formData.issue_date).toISOString(),
           status: "pending",
         } as AccountsPayable;
@@ -280,11 +280,11 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
             return;
         }
 
-        const totalServiceValue = getTotalServiceValue;
-        const totalRetentions = getTotalRetentions;
-        const issAmount = calculateISS;
+        const totalServiceValue = round2(getTotalServiceValue);
+        const totalRetentions = round2(getTotalRetentions);
+        const issAmount = round2(calculateISS);
 
-        let receivableAmount = (totalServiceValue || 0) - totalRetentions;
+        let receivableAmount = round2((totalServiceValue || 0) - totalRetentions);
       
         // If tax is retained, subtract ISS amount from receivable
         if (formData.tax_retained) {
@@ -306,21 +306,21 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 cofins_percentage: formData.cofins_percentage,
                 pis_pasep_percentage: formData.pis_pasep_percentage,
                 other_retentions_percentage: formData.other_retentions_percentage,
-                inss: calculateRetention(formData.inss_percentage),
-                irpj: calculateRetention(formData.irpj_percentage),
-                csll: calculateRetention(formData.csll_percentage),
-                cofins: calculateRetention(formData.cofins_percentage),
-                pis_pasep: calculateRetention(formData.pis_pasep_percentage),
-                other_retentions: calculateRetention(formData.other_retentions_percentage),
+                inss: round2(calculateRetention(formData.inss_percentage)),
+                irpj: round2(calculateRetention(formData.irpj_percentage)),
+                csll: round2(calculateRetention(formData.csll_percentage)),
+                cofins: round2(calculateRetention(formData.cofins_percentage)),
+                pis_pasep: round2(calculateRetention(formData.pis_pasep_percentage)),
+                other_retentions: round2(calculateRetention(formData.other_retentions_percentage)),
                 invoice_id: Date.now().toString()
             },
-            base_amount: totalServiceValue,
-            iss_amount: issAmount,
-            total_amount: totalServiceValue,
-            total_retentions: totalRetentions,
+            base_amount: round2(totalServiceValue),
+            iss_amount: round2(issAmount),
+            total_amount: round2(totalServiceValue),
+            total_retentions: round2(totalRetentions),
             accounts_receivable:{
                 description: `Recebimento da NFS-e ${formData.invoice_number}`,
-                amount: receivableAmount,
+                amount: round2(receivableAmount),
                 due_date: new Date(formData.issue_date).toISOString(),
                 status: "pending",
                 client_id: formData.client_id,
@@ -570,7 +570,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={currentService.service_value}
-                                            onChange={(e) => setCurrentService({ ...currentService, service_value: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setCurrentService({ ...currentService, service_value: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                     </div>
                                     <div className="col-span-2 space-y-2">
@@ -741,7 +741,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.inss_percentage}
-                                            onChange={(e) => setFormData({ ...formData, inss_percentage: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, inss_percentage: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                         <div className="text-sm text-slate-600">
                                             Valor: R$ {toBRLDecimal(calculateRetention(formData.inss_percentage).toFixed(2))}
@@ -753,7 +753,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.irpj_percentage}
-                                            onChange={(e) => setFormData({ ...formData, irpj_percentage: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, irpj_percentage: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                         <div className="text-sm text-slate-600">
                                             Valor: R$ {toBRLDecimal(calculateRetention(formData.irpj_percentage).toFixed(2))}
@@ -765,7 +765,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.csll_percentage}
-                                            onChange={(e) => setFormData({ ...formData, csll_percentage: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, csll_percentage: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                         <div className="text-sm text-slate-600">
                                             Valor: R$ {toBRLDecimal(calculateRetention(formData.csll_percentage).toFixed(2))}
@@ -777,7 +777,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.cofins_percentage}
-                                            onChange={(e) => setFormData({ ...formData, cofins_percentage: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, cofins_percentage: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                         <div className="text-sm text-slate-600">
                                             Valor: R$ {toBRLDecimal(calculateRetention(formData.cofins_percentage).toFixed(2))}
@@ -789,7 +789,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.pis_pasep_percentage}
-                                            onChange={(e) => setFormData({ ...formData, pis_pasep_percentage: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, pis_pasep_percentage: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                         <div className="text-sm text-slate-600">
                                             Valor: R$ {toBRLDecimal(calculateRetention(formData.pis_pasep_percentage).toFixed(2))}
@@ -801,7 +801,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.other_retentions_percentage}
-                                            onChange={(e) => setFormData({ ...formData, other_retentions_percentage: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, other_retentions_percentage: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                         <div className="text-sm text-slate-600">
                                             Valor: R$ {toBRLDecimal(calculateRetention(formData.other_retentions_percentage).toFixed(2))}
@@ -828,7 +828,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                             type="number"
                                             step="0.01"
                                             value={formData.tax_rate}
-                                            onChange={(e) => setFormData({ ...formData, tax_rate: parseFloat(e.target.value) || 0 })}
+                                            onChange={(e) => setFormData({ ...formData, tax_rate: round2(parseFloat(e.target.value) || 0 )})}
                                         />
                                     </div>
                                     <div className="space-y-2">

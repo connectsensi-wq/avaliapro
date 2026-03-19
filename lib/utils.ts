@@ -126,3 +126,7 @@ export const formatDate = (dateString: string) => {
   const [year, month, day] = dateString.split("T")[0].split("-");
   return `${day}/${month}/${year}`;
 };
+
+export const round2 = (value: number): number => {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+};

@@ -112,8 +112,15 @@ export async function GET(req: Request) {
 
 // POST: criar uma nova invoice
 export async function POST(req: Request) {
+  const round2 = (value: number): number => {
+    return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+  };
+
   try {
     const body = await req.json();
+
+    // 🔒 Sanitização de números (garante 2 casas decimais)
+    const sanitizeNumber = (value: any) => round2(Number(value) || 0);
 
     // 🔎 Validação básica
     if (!body.companyId) {
@@ -151,7 +158,7 @@ export async function POST(req: Request) {
               create: body.service_items.map((item: any, index: number) => ({
                 professional_id: item.professional_id,
                 professional_name: item.professional_name,
-                service_value: item.service_value,
+                service_value: sanitizeNumber(item.service_value),
                 description: item.description,
                 sequence: index + 1,
               })),
@@ -162,19 +169,19 @@ export async function POST(req: Request) {
         retentions: body.retentions
           ? {
               create: {
-                inss_percentage: body.retentions.inss_percentage,
-                inss: body.retentions.inss,
-                irpj_percentage: body.retentions.irpj_percentage,
-                irpj: body.retentions.irpj,
-                csll_percentage: body.retentions.csll_percentage,
-                csll: body.retentions.csll,
-                cofins_percentage: body.retentions.cofins_percentage,
-                cofins: body.retentions.cofins,
-                pis_pasep_percentage: body.retentions.pis_pasep_percentage,
-                pis_pasep: body.retentions.pis_pasep,
+                inss_percentage: sanitizeNumber(body.retentions.inss_percentage),
+                inss: sanitizeNumber(body.retentions.inss),
+                irpj_percentage: sanitizeNumber(body.retentions.irpj_percentage),
+                irpj: sanitizeNumber(body.retentions.irpj),
+                csll_percentage: sanitizeNumber(body.retentions.csll_percentage),
+                csll: sanitizeNumber(body.retentions.csll),
+                cofins_percentage: sanitizeNumber(body.retentions.cofins_percentage),
+                cofins: sanitizeNumber(body.retentions.cofins),
+                pis_pasep_percentage: sanitizeNumber(body.retentions.pis_pasep_percentage),
+                pis_pasep: sanitizeNumber(body.retentions.pis_pasep),
                 other_retentions_percentage:
-                  body.retentions.other_retentions_percentage,
-                other_retentions: body.retentions.other_retentions,
+                  sanitizeNumber(body.retentions.other_retentions_percentage),
+                other_retentions: sanitizeNumber(body.retentions.other_retentions),
               },
             }
           : undefined,
@@ -182,7 +189,7 @@ export async function POST(req: Request) {
           ?{
             create: {
               description: body.accounts_receivable.description,
-              amount: body.accounts_receivable.amount,
+              amount: sanitizeNumber(body.accounts_receivable.amount),
               due_date: body.accounts_receivable.due_date,
               status: body.accounts_receivable.status,
               document: body.invoice_number,
@@ -204,10 +211,10 @@ export async function POST(req: Request) {
               company: { connect: { id: body.companyId } },
               document: item.document,
               description: item.description,
-              gross_amount: item.gross_amount,
-              admin_fee_percentage: item.admin_fee_percentage,
-              admin_fee_amount: item.admin_fee_amount,
-              amount: item.amount,
+              gross_amount: sanitizeNumber(item.gross_amount),
+              admin_fee_percentage: sanitizeNumber(item.admin_fee_percentage),
+              admin_fee_amount: sanitizeNumber(item.admin_fee_amount),
+              amount: sanitizeNumber(item.amount),
               due_date: new Date(item.due_date), // 👈 conversão de string → Date
               status: item.status,
             })),
