@@ -85,7 +85,6 @@ export async function GET(req: Request) {
         retentions: {
           select: {
             id: true,
-            invoice_id: true,
             inss_percentage: true,
             inss: true,
             irpj_percentage: true,
@@ -136,20 +135,9 @@ export async function POST(req: Request) {
     body.rps_date = body.rps_date ? new Date(body.rps_date) : null;
     body.accounts_receivable.due_date =  body.accounts_receivable.due_date ? new Date(body.accounts_receivable.due_date) : null
 
-    // 🚨 Remover do body os campos que pertencem a "retentions" (não existem em Invoice)
-    const {
-      inss_percentage,
-      irpj_percentage,
-      csll_percentage,
-      cofins_percentage,
-      pis_pasep_percentage,
-      other_retentions_percentage,
-      ...invoiceData // 👈 aqui ficam só os campos válidos para Invoice
-    } = body;
-
     const invoice = await db.invoice.create({
       data: {
-        ...invoiceData, // só dados válidos de Invoice
+        ...body, // só dados válidos de Invoice
         issue_date: new Date(body.issue_date),
 
         // Criar itens relacionados (InvoiceServiceItem)

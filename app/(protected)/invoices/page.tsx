@@ -3,25 +3,24 @@
 import InvoiceDetails from "@/components/invoices/invoicedetails";
 import InvoiceFilters from "@/components/invoices/invoicefilters";
 import InvoiceForm from "@/components/invoices/invoiceform";
-import InvoicePrintMulti from "@/components/invoices/invoiceprint";
-import StatusUpdater from "@/components/invoices/statusupdater";
+import InvoiceItem from "@/components/invoices/invoiceitem";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { formatDate, toBRLDecimal } from "@/lib/utils";
+import { formatDate} from "@/lib/utils";
 import { Client } from "@/src/types/client";
 import { Company } from "@/src/types/company";
 import { Service } from "@/src/types/entities";
-import { Invoice, InvoiceServiceItem } from "@/src/types/invoice";
+import { InvoiceStatus } from "@/src/types/enums";
+import { Invoice} from "@/src/types/invoice";
 import { Professional } from "@/src/types/professional";
 import { ArrowDownFromLine, Edit, FileText, Lock, Plus } from "lucide-react";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
 export default function InvoicesPage() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [filteredInvoices, setFilteredInvoices] = useState<Invoice[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
@@ -32,6 +31,8 @@ export default function InvoicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [activeFilters, setActiveFilters] = useState<any>(null);
   const [company, setCompany] = useState<Company | null>(null);
+  const memoProfessionals = useMemo(() => professionals, [professionals]);
+  const memoCompany = useMemo(() => company, [company]);
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
@@ -55,13 +56,12 @@ export default function InvoicesPage() {
         const companyFiltered = (companyData as Company[]).find(c => c.id === companyId);
         
         // Ordena invoices por número da nota em ordem decrescente (convertendo string -> número)
-        const sortedInvoices = (invoicesData as Invoice[]).sort(
+        const sortedInvoices = [...(invoicesData as Invoice[])].sort(
           (a, b) => Number(b.invoice_number) - Number(a.invoice_number)
         );
 
         // Atualiza estados
-        setInvoices(invoicesData);
-        setFilteredInvoices(invoicesData);
+        setInvoices(sortedInvoices);
         setClients(clientsData as Client[]);
         setProfessionals(professionalsData as Professional[]);
         setServices(servicesData as Service[]);
@@ -69,7 +69,6 @@ export default function InvoicesPage() {
       } else {
         // Se não tiver companyId no localStorage, limpa estados
         setInvoices([]);
-        setFilteredInvoices([]);
         setClients([]);
         setProfessionals([]);
         setServices([]);
@@ -84,19 +83,12 @@ export default function InvoicesPage() {
     loadData();
   }, [loadData]);
 
-  useEffect(() => {
-    if (activeFilters) {
-    handleFilter(activeFilters); // <<< reaplica após recarregar invoices
-    }
-  }, [invoices]);
-
-  const handleFilter = useCallback((filters: any) => {
-    setActiveFilters(filters);
-    let filtered = [...invoices];
+  const applyFilter = useCallback((data: Invoice[], filters: any) => {
+    let filtered = [...data];
 
     const normalizeDate = (dateString: string) => {
       const d = new Date(dateString);
-      d.setHours(0, 0, 0, 0); // zera hora
+      d.setHours(0, 0, 0, 0);
       return d;
     };
 
@@ -105,28 +97,42 @@ export default function InvoicesPage() {
         invoice.invoice_number?.toLowerCase().includes(filters.invoice_number.toLowerCase())
       );
     }
+
     if (filters.client_name) {
       filtered = filtered.filter(invoice =>
         invoice?.client?.name.toLowerCase().includes(filters.client_name.toLowerCase())
       );
     }
+
     if (filters.start_date) {
       const start = normalizeDate(filters.start_date);
       filtered = filtered.filter(invoice => normalizeDate(invoice.issue_date) >= start);
     }
+
     if (filters.end_date) {
       const end = normalizeDate(filters.end_date);
       filtered = filtered.filter(invoice => normalizeDate(invoice.issue_date) <= end);
     }
+
     if (filters.status && filters.status !== "all") {
       filtered = filtered.filter(invoice => invoice.status === filters.status);
     }
+
     if (filters.total_amount) {
       filtered = filtered.filter(invoice => invoice.total_amount === filters.total_amount);
     }
 
-    setFilteredInvoices(filtered);
-  }, [invoices]);
+    return filtered;
+  }, []);
+
+  const filteredInvoices = useMemo(() => { 
+    if (!activeFilters) return invoices;
+    return applyFilter(invoices, activeFilters);
+  }, [invoices, activeFilters, applyFilter]);
+  
+  const handleFilter = useCallback((filters: any) => {
+    setActiveFilters(filters);
+  }, [setActiveFilters]);
 
   // POST/PUT - criar novo
   const handleSave = async (invoiceData: Partial<Invoice>) => {
@@ -143,7 +149,11 @@ export default function InvoicesPage() {
         });
 
         if (!res.ok) throw new Error("Erro ao editar invoice");
-        await loadData(); // recarrega lista
+        
+        const updated = await res.json();
+        setInvoices(prev =>
+          prev.map(inv => inv.id === updated.id ? updated : inv)
+        );
 
       } else {
         const res = await fetch(`/api/invoice`, {
@@ -153,7 +163,10 @@ export default function InvoicesPage() {
         });
 
         if (!res.ok) throw new Error("Erro ao salvar invoice");
-        await loadData(); // recarrega lista
+        const created = await res.json();
+        setInvoices(prev => [created, ...prev].sort(
+          (a, b) => Number(b.invoice_number) - Number(a.invoice_number)
+        ));
       }
 
       // Criar ou atualizar contas a receber
@@ -168,37 +181,41 @@ export default function InvoicesPage() {
       toast.success(`Nota Fiscal de serviço ${editingInvoice ? "atualizada" : "emitida"} com sucesso!`);
       setShowForm(false);
       setEditingInvoice(null);
-      loadData();
     } catch (err) {
       console.error(err);
     }
   };
 
+  const handleStatusChange = useCallback(
+    async (invoiceId: string, newStatus: string) => {
+      try {
+        const res = await fetch(`/api/invoice/${invoiceId}/status`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        });
 
-  const handleStatusChange = async (invoiceId: string, newStatus: string) => {
-    try {
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body?.error || "Erro ao atualizar status");
+        }
 
-      console.log("Dados recebido no handleStatusChange :", invoiceId);
+        setInvoices(prev =>
+          prev.map(inv =>
+            inv.id === invoiceId
+              ? { ...inv, status: newStatus as InvoiceStatus }
+              : inv
+          )
+        );
 
-      const res = await fetch(`/api/invoice/${invoiceId}/status`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body?.error || "Erro ao atualizar status");
+        toast.success("Status atualizado");
+      } catch (error) {
+        console.error(error);
+        toast.error(String(error));
       }
-
-      await loadData(); // reaplica filtro
-      
-      toast.success("Status atualizado");
-    } catch (error) {
-      console.error("Error updating invoice status:", error);
-      toast.error(String(error));
-    }
-  }
+    },
+    [] // ✅ importante
+  );
 
   // GET por ID - visualizar
   const handleView = useCallback(async (id: string) => {
@@ -228,6 +245,11 @@ export default function InvoicesPage() {
       </div>
     );
   }
+
+  const handleEdit = useCallback((invoice: Invoice) => {
+    setEditingInvoice(invoice);
+    setShowForm(true);
+  }, []);
 
   const exportToCSV = () => {
     if (!filteredInvoices.length) {
@@ -326,61 +348,14 @@ export default function InvoicesPage() {
           ) : filteredInvoices.length > 0 ? (
             <div className="divide-y divide-slate-100">
               {filteredInvoices.map(invoice => (
-                <div key={invoice.id} className="p-4 hover:bg-slate-50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center shrink-0">
-                        <InvoicePrintMulti 
-                          invoice={invoice}
-                          professionals={professionals}
-                          company={company}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-1">
-                          <h4 className="font-semibold text-slate-900">
-                            Demonstrativo NFS-e {invoice.invoice_number}
-                          </h4>
-                          {invoice.locked && (
-                            <Lock className="w-3 h-3 text-slate-400" aria-label="Nota fiscal bloqueada para edição pois possui recebimentos"/>
-                          )}
-                            <StatusUpdater
-                              invoiceId={invoice.id}
-                              currentStatus={invoice.status}
-                              onStatusChange={handleStatusChange}
-                              locked={invoice.locked}
-                            />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-slate-600">
-                          <div><span className="font-medium">Data:</span> {formatDate(invoice.issue_date)}</div>
-                          <div>
-                            <span className="font-medium">Valor:</span>
-                            {invoice.total_amount != null ? (
-                              <span className="font-semibold text-slate-900 ml-1">R$ {toBRLDecimal(invoice.total_amount.toFixed(2))}</span>
-                            ) : <span className="ml-1">-</span>}
-                          </div>
-                          <div><span className="font-medium">Participante:</span> {invoice.service_items?.length || 0}</div>
-                        </div>
-                        <div>
-                            <div><span className="font-medium w-full">Cliente:</span> {invoice?.client?.name}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 ml-4 shrink-0">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setEditingInvoice(invoice);
-                          setShowForm(true);
-                        }}
-                        className="px-3"
-                      >
-                        <Edit className="w-4 h-4 mr-1" /> Editar
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                <InvoiceItem
+                  key={invoice.id}
+                  invoice={invoice}
+                  professionals={memoProfessionals}
+                  company={memoCompany}
+                  onEdit={handleEdit}
+                  onStatusChange={handleStatusChange}
+                />
               ))}
             </div>
           ) : (

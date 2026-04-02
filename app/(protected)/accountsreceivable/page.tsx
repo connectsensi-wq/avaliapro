@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import ReceivableForm from "@/components/receivable/receivableform";
 import HistoryDialog from "@/components/receivable/historydialog";
-
+import ReceivableItem from "@/components/receivable/receivableitem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -91,48 +91,87 @@ export default function AccountsReceivablePage() {
   }
 
   const handleSavePayment = async (paymentData: Omit<any, "id">) => {
-    await fetch(`/api/accountsreceivable`, {
+    const createdInstallment = await fetch(`/api/accountsreceivable`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(paymentData),
-    })
+    }).then(r => r.json());
+
+    setReceivable(prev =>
+      prev.map(r => {
+        if (r.id !== paymentData.accounts_receivable_id) return r;
+
+        const updatedInstallments = [...(r.installments || []), createdInstallment];
+        const totalPaid = updatedInstallments.reduce((sum, i) => sum + i.amount_paid + (i.discount || 0), 0);
+        let newStatus = r.status;
+
+        if (totalPaid === 0) newStatus = "pending";
+        else if (totalPaid < r.amount) newStatus = "partially_paid";
+        else newStatus = "paid";
+        
+        return {
+          ...r,
+          installments: updatedInstallments,
+          status: newStatus,
+        };
+      })
+    );
 
     setShowPaymentForm(false);
     setSelectedReceivable(null);
-    await loadReceivable();
   };
 
-  const handleInstallmentDelete = async (installmentId: String) =>{
+  const handleInstallmentDelete = async (installmentId: string) =>{
     try {
       await fetch(`/api/accountsreceivable/installments/${installmentId}`, {
         method: "DELETE",
       })
 
-      loadReceivable()
+      setReceivable(prev =>
+        prev.map(r => {
+          if (!r.installments?.some(i => i.id === installmentId)) return r;
+        
+          const updatedInstallments = r.installments.filter(i => i.id !== installmentId);
+          const totalPaid = updatedInstallments.reduce((sum, i) => sum + i.amount_paid + (i.discount || 0), 0);
+          let newStatus: AccountsReceivableStatus = "pending";
+        
+          if (totalPaid === 0) newStatus = "pending";
+          else if (totalPaid < r.amount) newStatus = "partially_paid";
+          else newStatus = "paid";
+        
+          return {
+            ...r,
+            installments: updatedInstallments,
+            status: newStatus,
+          };
+        })
+      );
     } catch (error) {
       console.error("Erro ao deletar pagamento:", error)
     }
   }
 
-  const filteredAccounts = receivables.filter(acc => {
-    const term = searchTerm.toLowerCase();
-    const dueDate = new Date(acc.due_date);
-
-    const matchesSearch =
-      acc.client_name?.toLowerCase().includes(term) ||
-      acc.document?.includes(term) ||
-      acc.amount.toFixed(2).includes(term.replace(",", ".")) ||
-      statusConfig[acc.status]?.label.toLowerCase().includes(term);
-
-    const start = startDate ? new Date(startDate + "T00:00:00Z") : null;
-    const end = endDate ? new Date(endDate + "T23:59:59Z") : null;
-
-    const matchesDate =
-      (!start || dueDate >= start) &&
-      (!end || dueDate <= end);
-
-    return matchesSearch && matchesDate;
-  });
+  const filteredAccounts = React.useMemo(() => {
+    return receivables.filter(acc => {
+      const term = searchTerm.toLowerCase();
+      const dueDate = new Date(acc.due_date);
+    
+      const matchesSearch =
+        acc.client_name?.toLowerCase().includes(term) ||
+        acc.document?.includes(term) ||
+        acc.amount.toFixed(2).includes(term.replace(",", ".")) ||
+        statusConfig[acc.status]?.label.toLowerCase().includes(term);
+    
+      const start = startDate ? new Date(startDate + "T00:00:00Z") : null;
+      const end = endDate ? new Date(endDate + "T23:59:59Z") : null;
+    
+      const matchesDate =
+        (!start || dueDate >= start) &&
+        (!end || dueDate <= end);
+    
+      return matchesSearch && matchesDate;
+    });
+  }, [receivables, searchTerm, startDate, endDate]);
 
   const handleClear = () => {
     setSearchTerm("");
@@ -167,7 +206,8 @@ export default function AccountsReceivablePage() {
       "Data de Baixa (Parcela)",
       "Valor Recebido (R$)",
       "Desconto (R$)",
-      "Observações"
+      "Observações",
+      "Tomador do Serviço"
     ];
 
       // "Achata" as contas com suas parcelas
@@ -268,72 +308,16 @@ export default function AccountsReceivablePage() {
 
       <div className="space-y-4">
         {isLoading ? <p>Carregando...</p> : filteredAccounts.map(acc => {
-          const totalPaid = acc.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0
-          const totalDiscount = acc.installments?.reduce(
-            (sum, i) => sum + (i.discount || 0),
-            0
-          ) || 0
-          
-          const round = (v: number) => Number(v.toFixed(2));
-          const remainingAmount = round(
-            round(acc.amount) - round(totalPaid) - round(totalDiscount)
-          );
-          
           const status = statusConfig[acc.status] || { label: "Desconhecido", color: "bg-gray-200" }
-
-          return (
-            <Card key={acc.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4 flex items-center justify-between gap-4">
-                <div className="flex-1">
-                  <div className="grid grid-cols-[75%_25%]">
-                    <p className="text-md text-slate-500">
-                      NFS-e: {acc.document} - Emissão: {formatDate(acc.due_date)}
-                    </p>
-                    <div className="flex items-center justify-center">
-                      <Badge className={`min-w-25 text-center ${status.color}`}>{status.label}</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <h3 className="font-semibold">{acc.client_name}</h3>
-                  </div>
-                  <div className="text-sm mt-2 border-t pt-3">
-                    <span>Total: R$ {toBRLDecimal(acc.amount.toFixed(2))}</span>
-                    <span className="mx-2">|</span>
-                    <span className="text-green-600">Recebido: R$ {toBRLDecimal(totalPaid.toFixed(2))}</span>
-                    <span className="mx-2">|</span>
-                    <span className="text-blue-600">Descontos: R$ {toBRLDecimal(totalDiscount.toFixed(2))}</span>
-                    <span className="mx-2">|</span>
-                    <span className="text-red-600">Restante: R$ {toBRLDecimal(remainingAmount.toFixed(2))}</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <div className="grid grid-rows-2 gap-4">
-                    <Button
-                      size="sm"
-                      onClick={() => handleOpenPayment(acc)}
-                      disabled={acc.status === "paid"} // desativa quando está pago
-                      className={acc.status === "paid" ? "opacity-50 cursor-not-allowed" : ""}
-                    >
-                      {acc.status === "paid" ? (
-                        <Lock className="w-4 h-4 mr-1" />
-                      ) : (
-                        <DollarSign className="w-4 h-4 mr-1" />
-                      )}
-                      Receber
-                    </Button>
-                    
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleOpenHistory(acc)}
-                    >
-                      <History className="w-4 h-4 mr-1" /> Histórico
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )
+           return (
+            <ReceivableItem
+                key={acc.id}
+                acc={acc}
+                status={status}
+                onOpenPayment={handleOpenPayment}
+                onOpenHistory={handleOpenHistory}
+              />
+            );
         })}
       </div>
 

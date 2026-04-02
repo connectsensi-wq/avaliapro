@@ -61,7 +61,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
           <SidebarHeader className="border-b border-slate-200 p-6">
             {/* Logo e título */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-linear-to-br from-slate-700 to-slate-900 rounded-xl flex items-center justify-center">
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>

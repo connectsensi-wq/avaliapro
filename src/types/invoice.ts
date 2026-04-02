@@ -46,7 +46,7 @@ export interface InvoiceServiceItem {
 
 export interface Retentions {
   id?: string
-  invoice_id: string
+  invoice_id?: string
   inss_percentage: number
   inss: number
   irpj_percentage: number
@@ -60,3 +60,4 @@ export interface Retentions {
   other_retentions_percentage: number
   other_retentions: number
 }
+

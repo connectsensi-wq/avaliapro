@@ -158,6 +158,7 @@ export default function AccountsPayablePage() {
       "Data de Baixa (Parcela)",
       "Valor Pago (R$)",
       "Desconto (R$)",
+      "Observações",
       "Tomador do Serviço"
     ];
 
