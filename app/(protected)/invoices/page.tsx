@@ -177,7 +177,8 @@ export default function InvoicesPage() {
       if (invoiceData.tax_retained) {
         receivableAmount -= (invoiceData.iss_amount || 0);
       }
-
+      
+      await loadData();
       toast.success(`Nota Fiscal de serviço ${editingInvoice ? "atualizada" : "emitida"} com sucesso!`);
       setShowForm(false);
       setEditingInvoice(null);
