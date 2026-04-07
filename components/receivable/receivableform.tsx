@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -62,6 +62,11 @@ export default function ReceivableForm({ receivable, remainingAmount, onSave, on
       setIsSaving(false)
     }
   }
+
+  useEffect(() => {
+    const newAmount = remainingAmount - discount;
+    setAmount(newAmount >= 0 ? newAmount : 0);
+  }, [discount, remainingAmount]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
