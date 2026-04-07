@@ -16,6 +16,7 @@ interface PayableItemProps {
     totalDiscount: number;
     remainingAmount: number;
   };
+  role: string
   statusConfig: any;
   onOpenPayment: (acc: AccountsPayable) => void;
   onOpenHistory: (acc: AccountsPayable) => void;
@@ -25,6 +26,7 @@ function PayableItemComponent({
   acc,
   calculated,
   statusConfig,
+  role,
   onOpenPayment,
   onOpenHistory,
 }: PayableItemProps) {
@@ -83,7 +85,7 @@ function PayableItemComponent({
           <Button
             size="sm"
             onClick={() => onOpenPayment(acc)}
-            disabled={acc.status === "paid"}
+            disabled={acc.status === "paid" || role !== "admin"}
             className={acc.status === "paid" ? "opacity-50 cursor-not-allowed" : ""}
           >
             {acc.status === "paid" ? (

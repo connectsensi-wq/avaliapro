@@ -15,6 +15,7 @@ import { formatDate, toBRLDecimal } from "@/lib/utils";
 import { PayableItem } from "@/components/payable/payableitem";
 import { useDeferredValue } from "react";
 import { AccountsPayableStatus } from "@/src/types/enums";
+import { useRole } from "@/hooks/useRole";
 
 export default function AccountsPayablePage() {
   const [payables, setPayables] = useState<AccountsPayable[]>([]);
@@ -28,6 +29,7 @@ export default function AccountsPayablePage() {
   const [endDate, setEndDate] = useState("");
   const [inputValue, setInputValue] = useState("");
   const deferredSearch = useDeferredValue(inputValue);
+  const role = useRole();
 
   const statusConfig = useMemo(() => ({
     pending: { label: "Pendente", color: "bg-yellow-100 text-yellow-800" },
@@ -394,6 +396,7 @@ export default function AccountsPayablePage() {
                   acc={acc}
                   calculated={calculatedMap.get(acc.id)}
                   statusConfig={statusConfig}
+                  role={role}
                   onOpenPayment={handleOpenPayment}
                   onOpenHistory={handleOpenHistory}
                 />
@@ -428,6 +431,7 @@ export default function AccountsPayablePage() {
               installments={selectedPayable.installments || []}
               onCancel={() => setShowHistory(false)}
               onDelete={handleInstallmentDelete}
+              role={role}
             />
           )}
           <Button

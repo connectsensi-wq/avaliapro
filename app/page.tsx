@@ -2,14 +2,13 @@ import { Button } from "@/components/ui/button";
 import { getRole } from "@/utils/roles";
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export default async function Home() {
   const {userId} = await auth();
   const role = await getRole();
 
-  //f(userId && role) {
+  //if(userId && role) {
     //redirect(`/${role}`);
   //}
 

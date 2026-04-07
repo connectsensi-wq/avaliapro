@@ -12,13 +12,15 @@ interface HistoryDialogProps {
   installments: PaymentPayableInstallment[];
   onCancel: () => void;
   onDelete?: (id: string) => Promise<void> | void;
+  role: string
 }
 
 export function HistoryDialog({ 
   payable, 
   installments, 
   onCancel, 
-  onDelete 
+  onDelete,
+  role
 }: HistoryDialogProps) {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const handleDelete = async (installmentId: string) => {
@@ -71,7 +73,7 @@ export function HistoryDialog({
                       variant="ghost"
                       size = "lg" 
                       onClick={() => handleDelete(inst.id)}
-                      disabled={isDeleting === inst.id}
+                      disabled={isDeleting === inst.id || role !== "admin"}
                       className="text-red-600 hover:text-red-700 p-2 flex items-center justify-center h-10 w-21"
                   >
                     {isDeleting === inst.id ? (
