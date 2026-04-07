@@ -1,41 +1,41 @@
 "use client"
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import ReceivableForm from "@/components/receivable/receivableform";
 import HistoryDialog from "@/components/receivable/historydialog";
 import ReceivableItem from "@/components/receivable/receivableitem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { DollarSign, History, Search, Lock, RotateCcw, ArrowDownFromLine } from "lucide-react";
+import { Search, RotateCcw, ArrowDownFromLine } from "lucide-react";
 import { format } from "date-fns";
 import { AccountsReceivable } from "@/src/types/payment"
 import { Client } from "@/src/types/client"
 import { AccountsReceivableStatus } from "@/src/types/enums"
 import { formatDate, toBRLDecimal } from "@/lib/utils"
+import { useDeferredValue } from "react";
 
 export default function AccountsReceivablePage() {
   const [receivables, setReceivable] = useState<AccountsReceivable[]>([])
-  const [clients, setClients] = useState<Client[]>([])
+  const [clients,  setClients] = useState<Client[]>([])
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState("")
   const [showPaymentForm, setShowPaymentForm] = useState(false)
   const [selectedReceivable, setSelectedReceivable] = useState<AccountsReceivable | null>(null)
   const [showHistory, setShowHistory] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
-  const statusConfig: Record<AccountsReceivableStatus, { label: string; color: string }> = {
+  const statusConfig = useMemo(() => ({
     pending: { label: "Pendente", color: "bg-yellow-100 text-yellow-800" },
     partially_paid: { label: "Parcialmente Pago", color: "bg-blue-100 text-blue-800" },
     paid: { label: "Pago", color: "bg-green-100 text-green-800" },
     overdue: { label: "Vencido", color: "bg-red-100 text-red-800" },
     cancelled: { label: "Cancelado", color: "bg-gray-100 text-gray-800" },
-  }
+  }), []);
 
   const loadReceivable = useCallback(async () => {
     setIsLoading(true)
@@ -151,44 +151,46 @@ export default function AccountsReceivablePage() {
     }
   }
 
-  const filteredAccounts = React.useMemo(() => {
-    return receivables.filter(acc => {
-      const term = searchTerm.toLowerCase();
-      const dueDate = new Date(acc.due_date);
-    
+  const processedAccounts = React.useMemo(() => {
+    return receivables.map(acc => ({
+      ...acc,
+      _search: [
+        acc.client_name,
+        acc.document,
+        statusConfig[acc.status]?.label,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase(),
+      _amountStr: acc.amount.toFixed(2),
+      _dueDate: new Date(acc.due_date),
+    }));
+  }, [receivables, statusConfig]);
+
+  const filteredAccounts = useMemo(() => {
+    const term = searchTerm.toLowerCase().trim();
+  
+    const start = startDate ? new Date(startDate + "T00:00:00Z") : null;
+    const end = endDate ? new Date(endDate + "T23:59:59Z") : null;
+  
+    return processedAccounts.filter(acc => {
       const matchesSearch =
-        acc.client_name?.toLowerCase().includes(term) ||
-        acc.document?.includes(term) ||
-        acc.amount.toFixed(2).includes(term.replace(",", ".")) ||
-        statusConfig[acc.status]?.label.toLowerCase().includes(term);
-    
-      const start = startDate ? new Date(startDate + "T00:00:00Z") : null;
-      const end = endDate ? new Date(endDate + "T23:59:59Z") : null;
+        !term ||
+        acc._search.includes(term) ||
+        acc._amountStr.includes(term.replace(",", "."));
     
       const matchesDate =
-        (!start || dueDate >= start) &&
-        (!end || dueDate <= end);
+        (!start || acc._dueDate >= start) &&
+        (!end || acc._dueDate <= end);
     
       return matchesSearch && matchesDate;
     });
-  }, [receivables, searchTerm, startDate, endDate]);
+  }, [processedAccounts, searchTerm, startDate, endDate]);
 
   const handleClear = () => {
-    setSearchTerm("");
+    setInputValue("");
     setStartDate("");
     setEndDate("");
-  }
-
-  if (!selectedCompanyId) {
-    return (
-      <div className="p-8">
-        <Alert>
-          <AlertDescription>
-            Por favor, selecione uma empresa no menu lateral para gerenciar as contas a receber.
-          </AlertDescription>
-        </Alert>
-      </div>
-    )
   }
 
   const exportToCSV = () => {
@@ -257,108 +259,136 @@ export default function AccountsReceivablePage() {
     document.body.removeChild(link);
   };
 
+  const accountsWithStatus = useMemo(() => {
+    return filteredAccounts.map(acc => ({
+      acc,
+      status: statusConfig[acc.status] || {
+        label: "Desconhecido",
+        color: "bg-gray-200"
+      }
+    }));
+  }, [filteredAccounts, statusConfig]);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setSearchTerm(inputValue);
+    }, 300);
+
+    return () => clearTimeout(delay);
+  }, [inputValue]);
+
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Contas a Receber</h1>
-          <p className="text-slate-600 mt-1">Gerencie os recebimentos da empresa</p>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-4">
-        {/* Campo de busca */}
-        <div className="relative flex-1 min-w-62.5">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-          <Input
-            placeholder="Buscar por cliente, valor, status ou documento..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-
-        {/* Filtro entre datas */}
-        <div className="flex items-center gap-2">
-          <Input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="w-37.5"
-          />
-          <span className="text-slate-500">até</span>
-          <Input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="w-37.5"
-          />
-        </div>
-
-        {/* Botão de limpar */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleClear}
-        >
-          <RotateCcw className="w-4 h-4 mr-2" />
-            Limpar Filtros
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        {isLoading ? <p>Carregando...</p> : filteredAccounts.map(acc => {
-          const status = statusConfig[acc.status] || { label: "Desconhecido", color: "bg-gray-200" }
-           return (
-            <ReceivableItem
-                key={acc.id}
-                acc={acc}
-                status={status}
-                onOpenPayment={handleOpenPayment}
-                onOpenHistory={handleOpenHistory}
+    <div>
+      {!selectedCompanyId ? (
+        <Alert>
+          <AlertDescription>
+            Por favor, selecione uma empresa no menu lateral para gerenciar as contas a receber.
+          </AlertDescription>
+        </Alert>
+      ) : ( 
+        <div className="p-6 md:p-8 space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-slate-900">Contas a Receber</h1>
+              <p className="text-slate-600 mt-1">Gerencie os recebimentos da empresa</p>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Campo de busca */}
+            <div className="relative flex-1 min-w-62.5">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <Input
+                placeholder="Buscar por cliente, valor, status ou documento..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                className="pl-10"
               />
-            );
-        })}
-      </div>
-
-      {showPaymentForm && selectedReceivable && (
-        <Dialog open={showPaymentForm} onOpenChange={() => setShowPaymentForm(false)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Registrar Recebimento - NF {selectedReceivable.document}</DialogTitle>
-            </DialogHeader>
-            <ReceivableForm
+            </div>
+          
+            {/* Filtro entre datas */}
+            <div className="flex items-center gap-2">
+              <Input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="w-37.5"
+              />
+              <span className="text-slate-500">até</span>
+              <Input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-37.5"
+              />
+            </div>
+          
+            {/* Botão de limpar */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleClear}
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+                Limpar Filtros
+            </Button>
+          </div>
+          
+          <div className="space-y-4">
+            {isLoading ? <p className="text-slate-500 animate-pulse">Carregando contas...</p> 
+            : accountsWithStatus.map(({acc ,status})=> {
+               return (
+                <ReceivableItem
+                    key={acc.id}
+                    acc={acc}
+                    status={status}
+                    onOpenPayment={handleOpenPayment}
+                    onOpenHistory={handleOpenHistory}
+                  />
+                );
+            })}
+          </div>
+          
+          {showPaymentForm && selectedReceivable && (
+            <Dialog open={showPaymentForm} onOpenChange={() => setShowPaymentForm(false)}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Registrar Recebimento - NF {selectedReceivable.document}</DialogTitle>
+                </DialogHeader>
+                <ReceivableForm
+                  receivable={selectedReceivable}
+                  remainingAmount={selectedReceivable.amount - (
+                    selectedReceivable.installments?.reduce(
+                      (sum, i) => sum + i.amount_paid + (i.discount || 0),
+                      0
+                    ) || 0
+                  )}
+                  onSave={handleSavePayment}
+                  onCancel={() => setShowPaymentForm(false)}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
+    
+          {showHistory && selectedReceivable && (
+            <HistoryDialog
               receivable={selectedReceivable}
-              remainingAmount={selectedReceivable.amount - (
-                selectedReceivable.installments?.reduce(
-                  (sum, i) => sum + i.amount_paid + (i.discount || 0),
-                  0
-                ) || 0
-              )}
-              onSave={handleSavePayment}
-              onCancel={() => setShowPaymentForm(false)}
+              installments={selectedReceivable.installments || []}
+              onCancel={() => setShowHistory(false)}
+              onDelete={handleInstallmentDelete}
             />
-          </DialogContent>
-        </Dialog>
+          )}
+          <Button
+            variant="default"
+            size="sm"
+            onClick={exportToCSV}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            <ArrowDownFromLine className="w-4 h-4 mr-2" />
+            Exportar CSV
+          </Button>
+        </div>
       )}
-
-      {showHistory && selectedReceivable && (
-        <HistoryDialog
-          receivable={selectedReceivable}
-          installments={selectedReceivable.installments || []}
-          onCancel={() => setShowHistory(false)}
-          onDelete={handleInstallmentDelete}
-        />
-      )}
-      <Button
-        variant="default"
-        size="sm"
-        onClick={exportToCSV}
-        className="bg-green-600 hover:bg-green-700 text-white"
-      >
-        <ArrowDownFromLine className="w-4 h-4 mr-2" />
-        Exportar CSV
-      </Button>
     </div>
-  )
+  );
 }
