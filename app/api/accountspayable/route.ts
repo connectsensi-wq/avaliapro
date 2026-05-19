@@ -165,7 +165,7 @@ export async function POST(req: Request) {
           amount_paid,
           payment_date: new Date(payment_date),
           discount,
-          observations: observations || null,
+          observations: observations?.trim() || null,
         },
       });
 

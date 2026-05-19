@@ -15,12 +15,13 @@ interface PaymentFormProps {
 }
 
 export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: PaymentFormProps) {
+  const isFirstInstallment = !payable.installments || payable.installments.length === 0;
   const [isSaving, setIsSaving] = useState(false)
   const [amount, setAmount] = useState<number>(remainingAmount);
   const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0]);
   const [error, setError] = useState('');
   const [discount, setDiscount] = useState<number>(0)
-  const [observations, setObservations] = useState<string>("")
+  const [observations, setObservations] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,6 +69,20 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
     const newAmount = remainingAmount - discount;
     setAmount(newAmount >= 0 ? newAmount : 0);
   }, [discount, remainingAmount]);
+
+  useEffect(() => {
+    const installments = payable.installments || [];
+  
+    if (installments.length === 0) {
+      // primeira vez → usa description
+      setObservations(payable.description || "");
+    } else {
+      // já existe pagamento → usa a PRIMEIRA parcela
+      const firstInstallment = installments[0];
+    
+      setObservations(firstInstallment?.observations || "");
+    }
+  }, [payable]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

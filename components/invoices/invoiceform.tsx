@@ -65,7 +65,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
     const [formData, setFormData] = useState<InvoiceFormState>({
         // Inicialização de estado tipada com os valores padrão ou da fatura existente
         invoice_number: invoice?.invoice_number || "",
-        issue_date: invoice?.issue_date || "",
+        issue_date: invoice?.issue_date
+            ? new Date(invoice.issue_date).toISOString().split("T")[0]
+            : new Date().toISOString().split("T")[0],
         client_id: invoice?.client_id || "",
         tax_retained: invoice?.tax_retained || false,
         operation_nature: invoice?.operation_nature || "tributacao_no_municipio",
@@ -229,7 +231,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
         return {
           professional_id: item.professional_id,
           document: formData.invoice_number,
-          description: `Pagamento ao profissional ${item.professional_name} - NFS-e ${formData.invoice_number}`,
+          description: item.description,
           gross_amount: round2(item.service_value),
           admin_fee_percentage: round2(adminFeePercentage),
           admin_fee_amount: adminFeeAmount,
