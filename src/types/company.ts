@@ -8,7 +8,7 @@ export interface Company {
   id: string
   code: string
   document: string
-  document_type: DocumentType
+  document_type: string
   name: string
   fantasy_name?: string
   address_type?: AddressType

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { AccountsReceivable, PaymentInstallment } from "@/src/types/payment";
 import { Button } from "../ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, History, Calendar, Wallet } from "lucide-react";
 import { formatDate, toBRLDecimal } from "@/lib/utils";
 
 interface HistoryDialogProps {
@@ -27,8 +27,9 @@ export default function HistoryDialog({
   onDelete,
 }: HistoryDialogProps) {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+
   const handleDelete = async (installmentId: string) => {
-    if (isDeleting) return; // evita múltiplos cliques simultâneos
+    if (isDeleting) return;
     const confirmed = confirm("Tem certeza que deseja excluir esta parcela?");
     if (!confirmed) return;
 
@@ -46,68 +47,74 @@ export default function HistoryDialog({
 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            Histórico de Pagamentos - NFS-e {receivable.document}
+      <DialogContent className="sm:max-w-xl bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
+        <DialogHeader className="border-b border-border pb-3">
+          <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+            <History className="w-5 h-5 text-primary" />
+            Histórico de Recebimentos - NFS-e #{receivable.document}
           </DialogTitle>
-          <DialogDescription>
-            Valor Total: R$ {toBRLDecimal(receivable.amount.toFixed(2))}
+          <DialogDescription className="text-xs text-muted-foreground font-mono mt-1">
+            Valor Total Faturado: <strong className="text-primary font-bold">R$ {toBRLDecimal(receivable.amount.toFixed(2))}</strong>
           </DialogDescription>
-        </DialogHeader> 
+        </DialogHeader>
 
-        {installments.length > 0 ? (
-          // CONTÊINER ROLÁVEL ADICIONADO AQUI
-          <div className="max-h-[80vh] overflow-y-auto space-y-3 pr-2"> 
-            {installments.map((inst) => (
+        <div className="max-h-[60vh] overflow-y-auto space-y-3 pr-1 custom-scrollbar pt-2">
+          {installments.length > 0 ? (
+            installments.map((inst) => (
               <div
                 key={inst.id}
-                className="grid grid-cols-5 gap-4 border rounded-lg bg-slate-50 min-w-0"
+                className="bg-card border border-border rounded-xl p-4 flex items-start justify-between gap-4 shadow-sm hover:border-border/80 transition-colors"
               >
-                <div className="p-3 col-span-4 wrap-break-words">
-                  <p><strong>Data:</strong>{" "}{formatDate(inst.payment_date)}</p>
-                  <p><strong>Valor Recebido:</strong> R${" "}{toBRLDecimal(inst.amount_paid.toFixed(2))}</p>
+                <div className="space-y-1.5 text-xs text-muted-foreground flex-1 min-w-0">
+                  <div className="flex items-center gap-2 text-foreground font-semibold">
+                    <Calendar className="w-3.5 h-3.5 text-primary" />
+                    <span>Data do Recebimento: {formatDate(inst.payment_date)}</span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-sm font-bold text-primary">
+                      R$ {toBRLDecimal(inst.amount_paid.toFixed(2))}
+                    </span>
                     {Number(inst.discount) > 0 && (
-                      <p>
-                        <strong>Desconto:</strong> R$ {toBRLDecimal(inst.discount?.toFixed(2))}
-                      </p>
-                    )}
-                    
-                    {inst.observations && (
-                      <p className="text-slate-600">
-                        <strong>Obs:</strong> {inst.observations}
-                      </p>
-                    )}
-                </div>
-                <div className="col-span-1 flex justify-center mt-4 mr-4">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="lg"
-                    onClick={() => handleDelete(inst.id)}
-                    disabled={isDeleting === inst.id}
-                    className="text-red-600 hover:text-red-700 p-2 flex items-center justify-center h-10 w-21"
-                  >
-                    {isDeleting === inst.id ? (
-                      <span className="animate-pulse text-slate-500">
-                        Excluindo...
+                      <span className="text-[11px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                        Desconto: R$ {toBRLDecimal(inst.discount?.toFixed(2))}
                       </span>
-                    ) : (
-                      <>
-                        <Trash2 size={20} />
-                        Excluir
-                      </>
                     )}
-                  </Button>
+                  </div>
+
+                  {inst.observations && (
+                    <p className="text-muted-foreground text-[11px] bg-secondary/40 p-2 rounded-lg border border-border mt-1">
+                      <strong className="text-foreground">Obs:</strong> {inst.observations}
+                    </p>
+                  )}
                 </div>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDelete(inst.id)}
+                  disabled={isDeleting === inst.id}
+                  className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-500 border-rose-500/30 rounded-xl text-xs font-semibold shrink-0"
+                >
+                  {isDeleting === inst.id ? (
+                    <span className="animate-pulse text-muted-foreground">Excluindo...</span>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5 mr-1" />
+                      Excluir
+                    </>
+                  )}
+                </Button>
               </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-slate-500 text-center py-4">
-            Nenhum pagamento registrado.
-          </p>
-        )}
+            ))
+          ) : (
+            <div className="text-center py-8 text-xs text-muted-foreground bg-card border border-border rounded-xl">
+              <Wallet className="w-8 h-8 text-primary opacity-60 mx-auto mb-2" />
+              Nenhum pagamento registrado para esta conta.
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

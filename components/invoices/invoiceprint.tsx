@@ -19,21 +19,21 @@ function handlePrint({ invoice, professionals, company }: InvoicePrintMultiProps
     return;
   }
   const getFullAddress = () => {
-  const type = invoice.client?.address_type ?? "";
-  const parts = [
-    type.charAt(0).toUpperCase() + type.slice(1),
-    invoice.client?.street,
-    invoice.client?.number,
-    invoice.client?.complement,
-    invoice.client?.neighborhood,
-    invoice.client?.cep,
-    invoice.client?.city,
-    invoice.client?.state,
-  ]
-    .filter(Boolean)
-    .join(", ");
-  return parts || "Endereço não informado";
-};
+    const type = invoice.client?.address_type ?? "";
+    const parts = [
+      type.charAt(0).toUpperCase() + type.slice(1),
+      invoice.client?.street,
+      invoice.client?.number,
+      invoice.client?.complement,
+      invoice.client?.neighborhood,
+      invoice.client?.cep,
+      invoice.client?.city,
+      invoice.client?.state,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    return parts || "Endereço não informado";
+  };
   // cria uma nova janela
   const win = window.open("", "_blank", "width=900,height=700");
   if (!win) return;
@@ -72,12 +72,12 @@ function handlePrint({ invoice, professionals, company }: InvoicePrintMultiProps
       </head>
       <body>
         ${invoice.service_items
-          .map((item: InvoiceServiceItem, idx) => {
-            const prof = professionals.find((p) => p.id === item.professional_id);
-            const repasse =
-              item.service_value -
-              (item.service_value * (prof?.admin_fee_percentage || 0)) / 100;
-            return `
+      .map((item: InvoiceServiceItem, idx) => {
+        const prof = professionals.find((p) => p.id === item.professional_id);
+        const repasse =
+          item.service_value -
+          (item.service_value * (prof?.admin_fee_percentage || 0)) / 100;
+        return `
             <header>
               <div class="header-text"  >
                 <h1>DEMONSTRATIVO NFS-e Nº ${invoice.invoice_number}</h1>
@@ -130,22 +130,22 @@ function handlePrint({ invoice, professionals, company }: InvoicePrintMultiProps
                     </tr>
                     <tr>
                       <td style="text-align:center;">
-                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.inss_percentage || 0) / 100)).toFixed(2)) }
+                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.inss_percentage || 0) / 100)).toFixed(2))}
                       </td>
                       <td style="text-align:center;">
-                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.irpj_percentage || 0) / 100)).toFixed(2)) }
+                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.irpj_percentage || 0) / 100)).toFixed(2))}
                       </td>
                       <td style="text-align:center;">
-                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.csll_percentage || 0) / 100)).toFixed(2)) }
+                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.csll_percentage || 0) / 100)).toFixed(2))}
                       </td>
                       <td style="text-align:center;">
-                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.cofins_percentage || 0) / 100)).toFixed(2)) }
+                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.cofins_percentage || 0) / 100)).toFixed(2))}
                       </td>
                       <td style="text-align:center;">
-                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.pis_pasep_percentage || 0) / 100)).toFixed(2)) }
+                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.pis_pasep_percentage || 0) / 100)).toFixed(2))}
                       </td>
                       <td style="text-align:center;">
-                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.other_retentions_percentage || 0) / 100)).toFixed(2)) }
+                        ${toBRLDecimal((item.service_value * ((invoice.retentions?.other_retentions_percentage || 0) / 100)).toFixed(2))}
                       </td>
                       <td style="text-align:right;">
                         <strong>R$ ${toBRLDecimal(item.service_value.toFixed(2))}</strong>
@@ -163,8 +163,8 @@ function handlePrint({ invoice, professionals, company }: InvoicePrintMultiProps
             <footer></footer>
             ${idx < invoice.service_items!.length - 1 ? '<div class="page-break"></div>' : ""}
             `;
-          })
-          .join("")}
+      })
+      .join("")}
         <script>window.onload = () => window.print();</script>
       </body>
     </html>
@@ -180,12 +180,12 @@ export default function InvoicePrintMulti({
   professionals,
   company,
 }: InvoicePrintMultiProps) {
-  
+
 
   return (
     <FileText
       onClick={() => handlePrint({ invoice, professionals, company })}
-      className="w-5 h-5 text-slate-600 cursor-pointer hover:text-slate-900 transition"
+      className="w-5 h-5 text-slate-600 cursor-pointer text-white transition"
     />
   );
 }

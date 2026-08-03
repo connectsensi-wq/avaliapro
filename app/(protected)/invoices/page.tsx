@@ -8,12 +8,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { formatDate} from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { Client } from "@/src/types/client";
 import { Company } from "@/src/types/company";
 import { Service } from "@/src/types/entities";
 import { InvoiceStatus } from "@/src/types/enums";
-import { Invoice} from "@/src/types/invoice";
+import { Invoice } from "@/src/types/invoice";
 import { Professional } from "@/src/types/professional";
 import { ArrowDownFromLine, Edit, FileText, Lock, Plus } from "lucide-react";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
@@ -42,32 +42,27 @@ export default function InvoicesPage() {
       if (companyId) {
         setSelectedCompanyId(companyId);
 
-        // Dispara todas as requisições em paralelo
-        const [professionalsData, servicesData, companyData, invoicesData, clientsData,] =
+        const [professionalsData, servicesData, companyData, invoicesData, clientsData] =
           await Promise.all([
-            fetch(`/api/invoice/professionals?companyId=${companyId}`).then(res => res.json()),
-            fetch(`/api/services`).then(res => res.json()),
-            fetch(`/api/companies`).then(res => res.json()),
-            fetch(`/api/invoice?companyId=${companyId}`).then(res => res.json()),
-            fetch(`/api/invoice/clients?companyId=${companyId}`).then(res => res.json())
+            fetch(`/api/invoice/professionals?companyId=${companyId}`).then((res) => res.json()),
+            fetch(`/api/services`).then((res) => res.json()),
+            fetch(`/api/companies`).then((res) => res.json()),
+            fetch(`/api/invoice?companyId=${companyId}`).then((res) => res.json()),
+            fetch(`/api/invoice/clients?companyId=${companyId}`).then((res) => res.json()),
           ]);
-        
-        // filtra apenas a empresa da sessão
-        const companyFiltered = (companyData as Company[]).find(c => c.id === companyId);
-        
-        // Ordena invoices por número da nota em ordem decrescente (convertendo string -> número)
+
+        const companyFiltered = (companyData as Company[]).find((c) => c.id === companyId);
+
         const sortedInvoices = [...(invoicesData as Invoice[])].sort(
           (a, b) => Number(b.invoice_number) - Number(a.invoice_number)
         );
 
-        // Atualiza estados
         setInvoices(sortedInvoices);
         setClients(clientsData as Client[]);
         setProfessionals(professionalsData as Professional[]);
         setServices(servicesData as Service[]);
         setCompany(companyFiltered as Company);
       } else {
-        // Se não tiver companyId no localStorage, limpa estados
         setInvoices([]);
         setClients([]);
         setProfessionals([]);
@@ -93,54 +88,57 @@ export default function InvoicesPage() {
     };
 
     if (filters.invoice_number) {
-      filtered = filtered.filter(invoice =>
+      filtered = filtered.filter((invoice) =>
         invoice.invoice_number?.toLowerCase().includes(filters.invoice_number.toLowerCase())
       );
     }
 
     if (filters.client_name) {
-      filtered = filtered.filter(invoice =>
+      filtered = filtered.filter((invoice) =>
         invoice?.client?.name.toLowerCase().includes(filters.client_name.toLowerCase())
       );
     }
 
     if (filters.start_date) {
       const start = normalizeDate(filters.start_date);
-      filtered = filtered.filter(invoice => normalizeDate(invoice.issue_date) >= start);
+      filtered = filtered.filter((invoice) => normalizeDate(invoice.issue_date) >= start);
     }
 
     if (filters.end_date) {
       const end = normalizeDate(filters.end_date);
-      filtered = filtered.filter(invoice => normalizeDate(invoice.issue_date) <= end);
+      filtered = filtered.filter((invoice) => normalizeDate(invoice.issue_date) <= end);
     }
 
     if (filters.status && filters.status !== "all") {
-      filtered = filtered.filter(invoice => invoice.status === filters.status);
+      filtered = filtered.filter((invoice) => invoice.status === filters.status);
     }
 
     if (filters.total_amount) {
-      filtered = filtered.filter(invoice => invoice.total_amount === filters.total_amount);
+      filtered = filtered.filter((invoice) => invoice.total_amount === filters.total_amount);
     }
 
     return filtered;
   }, []);
 
-  const filteredInvoices = useMemo(() => { 
+  const filteredInvoices = useMemo(() => {
     if (!activeFilters) return invoices;
     return applyFilter(invoices, activeFilters);
   }, [invoices, activeFilters, applyFilter]);
-  
-  const handleFilter = useCallback((filters: any) => {
-    setActiveFilters(filters);
-  }, [setActiveFilters]);
 
-  // POST/PUT - criar novo
+  const handleFilter = useCallback(
+    (filters: any) => {
+      setActiveFilters(filters);
+    },
+    [setActiveFilters]
+  );
+
   const handleSave = async (invoiceData: Partial<Invoice>) => {
     try {
-      const dataToSave = { 
-        ...invoiceData, companyId: selectedCompanyId, 
+      const dataToSave = {
+        ...invoiceData,
+        companyId: selectedCompanyId,
       };
-      console.log(selectedCompanyId)
+
       if (editingInvoice) {
         const res = await fetch(`/api/invoice/${editingInvoice.id}`, {
           method: "PUT",
@@ -149,12 +147,9 @@ export default function InvoicesPage() {
         });
 
         if (!res.ok) throw new Error("Erro ao editar invoice");
-        
-        const updated = await res.json();
-        setInvoices(prev =>
-          prev.map(inv => inv.id === updated.id ? updated : inv)
-        );
 
+        const updated = await res.json();
+        setInvoices((prev) => prev.map((inv) => (inv.id === updated.id ? updated : inv)));
       } else {
         const res = await fetch(`/api/invoice`, {
           method: "POST",
@@ -164,26 +159,20 @@ export default function InvoicesPage() {
 
         if (!res.ok) throw new Error("Erro ao salvar invoice");
         const created = await res.json();
-        setInvoices(prev => [created, ...prev].sort(
-          (a, b) => Number(b.invoice_number) - Number(a.invoice_number)
-        ));
+        setInvoices((prev) =>
+          [created, ...prev].sort(
+            (a, b) => Number(b.invoice_number) - Number(a.invoice_number)
+          )
+        );
       }
 
-      // Criar ou atualizar contas a receber
-      const totalRetentions = invoiceData.total_retentions || 0;
-      let receivableAmount = (invoiceData.total_amount || 0) - totalRetentions;
-      
-      // Se o imposto for retido, subtraia o valor do ISS do valor a receber
-      if (invoiceData.tax_retained) {
-        receivableAmount -= (invoiceData.iss_amount || 0);
-      }
-      
       await loadData();
       toast.success(`Nota Fiscal de serviço ${editingInvoice ? "atualizada" : "emitida"} com sucesso!`);
       setShowForm(false);
       setEditingInvoice(null);
     } catch (err) {
       console.error(err);
+      toast.error("Erro ao salvar nota fiscal.");
     }
   };
 
@@ -201,24 +190,21 @@ export default function InvoicesPage() {
           throw new Error(body?.error || "Erro ao atualizar status");
         }
 
-        setInvoices(prev =>
-          prev.map(inv =>
-            inv.id === invoiceId
-              ? { ...inv, status: newStatus as InvoiceStatus }
-              : inv
+        setInvoices((prev) =>
+          prev.map((inv) =>
+            inv.id === invoiceId ? { ...inv, status: newStatus as InvoiceStatus } : inv
           )
         );
 
-        toast.success("Status atualizado");
+        toast.success("Status atualizado com sucesso!");
       } catch (error) {
         console.error(error);
         toast.error(String(error));
       }
     },
-    [] // ✅ importante
+    []
   );
 
-  // GET por ID - visualizar
   const handleView = useCallback(async (id: string) => {
     try {
       const res = await fetch(`/api/invoice/${id}`);
@@ -238,8 +224,8 @@ export default function InvoicesPage() {
   if (!selectedCompanyId && !isLoading) {
     return (
       <div className="p-8">
-        <Alert>
-          <AlertDescription>
+        <Alert className="bg-card border-border text-foreground rounded-2xl">
+          <AlertDescription className="text-xs font-semibold text-muted-foreground">
             Por favor, selecione uma empresa no menu lateral para gerenciar as notas fiscais.
           </AlertDescription>
         </Alert>
@@ -272,7 +258,7 @@ export default function InvoicesPage() {
       "Csll Retido",
       "Inss Retido",
       "Outras Retenções",
-      "Número Nfs-e Substitída",
+      "Número Nfs-e Substituída",
       "Provém de um RPS",
       "Data do RPS",
       "Número do RPS",
@@ -281,7 +267,7 @@ export default function InvoicesPage() {
       "Local do Serviço",
     ];
 
-    const rows = filteredInvoices.map(inv => [
+    const rows = filteredInvoices.map((inv) => [
       inv.invoice_number || "",
       inv.client?.name || "",
       formatDate(inv.issue_date),
@@ -304,10 +290,7 @@ export default function InvoicesPage() {
       inv.service_location,
     ]);
 
-    const csvContent = [
-      headers.join(";"),
-      ...rows.map(r => r.join(";"))
-    ].join("\n");
+    const csvContent = [headers.join(";"), ...rows.map((r) => r.join(";"))].join("\n");
 
     const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -320,35 +303,68 @@ export default function InvoicesPage() {
   };
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Notas Fiscais</h1>
-          <p className="text-slate-600 mt-1">Gerencie as notas fiscais da empresa</p>
+    <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
+      {/* Executive Header Banner */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              Faturamento & NFS-e Hospitalar
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+              <FileText className="w-6 h-6 text-primary" />
+              Notas Fiscais de Serviço (NFS-e)
+            </h1>
+            <p className="text-muted-foreground text-xs md:text-sm">
+              Gerencie a emissão, retenções tributárias e acompanhamento de NFS-e da empresa
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              onClick={exportToCSV}
+              className="bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+            >
+              <ArrowDownFromLine className="w-4 h-4 mr-2" />
+              Exportar CSV
+            </Button>
+            <Button
+              onClick={handleNew}
+              disabled={!selectedCompanyId}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none text-xs"
+            >
+              <Plus className="w-4 h-4 mr-2 stroke-[3]" />
+              Emitir NFS-e
+            </Button>
+          </div>
         </div>
-        <Button onClick={handleNew} className="bg-slate-900 hover:bg-slate-800" disabled={!selectedCompanyId}>
-          <Plus className="w-4 h-4 mr-2" />
-          Nova Nota Fiscal
-        </Button>
       </div>
 
       {/* Filtros */}
       <InvoiceFilters onFilter={handleFilter} />
 
       {/* Lista */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Lista de Notas Fiscais</CardTitle>
+      <Card className="bg-card border-card-border rounded-2xl shadow-md overflow-hidden">
+        <CardHeader className="py-4 px-6 border-b border-border flex flex-row items-center justify-between">
+          <CardTitle className="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+            <FileText className="w-4 h-4 text-primary" /> Histórico de Notas Fiscais
+          </CardTitle>
+          <div className="text-xs font-semibold text-muted-foreground bg-secondary border border-border px-3 py-1.5 rounded-xl">
+            Exibindo: <span className="text-primary font-bold">{filteredInvoices.length}</span> nota(s)
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           {isLoading ? (
-            <div className="p-8 text-center">
+            <div className="p-12 text-center text-muted-foreground text-xs font-medium">
               <div className="animate-pulse">Carregando notas fiscais...</div>
             </div>
           ) : filteredInvoices.length > 0 ? (
-            <div className="divide-y divide-slate-100">
-              {filteredInvoices.map(invoice => (
+            <div className="divide-y divide-border">
+              {filteredInvoices.map((invoice) => (
                 <InvoiceItem
                   key={invoice.id}
                   invoice={invoice}
@@ -360,57 +376,67 @@ export default function InvoicesPage() {
               ))}
             </div>
           ) : (
-            <div className="p-8 text-center">
-              <FileText className="h-12 w-12 text-slate-300 mx-auto mb-3" />
-              <p className="text-slate-500">Nenhuma nota fiscal encontrada</p>
+            <div className="p-12 text-center text-muted-foreground text-sm">
+              <FileText className="h-12 w-12 text-primary opacity-70 mx-auto mb-3" />
+              <p className="font-semibold text-foreground">Nenhuma nota fiscal encontrada</p>
+              <p className="text-xs mt-1">Ajuste os filtros ou emita uma nova nota fiscal.</p>
             </div>
           )}
         </CardContent>
       </Card>
-      <Button
-        variant="default"
-        size="sm"
-        onClick={exportToCSV}
-        className="bg-green-600 hover:bg-green-700 text-white"
+
+      {/* Form Dialog */}
+      <Dialog
+        open={showForm}
+        onOpenChange={() => {
+          setShowForm(false);
+          setEditingInvoice(null);
+        }}
       >
-        <ArrowDownFromLine className="w-4 h-4 mr-2" />
-        Exportar Excel
-      </Button>
-
-
-      {/* Dialogs */}
-      <Dialog open={showForm} onOpenChange={() => { setShowForm(false); setEditingInvoice(null); }}>
-        <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingInvoice ? "Editar Nota Fiscal" : "Nova Nota Fiscal"}</DialogTitle>
+        <DialogContent className="sm:max-w-6xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogHeader className="border-b border-border pb-3 shrink-0">
+            <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+              <FileText className="w-5 h-5 text-primary" />
+              {editingInvoice ? "Editar Nota Fiscal" : "Nova Nota Fiscal"}
+            </DialogTitle>
           </DialogHeader>
-          <InvoiceForm
-            invoice={editingInvoice}
-            clients={clients}
-            professionals={professionals}
-            services={services}
-            onSave={handleSave}
-            onCancel={() => { setShowForm(false); setEditingInvoice(null); }}
-          />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={!!selectedInvoice} onOpenChange={() => setSelectedInvoice(null)}>
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Detalhes da Nota Fiscal</DialogTitle>
-          </DialogHeader>
-          {selectedInvoice && (
-            <InvoiceDetails
-              invoice={selectedInvoice}
+          <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+            <InvoiceForm
+              invoice={editingInvoice}
               clients={clients}
               professionals={professionals}
               services={services}
+              onSave={handleSave}
+              onCancel={() => {
+                setShowForm(false);
+                setEditingInvoice(null);
+              }}
             />
-          )}
+          </div>
         </DialogContent>
       </Dialog>
 
+      {/* Details Dialog */}
+      <Dialog open={!!selectedInvoice} onOpenChange={() => setSelectedInvoice(null)}>
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogHeader className="border-b border-border pb-3 shrink-0">
+            <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+              <FileText className="w-5 h-5 text-primary" />
+              Detalhes da Nota Fiscal
+            </DialogTitle>
+          </DialogHeader>
+          <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+            {selectedInvoice && (
+              <InvoiceDetails
+                invoice={selectedInvoice}
+                clients={clients}
+                professionals={professionals}
+                services={services}
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

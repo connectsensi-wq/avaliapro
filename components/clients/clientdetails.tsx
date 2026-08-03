@@ -7,16 +7,8 @@ import {
   Mail,
   Phone,
   MapPin,
-  FileText,
-  CheckCircle,
+  CheckCircle2,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Client } from "@/src/types/client";
 import { formatDocument, formatPhone } from "@/lib/utils";
 
@@ -43,98 +35,100 @@ export default function ClientDetails({ client }: ClientDetailsProps) {
   };
 
   return (
-    <div className="space-y-6 max-h-[80vh] overflow-y-auto pr-4">
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
-          <Users className="w-8 h-8 text-slate-600" />
+    <div className="space-y-4 font-sans text-foreground py-2">
+      {/* Header Info */}
+      <div className="flex items-center gap-4 bg-card border border-border p-4 rounded-xl">
+        <div className="w-12 h-12 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
+          <Users className="w-6 h-6 text-primary" />
         </div>
-        <div>
-          <h2 className="text-xl font-bold text-slate-900">
-            {client.name}
-          </h2>
-          <p className="text-slate-600">
-            {client.fantasy_name || " "}
+        <div className="overflow-hidden flex-1">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="text-base font-bold text-foreground truncate">{client.name}</h2>
+            <Badge
+              className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${
+                client.status === "active"
+                  ? "bg-primary/10 text-primary border-primary/30"
+                  : "bg-secondary text-muted-foreground border-border"
+              }`}
+            >
+              {client.status === "active" ? "Ativo" : "Inativo"}
+            </Badge>
+          </div>
+          {client.fantasy_name && (
+            <p className="text-xs text-muted-foreground truncate mt-0.5">{client.fantasy_name}</p>
+          )}
+          <p className="text-[11px] font-mono text-primary mt-1">
+            {client.document_type?.toUpperCase()}: {formatDocument(client.document, client.document_type)}
           </p>
-          <Badge
-            variant={client.status === "active" ? "default" : "secondary"}
-            className="mt-1"
-          >
-            {client.status === "active" ? "Ativo" : "Inativo"}
-          </Badge>
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Informações Gerais</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm">
-          <p>
-            <FileText className="w-4 h-4 inline mr-2" />
-            {client.document_type?.toString().toLocaleUpperCase()}: {formatDocument(client.document, client.document_type)}
-          </p>
-          {client.state_registration && (
-            <p>Inscrição Estadual: {client.state_registration}</p>
-          )}
-          {client.municipal_registration && (
-            <p>Inscrição Municipal: {client.municipal_registration}</p>
-          )}
-          {client.is_simple_national_optant && (
-            <p className="flex items-center">
-              <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
-              Optante do Simples Nacional
-            </p>
-          )}
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Informações Fiscais */}
+        <div className="bg-card border border-border rounded-xl p-4 space-y-2.5">
+          <h3 className="text-xs font-bold text-primary uppercase tracking-wider">Informações Fiscais</h3>
+          <div className="text-xs space-y-2 text-muted-foreground">
+            {client.state_registration && (
+              <p className="font-mono flex items-center justify-between">
+                <span className="text-muted-foreground">Inscrição Estadual:</span>
+                <span className="text-foreground font-medium">{client.state_registration}</span>
+              </p>
+            )}
+            {client.municipal_registration && (
+              <p className="font-mono flex items-center justify-between">
+                <span className="text-muted-foreground">Inscrição Municipal:</span>
+                <span className="text-foreground font-medium">{client.municipal_registration}</span>
+              </p>
+            )}
+            {client.is_simple_national_optant && (
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold mt-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-primary" /> Optante do Simples Nacional
+              </div>
+            )}
+          </div>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Contato Principal</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm">
-          <p>
-            <Mail className="w-4 h-4 inline mr-2" /> {client.email || "N/A"}
-          </p>
-          {(client.ddd || client.phone) && (
-            <p>
-              <Phone className="w-4 h-4 inline mr-2" /> ({client.ddd}){" "}
-              {client.phone}
+        {/* Contato Principal */}
+        <div className="bg-card border border-border rounded-xl p-4 space-y-2.5">
+          <h3 className="text-xs font-bold text-primary uppercase tracking-wider">Contato Principal</h3>
+          <div className="text-xs space-y-2 text-muted-foreground">
+            <p className="flex items-center gap-2 truncate" title={client.email || undefined}>
+              <Mail className="w-3.5 h-3.5 text-primary shrink-0" />
+              <span className="truncate text-foreground">{client.email || "Sem e-mail cadastrado"}</span>
             </p>
-          )}
-        </CardContent>
-      </Card>
+            {(client.ddd || client.phone) && (
+              <p className="flex items-center gap-2 font-mono">
+                <Phone className="w-3.5 h-3.5 text-primary shrink-0" /> ({client.ddd}) {client.phone}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
 
+      {/* Contatos Adicionais */}
       {client.contacts && client.contacts.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Contatos Adicionais</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="bg-card border border-border rounded-xl p-4 space-y-3">
+          <h3 className="text-xs font-bold text-primary uppercase tracking-wider">Contatos Adicionais</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {client.contacts.map((contact, index) => (
-              <React.Fragment key={index}>
-                <div className="text-sm">
-                  <p className="font-semibold">{contact.name}</p>
-                  <p>{contact.email}</p>
-                  <p>{formatPhone(contact.phone)}</p>
-                </div>
-                {index < client.contacts!.length - 1 && <Separator />}
-              </React.Fragment>
+              <div key={index} className="bg-secondary/60 border border-border p-3 rounded-lg text-xs space-y-1">
+                <p className="font-bold text-foreground">{contact.name}</p>
+                <p className="text-muted-foreground truncate">{contact.email}</p>
+                <p className="text-muted-foreground font-mono">{formatPhone(contact.phone)}</p>
+              </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Endereço</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm">
-            <MapPin className="w-4 h-4 inline mr-2" /> {getFullAddress()}
-          </p>
-        </CardContent>
-      </Card>
+      {/* Endereço */}
+      <div className="bg-card border border-border rounded-xl p-4">
+        <h3 className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Endereço</h3>
+        <div className="flex items-start gap-2.5 text-xs text-muted-foreground">
+          <MapPin className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+          <p className="leading-relaxed text-foreground">{getFullAddress()}</p>
+        </div>
+      </div>
     </div>
   );
 }

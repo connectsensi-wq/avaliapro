@@ -4,10 +4,11 @@ import { InvoiceStatus } from "@/src/types/enums";
 import { FC, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
 import { RotateCcw, Search } from "lucide-react";
+import { Input } from "../ui/input";
 
 export interface InvoiceFiltersData {
   invoice_number: string;
@@ -65,7 +66,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
       start_date: "",
       end_date: "",
       status: "" as InvoiceStatus,
-      total_amount: 0 
+      total_amount: 0
     };
     setFilters(clearedFilters);
     onFilter(clearedFilters);
@@ -85,6 +86,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
               placeholder="Ex: 001"
               value={filters.invoice_number}
               onChange={(e) => handleInputChange('invoice_number', e.target.value)}
+              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
             />
           </div>
 
@@ -95,6 +97,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
               placeholder="Digite o nome..."
               value={filters.client_name}
               onChange={(e) => handleInputChange('client_name', e.target.value)}
+              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
             />
           </div>
 
@@ -105,6 +108,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
               type="date"
               value={filters.start_date}
               onChange={(e) => handleInputChange('start_date', e.target.value)}
+              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
             />
           </div>
 
@@ -115,6 +119,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
               type="date"
               value={filters.end_date}
               onChange={(e) => handleInputChange('end_date', e.target.value)}
+              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
             />
           </div>
 
@@ -125,17 +130,18 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
               type="number"
               value={filters.total_amount}
               onChange={(e) => handleInputChange('total_amount', e.target.value)}
+              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="status">Status</Label>
-            <Select 
-            
-              value={filters.status} 
+            <Select
+
+              value={filters.status}
               onValueChange={(value) => handleInputChange('status', value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
                 <SelectValue placeholder="Selecione o status..." />
               </SelectTrigger>
               <SelectContent>
@@ -149,7 +155,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
         </div>
 
         <div className="flex gap-3 justify-end">
-          <Button onClick={handleSearch} className="bg-slate-900 hover:bg-slate-800">
+          <Button variant="outline" onClick={handleSearch} className="bg-primary/80 hover:bg-primary hover:text-white">
             <Search className="w-4 h-4 mr-2" />
             Pesquisar
           </Button>

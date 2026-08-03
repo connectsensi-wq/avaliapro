@@ -5,7 +5,7 @@ import { Invoice } from "@/src/types/invoice";
 import { Professional } from "@/src/types/professional";
 import { Company } from "@/src/types/company";
 import { Button } from "../ui/button";
-import { Edit, Lock } from "lucide-react";
+import { Edit, Lock, FileText, UserCheck, Calendar } from "lucide-react";
 import { formatDate, toBRLDecimal } from "@/lib/utils";
 import InvoicePrintMulti from "./invoiceprint";
 import StatusUpdater from "./statusupdater";
@@ -26,10 +26,10 @@ function InvoiceItemComponent({
   onStatusChange,
 }: InvoiceItemProps) {
   return (
-    <div className="p-4 hover:bg-slate-50 transition-colors">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 flex-1">
-          <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center shrink-0">
+    <div className="p-4 sm:p-5 hover:bg-secondary/40 transition-colors border-b border-border last:border-b-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
+          <div className="w-11 h-11 text-white bg-secondary border border-border rounded-xl flex items-center justify-center shrink-0 shadow-inner">
             <InvoicePrintMulti
               invoice={invoice}
               professionals={professionals}
@@ -37,17 +37,16 @@ function InvoiceItemComponent({
             />
           </div>
 
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-1">
-              <h4 className="font-semibold text-slate-900">
-                Demonstrativo NFS-e {invoice.invoice_number}
+          <div className="flex-1 min-w-0 space-y-1.5">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h4 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
+                Demonstrativo NFS-e #{invoice.invoice_number}
               </h4>
 
               {invoice.locked && (
-                <Lock
-                  className="w-3 h-3 text-slate-400"
-                  aria-label="Nota fiscal bloqueada"
-                />
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-semibold">
+                  <Lock className="w-3 h-3" /> Bloqueada
+                </span>
               )}
 
               <StatusUpdater
@@ -58,44 +57,48 @@ function InvoiceItemComponent({
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-slate-600">
-              <div>
-                <span className="font-medium">Data:</span>{" "}
-                {formatDate(invoice.issue_date)}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              {invoice?.client?.name && (
+                <div className="flex items-center gap-1 text-foreground font-medium">
+                  <span className="text-muted-foreground font-normal">Cliente:</span>{" "}
+                  <span className="truncate">{invoice.client.name}</span>
+                </div>
+              )}
+
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Emissão: {formatDate(invoice.issue_date)}</span>
               </div>
 
-              <div>
-                <span className="font-medium">Valor:</span>
-                {invoice.total_amount != null ? (
-                  <span className="font-semibold text-slate-900 ml-1">
-                    R$ {toBRLDecimal(invoice.total_amount.toFixed(2))}
-                  </span>
-                ) : (
-                  <span className="ml-1">-</span>
-                )}
+              <div className="flex items-center gap-1">
+                <UserCheck className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Profissionais: {invoice.service_items?.length || 0}</span>
               </div>
-
-              <div>
-                <span className="font-medium">Participante:</span>{" "}
-                {invoice.service_items?.length || 0}
-              </div>
-            </div>
-
-            <div>
-              <span className="font-medium">Cliente:</span>{" "}
-              {invoice?.client?.name}
             </div>
           </div>
         </div>
 
-        <div className="flex gap-2 ml-4 shrink-0">
+        <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0 border-border">
+          <div className="text-right font-mono">
+            <span className="text-[10px] text-muted-foreground block uppercase font-semibold tracking-wider">
+              Valor Total
+            </span>
+            <span className="text-sm sm:text-base font-extrabold text-primary">
+              {invoice.total_amount != null ? (
+                `R$ ${toBRLDecimal(invoice.total_amount.toFixed(2))}`
+              ) : (
+                "-"
+              )}
+            </span>
+          </div>
+
           <Button
             variant="outline"
             size="sm"
             onClick={() => onEdit(invoice)}
-            className="px-3"
+            className="bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
           >
-            <Edit className="w-4 h-4 mr-1" /> Editar
+            <Edit className="w-3.5 h-3.5 mr-1.5" /> Editar
           </Button>
         </div>
       </div>

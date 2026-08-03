@@ -26,7 +26,15 @@ export async function GET(req: Request) {
 
     const receivables = await db.accountsReceivable.findMany({
       where: { companyId },
-      include: { installments: true}
+      include: { 
+        installments: true,
+        client: true,
+        invoice: {
+          include: {
+            client: true
+          }
+        }
+      }
     });
 
     const payables = await db.accountsPayable.findMany({

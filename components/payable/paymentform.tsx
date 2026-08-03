@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AccountsPayable, PaymentPayableInstallment } from "@/src/types/payment";
 import { toBRLDecimal } from "@/lib/utils";
+import { Banknote, Calendar, Tag } from "lucide-react";
 
 interface PaymentFormProps {
   payable: AccountsPayable;
@@ -16,11 +18,11 @@ interface PaymentFormProps {
 
 export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: PaymentFormProps) {
   const isFirstInstallment = !payable.installments || payable.installments.length === 0;
-  const [isSaving, setIsSaving] = useState(false)
+  const [isSaving, setIsSaving] = useState(false);
   const [amount, setAmount] = useState<number>(remainingAmount);
-  const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split('T')[0]);
-  const [error, setError] = useState('');
-  const [discount, setDiscount] = useState<number>(0)
+  const [paymentDate, setPaymentDate] = useState(new Date().toISOString().split("T")[0]);
+  const [error, setError] = useState("");
+  const [discount, setDiscount] = useState<number>(0);
   const [observations, setObservations] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,7 +30,7 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
     if (isSaving) return;
 
     if (amount <= 0) {
-      setError('O valor deve ser maior que zero.');
+      setError("O valor deve ser maior que zero.");
       return;
     }
     if (amount > remainingAmount) {
@@ -36,7 +38,7 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
       return;
     }
     if (discount < 0) {
-      setError("O desconto não pode ser negativo.")
+      setError("O desconto não pode ser negativo.");
       return;
     }
 
@@ -47,21 +49,21 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
       return;
     }
 
-    setIsSaving(true)
-    setError("")
+    setIsSaving(true);
+    setError("");
     try {
       await onSave({
         accounts_payable_id: payable.id!,
         amount_paid: amount,
         payment_date: paymentDate,
         discount,
-        observations
-      })
+        observations,
+      });
     } catch (err) {
-      console.error(err)
-      setError("Ocorreu um erro ao registrar o recebimento. Tente novamente.")
+      console.error(err);
+      setError("Ocorreu um erro ao registrar o recebimento. Tente novamente.");
     } finally {
-      setIsSaving(false)
+      setIsSaving(false);
     }
   };
 
@@ -72,81 +74,114 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
 
   useEffect(() => {
     const installments = payable.installments || [];
-  
+
     if (installments.length === 0) {
-      // primeira vez → usa description
       setObservations(payable.description || "");
     } else {
-      // já existe pagamento → usa a PRIMEIRA parcela
       const firstInstallment = installments[0];
-    
       setObservations(firstInstallment?.observations || "");
     }
   }, [payable]);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
+    <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground pt-2">
+      {error && (
+        <Alert variant="destructive" className="bg-rose-500/10 border-rose-500/30 text-rose-400 rounded-xl">
+          <AlertDescription className="text-xs font-semibold">{error}</AlertDescription>
+        </Alert>
+      )}
 
-      <div className="p-3 bg-slate-50 rounded-lg space-y-2">
-        <h4 className="font-medium">Detalhes do Pagamento</h4>
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div>Valor Bruto: R$ {toBRLDecimal((payable.gross_amount || 0).toFixed(2))}</div>
-          <div>Taxa Admin ({payable.admin_fee_percentage}%): R$ {toBRLDecimal((payable.admin_fee_amount || 0).toFixed(2))}</div>
-          <div className="col-span-2 space-y-4 font-semibold mt-2">Valor Líquido: R$ {toBRLDecimal(payable.amount.toFixed(2))}</div>
+      <div className="p-4 bg-secondary/40 border border-border rounded-xl space-y-2 text-xs">
+        <h4 className="font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+          <Banknote className="w-4 h-4 text-primary" /> Resumo do Repasse
+        </h4>
+        <div className="grid grid-cols-2 gap-2 text-muted-foreground pt-1">
+          <div>
+            Valor Bruto: <strong className="text-foreground">R$ {toBRLDecimal((payable.gross_amount || 0).toFixed(2))}</strong>
+          </div>
+          <div>
+            Taxa Admin ({payable.admin_fee_percentage}%):{" "}
+            <strong className="text-foreground">R$ {toBRLDecimal((payable.admin_fee_amount || 0).toFixed(2))}</strong>
+          </div>
+          <div className="col-span-2 text-sm font-extrabold text-primary border-t border-border pt-2 mt-1">
+            Valor Líquido a Pagar: R$ {toBRLDecimal(payable.amount.toFixed(2))}
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 items-center gap-2">
-        <label htmlFor="paymentDate">Data do Pagamento</label>
+      <div className="space-y-1.5">
+        <Label htmlFor="paymentDate" className="text-xs font-medium text-muted-foreground">
+          Data do Pagamento *
+        </Label>
         <Input
           id="paymentDate"
           type="date"
           value={paymentDate}
-          onChange={e => setPaymentDate(e.target.value)}
+          onChange={(e) => setPaymentDate(e.target.value)}
           required
-          className="justify-self-end w-37.5"
+          className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-2 space-y-2">
-        <label htmlFor="amount">Valor Pago R$</label>
-        <Input
-          id="amount"
-          type="number"
-          step="0.01"
-          value={amount.toFixed(2)}
-          onChange={e => setAmount(parseFloat(e.target.value) || 0)}
-          required
-          className="text-right"
-        />
-        <label htmlFor="discount">- Desconto R$</label>
-        <Input
-          id="discount"
-          type="number"
-          step="0.01"
-          value={discount.toFixed(2)}
-          onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-          className="text-right"
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="amount" className="text-xs font-medium text-muted-foreground">
+            Valor Pago (R$) *
+          </Label>
+          <Input
+            id="amount"
+            type="number"
+            step="0.01"
+            value={amount.toFixed(2)}
+            onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
+            required
+            className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono text-right"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="discount" className="text-xs font-medium text-muted-foreground">
+            Desconto (R$)
+          </Label>
+          <Input
+            id="discount"
+            type="number"
+            step="0.01"
+            value={discount.toFixed(2)}
+            onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
+            className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono text-right"
+          />
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <label htmlFor="observations">Observações</label>
+      <div className="space-y-1.5">
+        <Label htmlFor="observations" className="text-xs font-medium text-muted-foreground">
+          Observações
+        </Label>
         <Input
           id="observations"
           type="text"
           value={observations}
           onChange={(e) => setObservations(e.target.value)}
-          className="mt-2"
+          placeholder="Observações do pagamento..."
+          className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
         />
       </div>
 
-      <div className="flex justify-end gap-2 pt-4">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSaving}>
+      <div className="flex justify-end gap-3 pt-4 border-t border-border">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          disabled={isSaving}
+          className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold"
+        >
           Cancelar
         </Button>
-        <Button type="submit" disabled={isSaving}>
+        <Button
+          type="submit"
+          disabled={isSaving}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl text-xs shadow-md border-none"
+        >
           {isSaving ? "Registrando..." : "Registrar Pagamento"}
         </Button>
       </div>

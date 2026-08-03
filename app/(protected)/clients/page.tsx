@@ -24,7 +24,6 @@ import { Client } from "@/src/types/client";
 import { toast } from "sonner";
 import { formatDocument } from "@/lib/utils";
 
-
 export default function Clients() {
   const [clients, setClients] = useState<Client[]>([]);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
@@ -33,9 +32,7 @@ export default function Clients() {
   const [showForm, setShowForm] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(
-    null
-  );
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
 
   const loadClients = useCallback(async () => {
     setIsLoading(true);
@@ -112,9 +109,9 @@ export default function Clients() {
     setSelectedClient(client);
   };
 
-  const handleNew =  async () => {
+  const handleNew = async () => {
     if (!selectedCompanyId) return;
-    
+
     try {
       const res = await fetch(`/api/clients/maxcod?companyId=${selectedCompanyId}`);
       const data = await res.json();
@@ -122,7 +119,7 @@ export default function Clients() {
       if (!res.ok) throw new Error(data.error || "Erro ao buscar próximo código");
 
       const newClient: Partial<Client> = {
-        code: data.nextCod, //novo código
+        code: data.nextCod,
       };
 
       setEditingClient(newClient as Client);
@@ -136,10 +133,9 @@ export default function Clients() {
   if (!selectedCompanyId && !isLoading) {
     return (
       <div className="p-8">
-        <Alert>
-          <AlertDescription>
-            Por favor, selecione uma empresa no menu lateral para gerenciar os
-            clientes.
+        <Alert className="bg-card border-border text-foreground rounded-2xl">
+          <AlertDescription className="text-xs font-semibold text-muted-foreground">
+            Por favor, selecione uma empresa no menu lateral para gerenciar os clientes.
           </AlertDescription>
         </Alert>
       </div>
@@ -147,109 +143,145 @@ export default function Clients() {
   }
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      {/* Cabeçalho */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Clientes</h1>
-          <p className="text-slate-600 mt-1">
-            Gerencie os clientes da empresa
-          </p>
+    <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
+      {/* Banner Executivo */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              Cadastros & Hospitais/Clínicas
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+              Clientes, Hospitais e Clínicas Contratantes
+            </h1>
+            <p className="text-muted-foreground text-xs md:text-sm">
+              Gerencie a carteira de clientes, hospitais e clínicas contratantes dos serviços médicos
+            </p>
+          </div>
+
+          <Button
+            onClick={handleNew}
+            disabled={!selectedCompanyId}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none text-xs"
+          >
+            <Plus className="w-4 h-4 mr-2 stroke-[3]" />
+            Novo Cliente
+          </Button>
         </div>
-        <Button
-          onClick={handleNew}
-          className="bg-slate-900 hover:bg-slate-800"
-          disabled={!selectedCompanyId}
-        >
-          <Plus className="w-4 h-4 mr-2" /> Novo Cliente
-        </Button>
       </div>
 
-      {/* Busca */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-        <Input
-          placeholder="Buscar por nome ou documento..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
-        />
+      {/* Busca & Contador */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="relative w-full sm:max-w-md">
+          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-primary w-4 h-4" />
+          <Input
+            placeholder="Buscar por nome, razão social ou CNPJ/CPF..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+          />
+        </div>
+        <div className="text-xs font-semibold text-muted-foreground bg-card border border-border px-4 py-2 rounded-xl">
+          Total: <span className="text-primary font-bold">{filteredClients.length}</span> cliente(s)
+        </div>
       </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Grid de Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {isLoading
           ? Array(6)
               .fill(0)
               .map((_, i) => (
                 <div
                   key={i}
-                  className="animate-pulse h-40 bg-slate-200 rounded-lg"
+                  className="animate-pulse h-48 bg-card border border-border rounded-2xl"
                 ></div>
               ))
-          : filteredClients.map((client) => (
-              <Card
-                key={client.id}
-                className="hover:shadow-lg transition-all duration-200 border-slate-200"
-              >
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                        <Users className="w-5 h-5 text-slate-600" />
+          : filteredClients.length === 0 ? (
+              <div className="col-span-full text-center py-12 bg-card border border-border rounded-2xl p-6">
+                <Users className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                <h3 className="text-base font-bold text-foreground">Nenhum cliente encontrado</h3>
+                <p className="text-xs text-muted-foreground mt-1">Tente pesquisar por outro termo ou cadastre um novo cliente.</p>
+              </div>
+            ) : (
+              filteredClients.map((client) => (
+                <Card
+                  key={client.id}
+                  className="bg-card border-card-border hover:border-primary/40 transition-all duration-300 rounded-2xl shadow-md flex flex-col justify-between"
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-11 h-11 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
+                          <Users className="w-5.5 h-5.5 text-primary" />
+                        </div>
+                        <div className="overflow-hidden">
+                          <CardTitle className="text-base font-bold text-foreground min-w-0 overflow-hidden" title={client.name}>
+                            {client.name}
+                          </CardTitle>
+                          <p className="text-[11px] font-mono text-primary bg-secondary/80 px-2 py-0.5 rounded border border-border inline-block mt-1">
+                            {client.document_type?.toUpperCase()}: {formatDocument(client.document, client.document_type)}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <CardTitle className="text-lg text-slate-900">
-                          {client.name}
-                        </CardTitle>
-                        <p className="text-sm text-slate-500">
-                          {client.document_type.toUpperCase()}:{" "}
-                          {formatDocument(client.document, client.document_type)}
-                        </p>
-                      </div>
+                      <Badge
+                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${
+                          client.status === "active"
+                            ? "bg-primary/10 text-primary border-primary/30"
+                            : "bg-secondary text-muted-foreground border-border"
+                        }`}
+                      >
+                        {client.status === "active" ? "Ativo" : "Inativo"}
+                      </Badge>
                     </div>
-                    <Badge
-                      variant={
-                        client.status === "active" ? "default" : "secondary"
-                      }
-                    >
-                      {client.status === "active" ? "Ativo" : "Inativo"}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-1 text-sm text-slate-600">
-                    {client.email && <p>{client.email}</p>}
-                    {client.ddd && client.phone && (
-                      <p>
-                        ({client.ddd}) {client.phone}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex gap-2 mt-4">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleView(client)}
-                      className="flex-1"
-                    >
-                      <Eye className="w-4 h-4 mr-1" /> Ver
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(client)}
-                      className="flex-1"
-                    >
-                      <Edit className="w-4 h-4 mr-1" /> Editar
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent className="pt-0 space-y-3">
+                    <div className="space-y-1 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-xl border border-border">
+                      {client.email ? (
+                        <p className="truncate" title={client.email}>
+                          <span className="text-muted-foreground">E-mail: </span>
+                          <span className="text-foreground">{client.email}</span>
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground italic">Sem e-mail cadastrado</p>
+                      )}
+                      {client.ddd && client.phone ? (
+                        <p className="font-mono">
+                          <span className="text-muted-foreground">Tel: </span>
+                          <span className="text-foreground">({client.ddd}) {client.phone}</span>
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground italic">Sem telefone cadastrado</p>
+                      )}
+                    </div>
+                    <div className="flex gap-2 pt-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleView(client)}
+                        className="flex-1 bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+                      >
+                        <Eye className="w-3.5 h-3.5 mr-1.5" /> Ver Detalhes
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(client)}
+                        className="flex-1 bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+                      >
+                        <Edit className="w-3.5 h-3.5 mr-1.5" /> Editar
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
       </div>
 
-      {/* Formulário */}
+      {/* Formulário Modal */}
       <Dialog
         open={showForm}
         onOpenChange={() => {
@@ -257,30 +289,38 @@ export default function Clients() {
           setEditingClient(null);
         }}
       >
-        <DialogContent className="sm:max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>
-              {editingClient ? "Editar Cliente" : "Novo Cliente"}
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogHeader className="border-b border-border pb-3 shrink-0">
+            <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+              <Users className="w-5 h-5 text-primary" />
+              {editingClient?.id ? "Editar Cliente" : "Novo Cliente"}
             </DialogTitle>
           </DialogHeader>
-          <ClientForm
-            client={editingClient}
-            onSave={handleSave}
-            onCancel={() => {
-              setShowForm(false);
-              setEditingClient(null);
-            }}
-          />
+          <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+            <ClientForm
+              client={editingClient}
+              onSave={handleSave}
+              onCancel={() => {
+                setShowForm(false);
+                setEditingClient(null);
+              }}
+            />
+          </div>
         </DialogContent>
       </Dialog>
 
-      {/* Detalhes */}
+      {/* Detalhes Modal */}
       <Dialog open={!!selectedClient} onOpenChange={() => setSelectedClient(null)}>
-        <DialogContent className="sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Detalhes do Cliente</DialogTitle>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogHeader className="border-b border-border pb-3 shrink-0">
+            <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+              <Users className="w-5 h-5 text-primary" />
+              Detalhes do Cliente
+            </DialogTitle>
           </DialogHeader>
-          {selectedClient && <ClientDetails client={selectedClient} />}
+          <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+            {selectedClient && <ClientDetails client={selectedClient} />}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

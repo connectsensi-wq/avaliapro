@@ -3,18 +3,27 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, UserCheck, Search, Edit, Eye } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import ProfessionalForm from "@/components/professionals/professionalform";
+import ProfessionalDetails from "@/components/professionals/professionaldetails";
 import { Professional } from "@/src/types/professional";
 import { Specialty } from "@/lib/generated/prisma";
-import ProfessionalForm from "@/components/professionals/professionalform";
 import { toast } from "sonner";
-import ProfessionalDetails from "@/components/professionals/professionaldetails";
 import { formatCpf } from "@/lib/utils";
-
 
 export default function ProfessionalsPage() {
   const [professionals, setProfessionals] = useState<Professional[]>([]);
@@ -27,58 +36,50 @@ export default function ProfessionalsPage() {
   const [selectedProfessional, setSelectedProfessional] = useState<Professional | null>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
 
-  // Load professionals and specialties
-  const loadProfessionals = useCallback(async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       const companyId = localStorage.getItem("selectedCompanyId");
-      if (!companyId) {
+      if (companyId) {
+        setSelectedCompanyId(companyId);
+
+        const [profRes, specRes] = await Promise.all([
+          fetch(`/api/professionals?companyId=${companyId}`),
+          fetch(`/api/specialties`),
+        ]);
+
+        const profData = await profRes.json();
+        const specData = await specRes.json();
+
+        setProfessionals(profData);
+        setFilteredProfessionals(profData);
+        setSpecialties(specData);
+      } else {
         setProfessionals([]);
         setFilteredProfessionals([]);
-        setSpecialties([]);
-        setSelectedCompanyId(null);
-        return;
       }
-
-      setSelectedCompanyId(companyId);
-
-      // Fetch professionals
-      const profRes = await fetch(`/api/professionals?companyId=${companyId}`);
-      if (!profRes.ok) throw new Error("Erro ao carregar profissionais");
-      const profData: Professional[] = await profRes.json();
-
-      // Fetch specialties
-      const specRes = await fetch(`/api/specialties?companyId=${companyId}`);
-      if (!specRes.ok) throw new Error("Erro ao carregar especialidades");
-      const specData: Specialty[] = await specRes.json();
-
-      setProfessionals(profData);
-      setFilteredProfessionals(profData);
-      setSpecialties(specData);
     } catch (error) {
-      console.error("Erro ao carregar profissionais:", error);
-    } finally {
-      setIsLoading(false);
+      console.error("Erro ao carregar dados:", error);
     }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    loadProfessionals();
-  }, [loadProfessionals]);
+    loadData();
+  }, [loadData]);
 
-  // Filter professionals by name, CPF, or specialty
   const filterProfessionals = useCallback(() => {
     const filtered = professionals.filter((p) => {
       const nameMatch = p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
-    
-      const cpfNormalized = p.cpf?.replace(/\D/g, "") ?? ""; 
+
+      const cpfNormalized = p.cpf?.replace(/\D/g, "") ?? "";
       const searchNormalized = searchTerm.replace(/\D/g, "");
       const cpfMatch = searchNormalized ? cpfNormalized.includes(searchNormalized) : false;
-    
+
       const specialtyMatch = p.specialty?.name
         ? p.specialty.name.toLowerCase().includes(searchTerm.toLowerCase())
         : false;
-    
+
       return nameMatch || cpfMatch || specialtyMatch;
     });
     setFilteredProfessionals(filtered);
@@ -86,129 +87,61 @@ export default function ProfessionalsPage() {
 
   useEffect(() => {
     filterProfessionals();
-  }, [searchTerm, professionals]);
+  }, [filterProfessionals]);
 
-  //Função para bloquear o usuário no Clerk
-  const lockClerkUser = async (clerkUserId: string) => {
-    try {
-      const res = await fetch(`/api/professionals/${clerkUserId}/lock-user`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!res.ok) {
-        // É importante logar/toast se o bloqueio falhar, mas não interromper o fluxo principal
-        console.error("Falha ao bloquear o usuário no Clerk:", await res.json());
-        toast.warning("Profissional atualizado, mas houve falha ao bloquear a conta Clerk.");
-      } else {
-        toast.success("Conta Clerk do profissional bloqueada.");
-      }
-    } catch (error) {
-      console.error("Erro na comunicação com a API de bloqueio do Clerk:", error);
-      toast.warning("Profissional atualizado, mas houve erro ao tentar bloquear a conta Clerk.");
-    }
-  };
-
-  // Função para desbloquear o usuário no Clerk
-  const unlockClerkUser = async (clerkUserId: string) => {
-    try {
-      const res = await fetch(`/api/professionals/${clerkUserId}/unlock-user`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      if (!res.ok) {
-        console.error("Falha ao desbloquear o usuário no Clerk:", await res.json());
-        toast.warning("Profissional atualizado, mas houve falha ao desbloquear a conta Clerk.");
-      } else {
-        toast.success("Conta Clerk do profissional desbloqueada.");
-      }
-    } catch (error) {
-      console.error("Erro na comunicação com a API de desbloqueio do Clerk:", error);
-      toast.warning("Profissional atualizado, mas houve erro ao tentar desbloquear a conta Clerk.");
-    }
-  };
-
-
-  // Save or update professional
   const handleSave = async (professionalData: Partial<Professional>) => {
-    if (!selectedCompanyId) return;
-
-    // 1. Lógica para bloqueio (Active -> Inactive)
-    const isStatusChangeToInactive =
-      editingProfessional &&
-      editingProfessional.status === "active" &&
-      professionalData.status === "inactive";
-
-    // 2. Lógica para desbloqueio (Inactive -> Active)
-    const isStatusChangeToActive =
-      editingProfessional &&
-      editingProfessional.status === "inactive" &&
-      professionalData.status === "active";
-
     try {
-      const dataToSave = { ...professionalData, companyId: selectedCompanyId };
-      let res;
+      const dataToSave = {
+        ...professionalData,
+        companyId: selectedCompanyId,
+      };
 
       if (editingProfessional?.id) {
-        // Atualização no DB
-        res = await fetch(`/api/professionals/${editingProfessional.id}`, {
+        const res = await fetch(`/api/professionals/${editingProfessional.id}`, {
           method: "PUT",
           body: JSON.stringify(dataToSave),
           headers: { "Content-Type": "application/json" },
         });
 
-        // *** LÓGICA DE SINCRONIZAÇÃO CLERK ***
-        if (isStatusChangeToInactive && editingProfessional.clerkUserId) {
-          await lockClerkUser(editingProfessional.clerkUserId);
-        } else if (isStatusChangeToActive && editingProfessional.clerkUserId) {
-          await unlockClerkUser(editingProfessional.clerkUserId);
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.error || "Erro ao atualizar profissional");
         }
-        // *************************************
       } else {
-        // Criação via POST
-        res = await fetch(`/api/professionals`, {
+        const res = await fetch(`/api/professionals`, {
           method: "POST",
           body: JSON.stringify(dataToSave),
           headers: { "Content-Type": "application/json" },
         });
-      }
 
-      const result = await res.json();
-
-      if (!res.ok) {
-        // Mostra mensagem vinda do backend (CPF/E-mail duplicado, etc)
-        toast.error(result.error || "Falha ao salvar o profissional.");
-        return;
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.error || "Erro ao criar profissional");
+        }
       }
 
       toast.success(
-        `Profissional ${
-          editingProfessional ? "atualizado" : "criado"
-        } com sucesso!`
+        `Profissional ${editingProfessional ? "atualizado" : "criado"} com sucesso!`
       );
 
       setShowForm(false);
       setEditingProfessional(null);
-      loadProfessionals();
-    } catch (error) {
+      loadData();
+    } catch (error: any) {
       console.error("Erro ao salvar profissional:", error);
-      toast.error("Erro inesperado ao salvar profissional.");
+      toast.error(error.message || "Erro ao salvar profissional.");
     }
   };
 
-  // Open edit form
   const handleEdit = (professional: Professional) => {
     setEditingProfessional(professional);
     setShowForm(true);
   };
 
-  // Open details modal
   const handleView = (professional: Professional) => {
     setSelectedProfessional(professional);
   };
 
-  // Open new form
   const handleNew = async () => {
     if (!selectedCompanyId) return;
 
@@ -218,25 +151,24 @@ export default function ProfessionalsPage() {
 
       if (!res.ok) throw new Error(data.error || "Erro ao buscar próximo código");
 
-      const newProfessional: Partial<Professional> = {
-        code: data.nextCod, //novo código
+      const newProf: Partial<Professional> = {
+        code: data.nextCod,
       };
 
-      setEditingProfessional(newProfessional as Professional); // envia para o form
+      setEditingProfessional(newProf as Professional);
       setShowForm(true);
     } catch (error) {
       console.error(error);
-      toast.error("Erro ao gerar código do profissional");
+      toast.error("Erro ao gerar código do Profissional");
     }
   };
-
 
   if (!selectedCompanyId && !isLoading) {
     return (
       <div className="p-8">
-        <Alert>
-          <AlertDescription>
-            Por favor, selecione uma empresa no menu lateral para gerenciar os profissionais.
+        <Alert className="bg-card border-border text-foreground rounded-2xl">
+          <AlertDescription className="text-xs font-semibold text-muted-foreground">
+            Por favor, selecione uma empresa no menu lateral para gerenciar o corpo médico.
           </AlertDescription>
         </Alert>
       </div>
@@ -244,95 +176,166 @@ export default function ProfessionalsPage() {
   }
 
   return (
-    <div className="p-6 md:p-8 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900">Profissionais</h1>
-          <p className="text-slate-600 mt-1">Gerencie os profissionais da empresa</p>
+    <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
+      {/* Executive Header Banner */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              Cadastros & Equipe Médica
+            </div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+              Corpo Médico & Profissionais
+            </h1>
+            <p className="text-muted-foreground text-xs md:text-sm">
+              Gerencie os médicos e profissionais cadastrados no quadro societário da empresa
+            </p>
+          </div>
+
+          <Button
+            onClick={handleNew}
+            disabled={!selectedCompanyId}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none"
+          >
+            <Plus className="w-4 h-4 mr-2 stroke-[3]" />
+            Novo Profissional
+          </Button>
         </div>
-        <Button onClick={handleNew} className="bg-slate-900 hover:bg-slate-800" disabled={!selectedCompanyId}>
-          <Plus className="w-4 h-4 mr-2" />
-          Novo Profissional
-        </Button>
       </div>
 
-      {/* Search */}
-      <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-        <Input
-          placeholder="Buscar por nome, CPF ou especialidade..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
-        />
+      {/* Search & Metric Counter Bar */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="relative w-full sm:max-w-md">
+          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-primary w-4 h-4" />
+          <Input
+            placeholder="Buscar por nome, CPF ou especialidade..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+          />
+        </div>
+        <div className="text-xs font-semibold text-muted-foreground bg-card border border-border px-4 py-2 rounded-xl">
+          Total: <span className="text-primary font-bold">{filteredProfessionals.length}</span> profissional(is)
+        </div>
       </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="animate-pulse h-44 bg-slate-200 rounded-lg"></div>
-            ))
-          : filteredProfessionals.map((professional) => (
-              <Card key={professional.id} className="hover:shadow-lg transition-all duration-200 border-slate-200">
+            <div key={i} className="animate-pulse h-48 bg-card border border-border rounded-2xl"></div>
+          ))
+          : filteredProfessionals.length === 0 ? (
+            <div className="col-span-full text-center py-12 bg-card border border-border rounded-2xl p-6">
+              <UserCheck className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+              <h3 className="text-base font-bold text-foreground">Nenhum profissional encontrado</h3>
+              <p className="text-xs text-muted-foreground mt-1">Tente pesquisar por outro termo ou cadastre um novo profissional.</p>
+            </div>
+          ) : (
+            filteredProfessionals.map((professional) => (
+              <Card
+                key={professional.id}
+                className="bg-card border-card-border hover:border-primary/40 transition-all duration-300 rounded-2xl shadow-md flex flex-col justify-between"
+              >
                 <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                        <UserCheck className="w-5 h-5 text-slate-600" />
+                      <div className="w-11 h-11 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
+                        <UserCheck className="w-5.5 h-5.5 text-primary" />
                       </div>
-                      <div>
-                        <CardTitle className="text-lg text-slate-900">{professional.name}</CardTitle>
-                        <p className="text-sm text-slate-500">{professional.specialty?.name}</p>
+                      <div className="overflow-hidden">
+                        <CardTitle className="text-base font-bold text-foreground min-w-0 overflow-hidden" title={professional.name}>
+                          {professional.name}
+                        </CardTitle>
+                        <p className="text-xs text-primary font-semibold truncate">
+                          {professional.specialty?.name || "Sem Especialidade"}
+                        </p>
                       </div>
                     </div>
-                    <Badge variant={professional.status === "active" ? "default" : "secondary"}>
+                    <Badge
+                      className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${professional.status === "active"
+                        ? "bg-primary/10 text-primary border-primary/30"
+                        : "bg-secondary text-muted-foreground border-border"
+                        }`}
+                    >
                       {professional.status === "active" ? "Ativo" : "Inativo"}
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-1 text-sm text-slate-600">
-                    <p>CPF: {formatCpf(professional.cpf)}</p>
-                    <p>Email: {professional.email}</p>
-                    <p>Taxa Admin: {professional.admin_fee_percentage}%</p>
+                <CardContent className="pt-0 space-y-3">
+                  <div className="space-y-1 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-xl border border-border">
+                    <p className="font-mono flex justify-between">
+                      <span className="text-muted-foreground">CPF:</span>
+                      <span className="text-foreground font-semibold">{formatCpf(professional.cpf) || "N/A"}</span>
+                    </p>
+                    <p className="flex justify-between truncate">
+                      <span className="text-muted-foreground">E-mail:</span>
+                      <span className="text-foreground truncate ml-2" title={professional.email || undefined}>{professional.email || "N/A"}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-muted-foreground">Taxa Admin:</span>
+                      <span className="text-primary font-bold">{professional.admin_fee_percentage}%</span>
+                    </p>
                   </div>
-                  <div className="flex gap-2 mt-4">
-                    <Button variant="outline" size="sm" onClick={() => handleView(professional)} className="flex-1">
-                      <Eye className="w-4 h-4 mr-1" /> Ver
+                  <div className="flex gap-2 pt-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleView(professional)}
+                      className="flex-1 bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+                    >
+                      <Eye className="w-3.5 h-3.5 mr-1.5" /> Ver Detalhes
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(professional)} className="flex-1">
-                      <Edit className="w-4 h-4 mr-1" /> Editar
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(professional)}
+                      className="flex-1 bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+                    >
+                      <Edit className="w-3.5 h-3.5 mr-1.5" /> Editar
                     </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ))
+          )}
       </div>
 
-      {/* Form */}
+      {/* Form Dialog */}
       <Dialog open={showForm} onOpenChange={() => { setShowForm(false); setEditingProfessional(null); }}>
-        <DialogContent className="sm:max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{editingProfessional ? "Editar Profissional" : "Novo Profissional"}</DialogTitle>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogHeader className="border-b border-border pb-3 shrink-0">
+            <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+              <UserCheck className="w-5 h-5 text-primary" />
+              {editingProfessional?.id ? "Editar Profissional" : "Novo Profissional"}
+            </DialogTitle>
           </DialogHeader>
-          <ProfessionalForm
-            professional={editingProfessional}
-            onSave={handleSave}
-            onCancel={() => { setShowForm(false); setEditingProfessional(null); }}
-            specialties={specialties}
-          />
+          <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+            <ProfessionalForm
+              professional={editingProfessional}
+              onSave={handleSave}
+              onCancel={() => { setShowForm(false); setEditingProfessional(null); }}
+              specialties={specialties}
+            />
+          </div>
         </DialogContent>
       </Dialog>
 
-      {/* Details */}
+      {/* Details Dialog */}
       <Dialog open={!!selectedProfessional} onOpenChange={() => setSelectedProfessional(null)}>
-        <DialogContent className="sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Detalhes do Profissional</DialogTitle>
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogHeader className="border-b border-border pb-3 shrink-0">
+            <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
+              <UserCheck className="w-5 h-5 text-primary" />
+              Detalhes do Profissional
+            </DialogTitle>
           </DialogHeader>
-          {selectedProfessional && <ProfessionalDetails professional={selectedProfessional} specialties={specialties} />}
+          <div className="overflow-y-auto pr-1 flex-1 custom-scrollbar">
+            {selectedProfessional && <ProfessionalDetails professional={selectedProfessional} specialties={specialties} />}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

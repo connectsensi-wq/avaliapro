@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import {
   TrendingUp,
   TrendingDown,
@@ -10,9 +9,9 @@ import {
   UserRoundCheck,
   Stethoscope,
   Percent,
+  Users,
 } from "lucide-react";
 
-// Tipagem do objeto que vem da API
 interface FinancialData {
   totalReceivable: number;
   totalPayable: number;
@@ -31,9 +30,11 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
         maximumFractionDigits: 2,
       })}`,
       icon: TrendingUp,
-      color: "text-emerald-600",
-      bgColor: "bg-emerald-50",
-      borderColor: "border-emerald-200",
+      color: "text-[#00F5A0]",
+      bgColor: "bg-[#00F5A0]/10",
+      borderColor: "border-[#00F5A0]/25",
+      badgeText: "Entradas",
+      badgeColor: "bg-[#00F5A0]/10 text-[#00F5A0] border-[#00F5A0]/20",
     },
     {
       title: "Contas a Pagar",
@@ -42,9 +43,11 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
         maximumFractionDigits: 2,
       })}`,
       icon: TrendingDown,
-      color: "text-red-600",
-      bgColor: "bg-red-50",
-      borderColor: "border-red-200",
+      color: "text-rose-400",
+      bgColor: "bg-rose-500/10",
+      borderColor: "border-rose-500/25",
+      badgeText: "Saídas",
+      badgeColor: "bg-rose-500/10 text-rose-400 border-rose-500/20",
     },
     {
       title: "Receita do Mês",
@@ -53,88 +56,98 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
         maximumFractionDigits: 2,
       })}`,
       icon: DollarSign,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
+      color: "text-sky-400",
+      bgColor: "bg-sky-500/10",
+      borderColor: "border-sky-500/25",
+      badgeText: "Bruto",
+      badgeColor: "bg-sky-500/10 text-sky-400 border-sky-500/20",
     },
     {
-      title: "Taxas Admin.",
+      title: "Taxas Administrativas",
       value: `R$ ${data.adminFees?.toLocaleString("pt-BR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
       icon: Percent,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-200",
-    },
-  ];
-
-  const clifor = [
-    {
-      title: "Clientes",
-      value: data.totalClients,
-      icon: UserRoundCheck,
-      color: "text-orange-600",
-    },
-    {
-      title: "Profissionais",
-      value: data.totalProfessionals,
-      icon: Stethoscope,
-      color: "text-blue-600",
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/10",
+      borderColor: "border-purple-500/25",
+      badgeText: "Retenção",
+      badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",
     },
   ];
 
   return (
-    <>
-      {/* Cards principais */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="space-y-4">
+      {/* 4 Cards Financeiros Enxutos */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((card, index) => (
           <Card
             key={index}
-            className={`border-l-4 ${card.borderColor} hover:shadow-lg transition-all duration-200`}
+            className={`bg-[#002421] border ${card.borderColor} rounded-xl p-3.5 shadow-md hover:border-opacity-60 transition-all duration-200`}
           >
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">
-                {card.title}
-              </CardTitle>
-              <div className={`p-2 rounded-lg ${card.bgColor}`}>
-                <card.icon className={`h-5 w-5 ${card.color}`} />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-slate-900">
-                {card.value}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Cards de clifor */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {clifor.map((item, index) => (
-          <Card
-            key={index}
-            className="bg-gradient-to-r from-slate-50 to-slate-100"
-          >
-            <CardContent className="p-4">
+            <div className="flex flex-col justify-between space-y-2">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <item.icon className={`h-5 w-5 ${item.color}`} />
-                  <span className="text-lg font-medium text-slate-700">
-                    {item.title}
-                  </span>
-                </div>
-                <div  className="text-2xl font-bold pr-2">
-                  {item.value}
-                </div>
-
+                <span className="text-[11px] font-semibold text-slate-300">
+                  {card.title}
+                </span>
+                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${card.badgeColor}`}>
+                  {card.badgeText}
+                </span>
               </div>
-            </CardContent>
+
+              <div className="flex items-center justify-between">
+                <span className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  {card.value}
+                </span>
+                <div className={`p-2 rounded-lg ${card.bgColor} shrink-0`}>
+                  <card.icon className={`h-4 w-4 ${card.color}`} />
+                </div>
+              </div>
+            </div>
           </Card>
         ))}
       </div>
-    </>
+
+      {/* Card Único Unificado: Clientes Ativos & Profissionais Cadastrados */}
+      <Card className="bg-gradient-to-r from-[#002824] via-[#002421] to-[#001D1B] border border-[#004841] rounded-xl p-3.5 shadow-md">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 uppercase tracking-wider">
+            <Users className="w-4 h-4 text-[#00F5A0]" />
+            Base Operacional Ativa
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 sm:gap-10 w-full sm:w-auto">
+            {/* Clientes */}
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                <UserRoundCheck className="h-4.5 w-4.5" />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-semibold uppercase">Clientes Ativos</p>
+                <p className="text-lg font-extrabold text-white leading-none mt-0.5">
+                  {data.totalClients}
+                </p>
+              </div>
+            </div>
+
+            {/* Profissionais */}
+            <div className="flex items-center gap-3 border-l border-[#00453F] pl-6 sm:pl-10">
+              <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                <Stethoscope className="h-4.5 w-4.5" />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-semibold uppercase">Profissionais</p>
+                <p className="text-lg font-extrabold text-white leading-none mt-0.5">
+                  {data.totalProfessionals}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
   );
 }
+
+

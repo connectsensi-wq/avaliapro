@@ -1,22 +1,21 @@
 "use client";
 
-import { InvoiceStatus} from "@/src/types/enums";
+import { InvoiceStatus } from "@/src/types/enums";
 import { FC } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Badge } from "lucide-react";
-
+import { Badge } from "../ui/badge";
 
 interface StatusUpdaterProps {
   invoiceId: string;
   currentStatus: InvoiceStatus;
   onStatusChange: (invoiceId: string, newStatus: InvoiceStatus) => void;
-  locked: boolean
+  locked: boolean;
 }
 
 const statusConfig: Record<InvoiceStatus, { color: string }> = {
-  "regular": { color: "bg-green-100 text-green-800" },
-  "cancelada": { color: "bg-red-100 text-red-800" },
-  "pendente_de_cancelamento": { color: "bg-yellow-100 text-yellow-800" },
+  regular: { color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
+  cancelada: { color: "bg-rose-500/10 text-rose-400 border-rose-500/30" },
+  pendente_de_cancelamento: { color: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
 };
 
 const getStatusLabel = (status: InvoiceStatus) => {
@@ -35,20 +34,20 @@ const getStatusLabel = (status: InvoiceStatus) => {
 const statusOptions: InvoiceStatus[] = ["regular", "pendente_de_cancelamento", "cancelada"];
 
 const StatusUpdater: FC<StatusUpdaterProps> = ({ invoiceId, currentStatus, onStatusChange, locked }) => {
-  const config = statusConfig[currentStatus] || { color: "" };
+  const config = statusConfig[currentStatus] || { color: "bg-secondary text-muted-foreground border-border" };
 
   return (
     <Select value={currentStatus} onValueChange={(newStatus) => onStatusChange(invoiceId, newStatus as InvoiceStatus)}>
-      <SelectTrigger className="w-auto border-none focus:ring-0" disabled={locked}>
+      <SelectTrigger className="w-auto h-auto p-0 border-none bg-transparent focus:ring-0 focus:outline-none" disabled={locked}>
         <SelectValue asChild>
-          <Badge className={`${config.color} hover:bg-opacity-80`}>
+          <Badge className={`${config.color} border px-2.5 py-0.5 rounded-full text-[10px] font-semibold cursor-pointer hover:opacity-80 transition-opacity`}>
             {getStatusLabel(currentStatus)}
           </Badge>
         </SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
         {statusOptions.map((status) => (
-          <SelectItem key={status} value={status}>
+          <SelectItem key={status} value={status} className="focus:bg-accent focus:text-accent-foreground text-xs">
             {getStatusLabel(status)}
           </SelectItem>
         ))}

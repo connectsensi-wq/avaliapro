@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { DollarSign, Percent, TrendingUp } from "lucide-react";
+import { BarChart2, Calendar, Filter, Info } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -12,8 +11,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Legend,
 } from "recharts";
-
 
 interface MonthlyChartProps {
   companyId: string | null;
@@ -21,12 +20,13 @@ interface MonthlyChartProps {
 
 interface Invoice {
   issue_date: string;
-  total_amount: number;
+  total_amount?: number;
+  base_amount?: number;
 }
 
 interface AccountsPayable {
   due_date: string;
-  admin_fee_amount: number;
+  admin_fee_amount?: number;
 }
 
 interface ChartDataItem {
@@ -39,196 +39,287 @@ interface ChartDataItem {
 
 export default function MonthlyChart({ companyId }: MonthlyChartProps) {
   const [chartData, setChartData] = useState<ChartDataItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [availableYears, setAvailableYears] = useState<number[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<
+    "receita" | "comparativo_receita" | "taxa_admin" | "comparativo_taxa_admin"
+  >("receita");
 
   useEffect(() => {
     if (!companyId) return;
 
     const loadChartData = async () => {
-      setIsLoading(true);
       try {
         const res = await fetch(`/api/dashboard?companyId=${companyId}`);
-        const data: { invoices: Invoice[];  payables: AccountsPayable [] } = await res.json();
+        const data: { invoices: Invoice[]; payables: AccountsPayable[] } = await res.json();
 
-        // lista de anos encontrados nas invoices
-        const invoiceYears: number[] = (data.invoices ?? []).map((i) =>
-          new Date(i.issue_date).getUTCFullYear()
+        // Extrair anos disponíveis das faturas e pagamentos
+        const invoiceYears = (data.invoices ?? []).map((i) => {
+          const d = new Date(i.issue_date);
+          return isNaN(d.getTime()) ? new Date().getFullYear() : d.getUTCFullYear();
+        });
+
+        const payableYears = (data.payables ?? []).map((p) => {
+          const d = new Date(p.due_date);
+          return isNaN(d.getTime()) ? new Date().getFullYear() : d.getUTCFullYear();
+        });
+
+        const allYears = Array.from(new Set<number>([...invoiceYears, ...payableYears])).sort(
+          (a, b) => b - a
         );
 
-        // transformar em Set<number>, depois em array, e ordenar desc
-        const years: number[] = Array.from(new Set<number>(invoiceYears)).sort(
-          (a: number, b: number) => b - a
-        );
+        const currentYear = new Date().getFullYear();
+        const validYears = allYears.length > 0 ? allYears : [currentYear];
+        setAvailableYears(validYears);
 
-        setAvailableYears(years);
+        // Se selectedYear ainda for null, usa o ano mais recente disponível
+        const activeYear = selectedYear ?? validYears[0];
 
-        if (!selectedYear && years.length > 0) {
-          setSelectedYear(years[0]); // define ano mais recente
-        }
+        const months = [
+          "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez",
+        ];
 
-        if (selectedYear) {
-          const months = [
-            "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez",
-          ];
+        const monthlyData: ChartDataItem[] = months.map((month) => ({
+          month,
+          receita: 0,
+          invoiceLastYear: 0,
+          payable: 0,
+          payableLastYear: 0,
+        }));
 
-          const monthlyData: ChartDataItem[] = months.map((month) => ({
-            month,
-            receita: 0,
-            invoiceLastYear: 0,
-            payable: 0,
-            payableLastYear: 0 
-          }));
+        (data.invoices || []).forEach((invoice) => {
+          if (!invoice.issue_date) return;
+          const d = new Date(invoice.issue_date);
+          if (isNaN(d.getTime())) return;
 
-          data.invoices.forEach((invoice) => {
-            const d = new Date(invoice.issue_date);
-            const year = d.getUTCFullYear();
-            const monthIndex = d.getUTCMonth();
+          const year = d.getUTCFullYear();
+          const monthIndex = d.getUTCMonth();
+          const amount = Number(invoice.total_amount || invoice.base_amount || 0);
 
-            if (year === selectedYear) {
-              monthlyData[monthIndex].receita += invoice.total_amount || 0;
-            } else if (year === selectedYear - 1) {
-              monthlyData[monthIndex].invoiceLastYear +=
-                invoice.total_amount || 0;
-            }
-          });
+          if (year === activeYear) {
+            monthlyData[monthIndex].receita += amount;
+          } else if (year === activeYear - 1) {
+            monthlyData[monthIndex].invoiceLastYear += amount;
+          }
+        });
 
-          data.payables.forEach((payables) => {
-            const d = new Date(payables.due_date);
-            const year = d.getUTCFullYear();
-            const monthIndex = d.getUTCMonth();
+        (data.payables || []).forEach((payable) => {
+          if (!payable.due_date) return;
+          const d = new Date(payable.due_date);
+          if (isNaN(d.getTime())) return;
 
-            if (year === selectedYear) {
-              monthlyData[monthIndex].payable += payables.admin_fee_amount || 0;
-            } else if (year === selectedYear - 1) {
-              monthlyData[monthIndex].payableLastYear +=
-                payables.admin_fee_amount || 0;
-            }
-          });
+          const year = d.getUTCFullYear();
+          const monthIndex = d.getUTCMonth();
+          const feeAmount = Number(payable.admin_fee_amount || 0);
 
-          setChartData(monthlyData);
-        }
+          if (year === activeYear) {
+            monthlyData[monthIndex].payable += feeAmount;
+          } else if (year === activeYear - 1) {
+            monthlyData[monthIndex].payableLastYear += feeAmount;
+          }
+        });
+
+        setChartData(monthlyData);
       } catch (error) {
         console.error("Erro ao carregar dados do gráfico:", error);
       }
-      setIsLoading(false);
     };
 
     loadChartData();
   }, [companyId, selectedYear]);
 
-  return (
-    <div className="flex flex-col gap-4">
-      {/*Invoice Data*/}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-slate-900">
-            <DollarSign className="h-5 w-5" />
-            Receita Mensal
-          </CardTitle>
+  const activeYear = selectedYear ?? (availableYears[0] || new Date().getFullYear());
+  const lastYear = activeYear - 1;
 
-          {availableYears.length > 0 && (
+  const isComparative = viewMode === "comparativo_receita" || viewMode === "comparativo_taxa_admin";
+
+  return (
+    <Card className="bg-[#002623] border border-[#00453F] rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#003B35]">
+        <div className="space-y-1">
+          <CardTitle className="flex items-center gap-2.5 text-base font-bold text-white">
+            <div className="p-2 rounded-lg bg-[#00F5A0]/10 border border-[#00F5A0]/20 text-[#00F5A0]">
+              <BarChart2 className="h-5 w-5" />
+            </div>
+            Desempenho Operacional Mensal
+          </CardTitle>
+          {isComparative && (
+            <p className="text-xs text-[#00F5A0] flex items-center gap-1.5 font-medium">
+              <Info className="w-3.5 h-3.5" />
+              Comparando ano base <span className="font-bold underline">{activeYear}</span> com ano anterior <span className="font-bold underline">{lastYear}</span>
+            </p>
+          )}
+        </div>
+
+        {/* Filtros em Lado a Lado */}
+        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+          {/* Select de Ano */}
+          <div className="flex items-center gap-1.5 bg-[#001715] border border-[#00453F] px-3 py-1.5 rounded-xl text-xs">
+            <Calendar className="h-3.5 w-3.5 text-[#00F5A0]" />
             <select
-              className="border rounded px-3 py-1 text-sm"
-              value={selectedYear ?? ""}
+              className="bg-transparent font-semibold text-[#00F5A0] focus:outline-none cursor-pointer"
+              value={selectedYear ?? availableYears[0] ?? ""}
               onChange={(e) => setSelectedYear(Number(e.target.value))}
             >
               {availableYears.map((y) => (
-                <option key={y} value={y}>
-                  {y}
+                <option key={y} value={y} className="bg-[#002623] text-white">
+                  Ano: {y}
                 </option>
               ))}
             </select>
-          )}
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={320}>
-            <BarChart
-              data={chartData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          </div>
+
+          {/* Select de Visão / Modo */}
+          <div className="flex items-center gap-1.5 bg-[#001715] border border-[#00453F] px-3 py-1.5 rounded-xl text-xs">
+            <Filter className="h-3.5 w-3.5 text-sky-400" />
+            <select
+              className="bg-transparent font-semibold text-slate-200 focus:outline-none cursor-pointer"
+              value={viewMode}
+              onChange={(e: any) => setViewMode(e.target.value)}
             >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="month" stroke="#64748b" />
-              <YAxis stroke="#64748b" />
-              <Tooltip
-                formatter={(value, name) => [
-                  `R$ ${Number(value).toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                  })}`,
-                  name,
-                ]}
-                labelStyle={{ color: "#1e293b" }}
-                contentStyle={{
-                  backgroundColor: "white",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
-                }}
-              />
+              <option value="receita" className="bg-[#002623] text-white">
+                Receita
+              </option>
+              <option value="comparativo_receita" className="bg-[#002623] text-white">
+                Comparativo de Receita
+              </option>
+              <option value="taxa_admin" className="bg-[#002623] text-white">
+                Taxa Administrativa
+              </option>
+              <option value="comparativo_taxa_admin" className="bg-[#002623] text-white">
+                Comparativo de Taxa Adm
+              </option>
+            </select>
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent className="pt-6">
+        <ResponsiveContainer width="100%" height={305}>
+          <BarChart
+            // 1. Removido o layout="vertical"
+            data={chartData}
+            barCategoryGap="18%"
+            barGap={3}
+            margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+          >
+            <defs>
+              {/* 5. Gradientes ajustados para baixo -> cima (y1="1" y2="0") */}
+              <linearGradient id="barPrimary" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
+                <stop offset="100%" stopColor="#00F5A0" stopOpacity={1} />
+              </linearGradient>
+              <linearGradient id="barSecondary" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
+                <stop offset="100%" stopColor="#96a09eff" stopOpacity={1} />
+              </linearGradient>
+              <linearGradient id="barSky" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
+                <stop offset="100%" stopColor="#38bdf8" stopOpacity={1} />
+              </linearGradient>
+              <linearGradient id="barPurple" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
+                <stop offset="100%" stopColor="#96a09eff" stopOpacity={1} />
+              </linearGradient>
+            </defs>
+
+            {/* 3. Grid alterado para linhas horizontais */}
+            <CartesianGrid strokeDasharray="3 3" stroke="#003D37" vertical={false} />
+
+            {/* 2. Eixos Invertidos */}
+            <XAxis
+              dataKey="month" // Meses vieram pro eixo X
+              stroke="#94a3b8"
+              tick={{ fill: "#94a3b8", fontSize: 12, fontWeight: "bold" }}
+            />
+            <YAxis
+              stroke="#94a3b8"
+              tick={{ fill: "#94a3b8", fontSize: 11 }}
+              tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} // Valores foram pro eixo Y
+            />
+
+            <Tooltip
+              formatter={(value: any, name: any) => [
+                `R$ ${Number(value).toLocaleString("pt-BR", {
+                  minimumFractionDigits: 2,
+                })}`,
+                name,
+              ]}
+              labelStyle={{ color: "#00F5A0", fontWeight: "bold" }}
+              contentStyle={{
+                backgroundColor: "#001A18",
+                border: "1px solid #00453F",
+                borderRadius: "12px",
+                color: "#f8fafc",
+                boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+              }}
+            />
+            <Legend wrapperStyle={{ paddingTop: "12px", fontSize: "12px" }} />
+
+            {/* 4. Radius das barras ajustado para o topo: [6, 6, 0, 0] */}
+            {viewMode === "receita" && (
               <Bar
                 dataKey="receita"
-                fill="#1f4379ff"
-                name={`Receita ${selectedYear}`}
-                radius={[4, 4, 0, 0]}
+                fill="url(#barPrimary)"
+                name={`Receita ${activeYear}`}
+                radius={[10, 10, 0, 0]}
+                barSize={30}
               />
+            )}
+
+            {viewMode === "comparativo_receita" && (
+              <Bar
+                dataKey="receita"
+                fill="url(#barPrimary)"
+                name={`Receita ${activeYear}`}
+                radius={[10, 10, 0, 0]}
+                barSize={30}
+              />
+            )}
+            {viewMode === "comparativo_receita" && (
               <Bar
                 dataKey="invoiceLastYear"
-                fill="#88aceaff"
-                name={`Receita ${selectedYear ? selectedYear - 1 : ""}`}
-                radius={[4, 4, 0, 0]}
+                fill="url(#barSecondary)"
+                name={`Receita ${lastYear}`}
+                radius={[10, 10, 0, 0]}
+                barSize={18}
               />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+            )}
 
-      {/*Payable Data*/}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-slate-900">
-            <Percent className="h-5 w-5" />
-            Taxa Administrativa Mensal
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={320}>
-            <BarChart
-              data={chartData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="month" stroke="#64748b" />
-              <YAxis stroke="#64748b" />
-              <Tooltip
-                formatter={(value, name) => [
-                  `R$ ${Number(value).toLocaleString("pt-BR", {
-                    minimumFractionDigits: 2,
-                  })}`,
-                  name,
-                ]}
-                labelStyle={{ color: "#1e293b" }}
-                contentStyle={{
-                  backgroundColor: "white",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
-                }}
-              />
+            {viewMode === "taxa_admin" && (
               <Bar
                 dataKey="payable"
-                fill="#3fb8af"
-                name={`Taxa Admin ${selectedYear}`}
-                radius={[4, 4, 0, 0]}
+                fill="url(#barSky)"
+                name={`Taxa Admin ${activeYear}`}
+                radius={[6, 6, 0, 0]}
+                barSize={30}
               />
+            )}
+
+            {viewMode === "comparativo_taxa_admin" && (
+              <Bar
+                dataKey="payable"
+                fill="url(#barSky)"
+                name={`Taxa Admin ${activeYear}`}
+                radius={[6, 6, 0, 0]}
+                barSize={18}
+              />
+            )}
+            {viewMode === "comparativo_taxa_admin" && (
               <Bar
                 dataKey="payableLastYear"
-                fill="#bac4c4"
-                name={`Taxa Admin ${selectedYear ? selectedYear - 1 : ""}`}
-                radius={[4, 4, 0, 0]}
+                fill="url(#barPurple)"
+                name={`Taxa Admin ${lastYear}`}
+                radius={[6, 6, 0, 0]}
+                barSize={11}
               />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-    </div>
+            )}
+          </BarChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
   );
 }
+
+
+
