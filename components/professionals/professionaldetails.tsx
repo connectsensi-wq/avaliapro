@@ -149,7 +149,7 @@ export default function ProfessionalDetails({ professional, specialties }: Profe
             </p>
             {professional.pix_key && (
               <p className="flex items-center gap-2 font-mono truncate">
-                <CreditCard className="w-3.5 h-3.5 text-primary shrink-0" /> PIX ({(professional.pix_key_type && pixKeyTypeLabels[professional.pix_key_type]) || professional.pix_key_type || "Chave"}): <span className="truncate text-foreground">{professional.pix_key}</span>
+                <CreditCard className="w-3.5 h-3.5 text-primary shrink-0" /> PIX ({(professional.pix_key_type && pixKeyTypes.find((p) => p.value === professional.pix_key_type)?.label) || professional.pix_key_type || "Chave"}): <span className="truncate text-foreground">{professional.pix_key}</span>
               </p>
             )}
           </div>
