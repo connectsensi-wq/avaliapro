@@ -137,7 +137,7 @@ export default function Specialties() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
       {/* Executive Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#002B27] via-[#003833] to-[#002421] border border-[#004D46] px-6 py-5 rounded-2xl shadow-md">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -146,7 +146,7 @@ export default function Specialties() {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Cadastros & Categorização Médica
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
               Especialidades Médicas
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm">
@@ -171,10 +171,10 @@ export default function Specialties() {
             placeholder="Buscar especialidade por nome ou descrição..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+            className="pl-10 bg-banner-via border-border text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
           />
         </div>
-        <div className="text-xs font-semibold text-muted-foreground bg-card border border-border px-4 py-2 rounded-xl">
+        <div className="text-xs font-semibold text-muted-foreground bg-banner-to border border-border px-4 py-2 rounded-xl">
           Total: <span className="text-primary font-bold">{filteredSpecialties.length}</span> especialidade(s)
         </div>
       </div>
@@ -197,7 +197,7 @@ export default function Specialties() {
           filteredSpecialties.map((specialty) => (
             <Card
               key={specialty.id}
-              className="bg-card border-card-border hover:border-primary/40 transition-all duration-300 rounded-2xl shadow-md flex flex-col justify-between"
+              className="bg-card border-border transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-3">
@@ -249,7 +249,7 @@ export default function Specialties() {
           setEditingSpecialty(null);
         }}
       >
-        <DialogContent className="sm:max-w-md bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
+        <DialogContent className="sm:max-w-md bg-card border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
           <DialogHeader className="border-b border-border pb-3">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <Stethoscope className="w-5 h-5 text-primary" />
@@ -265,7 +265,7 @@ export default function Specialties() {
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Ex: Cardiologia"
                 required
-                className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+                className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
               />
             </div>
 
@@ -275,7 +275,7 @@ export default function Specialties() {
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Descrição opcional..."
-                className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm min-h-[80px]"
+                className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm min-h-[80px]"
               />
             </div>
 

@@ -62,13 +62,13 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
   // Dados que alimentam as duas fatias da meia-pizza
   const gaugeData = [
     { name: "Realizado", value: currentGaugeValue, color: "#00F5A0" }, // Verde Neon
-    { name: "Faltante", value: remainingGaugeValue, color: "#001715" }, // Fundo escuro
+    { name: "Faltante", value: remainingGaugeValue, color: "#034e3fff" }, // Fundo escuro
   ];
 
   return (
-    <Card className="bg-[#002623] border border-[#00453F] rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
       <CardHeader className="border-b border-[#003B35] pb-1 flex flex-row items-center justify-between">
-        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-white">
+        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
           <div className="p-2 rounded-lg bg-[#00F5A0]/10 border border-[#00F5A0]/20 text-[#00F5A0]">
             <Target className="h-5 w-5" />
           </div>
@@ -117,12 +117,12 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
           {/* Texto Posicionado de Forma Absoluta */}
           <div className="absolute left-1/2 top-[80%] -translate-x-1/2 -translate-y-full flex flex-col items-center pointer-events-none">
             <span
-              className={`text-3xl font-black ${isGoalAchieved ? "text-[#00F5A0]" : "text-white"
+              className={`text-3xl font-black ${isGoalAchieved ? "text-[#00F5A0]" : "text-primary"
                 }`}
             >
               {progressPercent}%
             </span>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
               Alcançado
             </span>
           </div>
@@ -130,11 +130,11 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
 
         {/* Valores Comparativos */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-[#001D1B] border border-[#00453F] rounded-xl p-3.5">
-            <span className="text-[10px] font-bold text-[#00F5A0] uppercase tracking-wider">
+          <div className="bg-card border border-border rounded-xl p-3.5">
+            <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">
               Mês Corrente
             </span>
-            <p className="text-lg font-black text-white mt-1">
+            <p className="text-lg font-black text-primary mt-1">
               R${" "}
               {currentMonthRevenue.toLocaleString("pt-BR", {
                 minimumFractionDigits: 2,
@@ -143,11 +143,11 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
             </p>
           </div>
 
-          <div className="bg-[#001D1B] border border-[#00453F] rounded-xl p-3.5">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+          <div className="bg-card border border-border rounded-xl p-3.5">
+            <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">
               Meta (Mês Anterior)
             </span>
-            <p className="text-lg font-black text-slate-200 mt-1">
+            <p className="text-lg font-black text-foreground mt-1">
               R${" "}
               {previousMonthRevenue.toLocaleString("pt-BR", {
                 minimumFractionDigits: 2,

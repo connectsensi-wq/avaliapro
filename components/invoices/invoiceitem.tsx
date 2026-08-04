@@ -29,7 +29,7 @@ function InvoiceItemComponent({
     <div className="p-4 sm:p-5 hover:bg-secondary/40 transition-colors border-b border-border last:border-b-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
-          <div className="w-11 h-11 text-white bg-secondary border border-border rounded-xl flex items-center justify-center shrink-0 shadow-inner">
+          <div className="w-11 h-11 text-white bg-secondary hover:bg-slate-300 border border-border rounded-xl flex items-center justify-center shrink-0 shadow-inner">
             <InvoicePrintMulti
               invoice={invoice}
               professionals={professionals}
@@ -44,7 +44,7 @@ function InvoiceItemComponent({
               </h4>
 
               {invoice.locked && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-semibold">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-semibold">
                   <Lock className="w-3 h-3" /> Bloqueada
                 </span>
               )}
@@ -96,7 +96,7 @@ function InvoiceItemComponent({
             variant="outline"
             size="sm"
             onClick={() => onEdit(invoice)}
-            className="bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+            className="bg-secondary hover:bg-cyan-800 text-primary hover:text-white border-border rounded-xl text-xs font-semibold"
           >
             <Edit className="w-3.5 h-3.5 mr-1.5" /> Editar
           </Button>

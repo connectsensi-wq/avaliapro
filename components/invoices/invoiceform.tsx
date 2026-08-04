@@ -310,7 +310,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
               onChange={(e) => setFormData({ ...formData, invoice_number: e.target.value })}
               required
               placeholder="Ex: 1042"
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
             />
           </div>
           <div className="space-y-1.5">
@@ -323,7 +323,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
               value={toInputDate(formData.issue_date)}
               onChange={(e) => setFormData({ ...formData, issue_date: e.target.value })}
               required
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
             />
           </div>
         </CardContent>
@@ -331,34 +331,34 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
 
       {/* Navegação por Abas */}
       <Tabs defaultValue="client" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 bg-input border border-border p-1 rounded-xl">
+        <TabsList className="grid w-full grid-cols-5 bg-background border border-border p-1 rounded-xl">
           <TabsTrigger
             value="client"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
           >
             Tomador
           </TabsTrigger>
           <TabsTrigger
             value="service"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
           >
             Serviço
           </TabsTrigger>
           <TabsTrigger
             value="items"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
           >
             Descrição
           </TabsTrigger>
           <TabsTrigger
             value="additional"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
           >
             Complementares
           </TabsTrigger>
           <TabsTrigger
             value="summary"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
           >
             Resumo
           </TabsTrigger>
@@ -377,7 +377,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 <Label className="text-xs font-medium text-muted-foreground">Tomador do Serviço *</Label>
 
                 <div
-                  className="border border-border rounded-xl p-3 bg-input text-foreground text-sm cursor-pointer hover:border-primary/50 transition-colors flex items-center justify-between"
+                  className="border border-border rounded-xl p-3 bg-background text-foreground text-sm cursor-pointer hover:border-primary/50 transition-colors flex items-center justify-between"
                   onClick={() => setOpenClientSearch(!openClientSearch)}
                 >
                   {selectedClient ? (
@@ -506,7 +506,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                   required
                   onValueChange={(value) => setFormData({ ...formData, operation_nature: value })}
                 >
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue id="operation_nature" placeholder="Selecione a natureza" />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
@@ -523,7 +523,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 <div className="space-y-1.5">
                   <Label className="text-xs font-medium text-muted-foreground">Tipo de Serviço *</Label>
                   <Select value={formData.service_code} onValueChange={handleServiceChange} required>
-                    <SelectTrigger className="w-full bg-input border-border text-foreground rounded-xl text-sm">
+                    <SelectTrigger className="w-full bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue placeholder="Selecione o serviço..." />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
@@ -541,7 +541,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                     value={formData.service_location}
                     onValueChange={(value) => setFormData({ ...formData, service_location: value })}
                   >
-                    <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                    <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue placeholder="Selecione o estado..." />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
@@ -589,13 +589,13 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                         })
                       }
                       placeholder="0,00"
-                      className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                      className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                     />
                   </div>
                   <div className="md:col-span-2 space-y-1.5">
                     <Label className="text-xs font-medium text-muted-foreground">Profissional Médico *</Label>
                     <Select value={currentService.professional_id} onValueChange={handleProfessionalChange}>
-                      <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                      <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                         <SelectValue placeholder="Selecione um profissional..." />
                       </SelectTrigger>
                       <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
@@ -614,7 +614,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                     value={currentService.description}
                     onChange={(e) => setCurrentService({ ...currentService, description: e.target.value })}
                     placeholder="Ex: Plantão Médico UTI Neonatal 12h..."
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
                   />
                 </div>
                 <div>
@@ -716,7 +716,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                       value={formData.substitute_number}
                       onChange={(e) => setFormData({ ...formData, substitute_number: e.target.value })}
                       placeholder="Ex: 1041"
-                      className="bg-input border-border text-foreground rounded-xl text-sm font-mono max-w-xs"
+                      className="bg-background border-border text-foreground rounded-xl text-sm font-mono max-w-xs"
                     />
                   </div>
                 )}
@@ -746,7 +746,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                       <Input
                         value={formData.rps_number}
                         onChange={(e) => setFormData({ ...formData, rps_number: e.target.value })}
-                        className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                        className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -755,7 +755,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                         type="date"
                         value={formData.rps_date}
                         onChange={(e) => setFormData({ ...formData, rps_date: e.target.value })}
-                        className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                        className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                       />
                     </div>
                   </div>
@@ -791,7 +791,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                           inss_percentage: round2(parseFloat(e.target.value) || 0),
                         }))
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground block font-mono">
                       R$ {toBRLDecimal(calculateRetention(retentions.inss_percentage).toFixed(2))}
@@ -810,7 +810,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                           irpj_percentage: round2(parseFloat(e.target.value) || 0),
                         }))
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground block font-mono">
                       R$ {toBRLDecimal(calculateRetention(retentions.irpj_percentage).toFixed(2))}
@@ -829,7 +829,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                           csll_percentage: round2(parseFloat(e.target.value) || 0),
                         }))
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground block font-mono">
                       R$ {toBRLDecimal(calculateRetention(retentions.csll_percentage).toFixed(2))}
@@ -848,7 +848,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                           cofins_percentage: round2(parseFloat(e.target.value) || 0),
                         }))
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground block font-mono">
                       R$ {toBRLDecimal(calculateRetention(retentions.cofins_percentage).toFixed(2))}
@@ -867,7 +867,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                           pis_pasep_percentage: round2(parseFloat(e.target.value) || 0),
                         }))
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground block font-mono">
                       R$ {toBRLDecimal(calculateRetention(retentions.pis_pasep_percentage).toFixed(2))}
@@ -886,7 +886,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                           other_retentions_percentage: round2(parseFloat(e.target.value) || 0),
                         }))
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground block font-mono">
                       R$ {toBRLDecimal(calculateRetention(retentions.other_retentions_percentage).toFixed(2))}
@@ -909,7 +909,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <div className="space-y-1">
                     <Label className="text-[11px] text-muted-foreground">Base de Cálculo do Serviço</Label>
-                    <div className="h-10 px-3 py-2 border border-border rounded-xl bg-input flex items-center font-mono font-bold text-primary text-sm">
+                    <div className="h-10 px-3 py-2 border border-border rounded-xl bg-background flex items-center font-mono font-bold text-primary text-sm">
                       R$ {toBRLDecimal(totalServiceValue.toFixed(2))}
                     </div>
                   </div>
@@ -922,12 +922,12 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                       onChange={(e) =>
                         setFormData({ ...formData, tax_rate: round2(parseFloat(e.target.value) || 0) })
                       }
-                      className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                     />
                   </div>
                   <div className="space-y-1">
                     <Label className="text-[11px] text-muted-foreground">Valor do ISS</Label>
-                    <div className="h-10 px-3 py-2 border border-border rounded-xl bg-input flex items-center font-mono font-bold text-primary text-sm">
+                    <div className="h-10 px-3 py-2 border border-border rounded-xl bg-background flex items-center font-mono font-bold text-primary text-sm">
                       R$ {toBRLDecimal(issAmount.toFixed(2))}
                     </div>
                   </div>
@@ -941,7 +941,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                   onChange={(e) => setFormData({ ...formData, observations: e.target.value })}
                   rows={3}
                   placeholder="Observações adicionais para a nota fiscal..."
-                  className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm min-h-[80px]"
+                  className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm min-h-[80px]"
                 />
               </div>
             </CardContent>

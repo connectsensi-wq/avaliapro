@@ -86,17 +86,17 @@ export default function ProfessionalDetails({ professional, specialties }: Profe
   return (
     <div className="space-y-4 font-sans text-foreground py-2">
       {/* Header Info */}
-      <div className="flex items-center gap-4 bg-card border border-border p-4 rounded-xl">
-        <div className="w-12 h-12 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
+      <div className="flex items-center gap-4 bg-banner-via border border-border p-4 rounded-xl">
+        <div className="w-12 h-12 bg-banner-via border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
           <UserCheck className="w-6 h-6 text-primary" />
         </div>
         <div className="overflow-hidden flex-1">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-base font-bold text-foreground truncate">{professional.name}</h2>
+            <h2 className="text-base font-bold text-white truncate">{professional.name}</h2>
             <Badge
               className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${professional.status === "active"
-                  ? "bg-primary/10 text-primary border-primary/30"
-                  : "bg-secondary text-muted-foreground border-border"
+                ? "bg-primary/10 text-primary border-primary/30"
+                : "bg-secondary text-muted-foreground border-border"
                 }`}
             >
               {professional.status === "active" ? "Ativo" : "Inativo"}

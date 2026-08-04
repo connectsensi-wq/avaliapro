@@ -47,7 +47,7 @@ export default function HistoryDialog({
 
   return (
     <Dialog open={true} onOpenChange={onCancel}>
-      <DialogContent className="sm:max-w-xl bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
+      <DialogContent className="sm:max-w-xl bg-card border-border text-foreground shadow-2xl rounded-2xl p-6">
         <DialogHeader className="border-b border-border pb-3">
           <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
             <History className="w-5 h-5 text-primary" />

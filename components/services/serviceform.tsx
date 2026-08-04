@@ -58,8 +58,8 @@ export default function ServiceForm({ service, onSave, onCancel }: ServiceFormPr
           value={formData.code || ""}
           onChange={(e) => setFormData((prev) => ({ ...prev, code: parseInt(e.target.value) || 0 }))}
           required
-          disabled={!!service?.code}
-          className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+          disabled={!!service?.id}
+          className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
         />
       </div>
 
@@ -70,7 +70,7 @@ export default function ServiceForm({ service, onSave, onCancel }: ServiceFormPr
           onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
           placeholder="Ex: Plantão Médico UTI Neonatal 12h..."
           required
-          className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm min-h-[90px]"
+          className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm min-h-[90px]"
         />
       </div>
 

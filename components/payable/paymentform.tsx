@@ -119,7 +119,7 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
           value={paymentDate}
           onChange={(e) => setPaymentDate(e.target.value)}
           required
-          className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+          className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
         />
       </div>
 
@@ -135,7 +135,7 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
             value={amount.toFixed(2)}
             onChange={(e) => setAmount(parseFloat(e.target.value) || 0)}
             required
-            className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono text-right"
+            className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono text-right"
           />
         </div>
         <div className="space-y-1.5">
@@ -148,7 +148,7 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
             step="0.01"
             value={discount.toFixed(2)}
             onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-            className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono text-right"
+            className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono text-right"
           />
         </div>
       </div>
@@ -163,7 +163,7 @@ export function PaymentForm({ payable, remainingAmount, onSave, onCancel }: Paym
           value={observations}
           onChange={(e) => setObservations(e.target.value)}
           placeholder="Observações do pagamento..."
-          className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+          className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
         />
       </div>
 

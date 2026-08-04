@@ -11,9 +11,9 @@ interface TaxInformationsProps {
 
 export default function TaxInformations({ data }: TaxInformationsProps) {
   return (
-    <Card className="bg-[#002623] border border-[#00453F] rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
       <CardHeader className="border-b border-[#003B35] pb-4">
-        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-white">
+        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
           <div className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400">
             <Receipt className="h-5 w-5" />
           </div>
@@ -25,7 +25,7 @@ export default function TaxInformations({ data }: TaxInformationsProps) {
           <div className="p-3 rounded-full bg-[#001715] border border-[#00453F] text-[#00F5A0]">
             <Bot className="h-6 w-6 text-[#00F5A0]" />
           </div>
-          <p className="text-sm font-semibold text-slate-200">Módulo Fiscal em Processamento</p>
+          <p className="text-sm font-semibold text-muted-foreground">Módulo Fiscal em Processamento</p>
           <p className="text-xs text-slate-400 max-w-xs">Cálculo automatizado de retenções de impostos para a empresa selecionada.</p>
         </div>
       </CardContent>

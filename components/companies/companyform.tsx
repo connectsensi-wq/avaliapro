@@ -116,14 +116,14 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
   return (
     <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground">
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-input border border-border p-1 rounded-xl">
-          <TabsTrigger value="basic" className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg">
+        <TabsList className="grid w-full grid-cols-3 bg-card border border-border p-1 rounded-xl">
+          <TabsTrigger value="basic" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg">
             Dados Principais
           </TabsTrigger>
-          <TabsTrigger value="address" className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg">
+          <TabsTrigger value="address" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg">
             Endereço Sede
           </TabsTrigger>
-          <TabsTrigger value="contact" className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg">
+          <TabsTrigger value="contact" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg">
             Contato & Fiscal
           </TabsTrigger>
         </TabsList>
@@ -143,7 +143,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                     onChange={(e) => handleChange("code", e.target.value)}
                     required
                     disabled={!!company?.code}
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
                 <div className="space-y-1.5 col-span-1">
@@ -152,7 +152,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                     value={formData.document_type?.toString() || "cnpj"}
                     onValueChange={(v) => handleChange("document_type", v as DocumentType)}
                   >
-                    <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                    <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -167,7 +167,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                     value={formData.document || ""}
                     onChange={(e) => handleChange("document", e.target.value.replace(/\D/g, ""))}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
               </div>
@@ -178,7 +178,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   value={formData.name || ""}
                   onChange={(e) => handleChange("name", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-semibold"
+                  className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-semibold"
                 />
               </div>
 
@@ -187,7 +187,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                 <Input
                   value={formData.fantasy_name || ""}
                   onChange={(e) => handleChange("fantasy_name", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
             </CardContent>
@@ -214,13 +214,13 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                       }
                     }}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
                   />
                   <Button
                     type="button"
                     onClick={handleSearchCep}
                     disabled={isSearchingCep}
-                    className="bg-secondary hover:bg-secondary/80 text-primary border border-primary/30 rounded-xl px-4 text-xs font-semibold shrink-0 transition-all"
+                    className="bg-secondary hover:bg-cyan-800 text-primary hover:text-white border border-primary/30 rounded-xl px-4 text-xs font-semibold shrink-0 transition-all"
                   >
                     {isSearchingCep ? (
                       <>
@@ -240,7 +240,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
               <div className="space-y-1.5">
                 <Label className="text-xs font-medium text-muted-foreground">Tipo de Endereço *</Label>
                 <Select value={formData.address_type?.toString() || "rua"} onValueChange={(v) => handleChange("address_type", v as AddressType)}>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -259,7 +259,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   value={formData.street || ""}
                   onChange={(e) => handleChange("street", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -269,7 +269,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   value={formData.number || ""}
                   onChange={(e) => handleChange("number", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -278,7 +278,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                 <Input
                   value={formData.complement || ""}
                   onChange={(e) => handleChange("complement", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -288,7 +288,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   value={formData.neighborhood || ""}
                   onChange={(e) => handleChange("neighborhood", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -298,14 +298,14 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   value={formData.city || ""}
                   onChange={(e) => handleChange("city", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
               <div className="space-y-1.5 md:col-span-2">
                 <Label className="text-xs font-medium text-muted-foreground">Estado (UF) *</Label>
                 <Select value={formData.state?.toString() || undefined} onValueChange={(v) => handleChange("state", v as State)}>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione um estado..." />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -333,7 +333,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   type="email"
                   value={formData.email || ""}
                   onChange={(e) => handleChange("email", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
               <div className="flex flex-row gap-2">
@@ -342,7 +342,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   <Input
                     value={formData.ddd || ""}
                     onChange={(e) => handleChange("ddd", e.target.value)}
-                    className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                   />
                 </div>
 
@@ -351,7 +351,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   <Input
                     value={formData.phone || ""}
                     onChange={(e) => handleChange("phone", e.target.value)}
-                    className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                   />
                 </div>
               </div>
@@ -360,7 +360,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                 <Input
                   value={formData.state_registration || ""}
                   onChange={(e) => handleChange("state_registration", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
 
@@ -369,7 +369,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                 <Input
                   value={formData.municipal_registration || ""}
                   onChange={(e) => handleChange("municipal_registration", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
 
@@ -379,14 +379,14 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   type="date"
                   value={new Date(formData.constitution_date as Date).toISOString().split("T")[0] || ""}
                   onChange={(e) => handleChange("constitution_date", new Date(e.target.value))}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
 
               <div className="space-y-1.5 md:col-span-1">
                 <Label className="text-xs font-medium text-muted-foreground">Status</Label>
                 <Select value={formData.status?.toString() || "active"} onValueChange={(v) => handleChange("status", v as Status)}>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">

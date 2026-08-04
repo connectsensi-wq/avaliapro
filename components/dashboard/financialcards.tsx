@@ -84,11 +84,11 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
         {cards.map((card, index) => (
           <Card
             key={index}
-            className={`bg-[#002421] border ${card.borderColor} rounded-xl p-3.5 shadow-md hover:border-opacity-60 transition-all duration-200`}
+            className={`bg-card border ${card.borderColor} rounded-xl p-3.5 shadow-md hover:border-opacity-60 transition-all duration-200`}
           >
             <div className="flex flex-col justify-between space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-slate-300">
+                <span className="text-[11px] font-semibold text-foreground">
                   {card.title}
                 </span>
                 <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md border ${card.badgeColor}`}>
@@ -97,7 +97,7 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                <span className="text-lg sm:text-xl font-bold text-primary tracking-tight">
                   {card.value}
                 </span>
                 <div className={`p-2 rounded-lg ${card.bgColor} shrink-0`}>
@@ -110,9 +110,9 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
       </div>
 
       {/* Card Único Unificado: Clientes Ativos & Profissionais Cadastrados */}
-      <Card className="bg-gradient-to-r from-[#002824] via-[#002421] to-[#001D1B] border border-[#004841] rounded-xl p-3.5 shadow-md">
+      <Card className="bg-card border border-border rounded-xl p-3.5 shadow-md">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-xs font-semibold text-foreground uppercase tracking-wider">
             <Users className="w-4 h-4 text-[#00F5A0]" />
             Base Operacional Ativa
           </div>
@@ -125,7 +125,7 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold uppercase">Clientes Ativos</p>
-                <p className="text-lg font-extrabold text-white leading-none mt-0.5">
+                <p className="text-lg font-extrabold text-foreground leading-none mt-0.5">
                   {data.totalClients}
                 </p>
               </div>
@@ -138,7 +138,7 @@ export default function FinancialCards({ data }: { data: FinancialData }) {
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold uppercase">Profissionais</p>
-                <p className="text-lg font-extrabold text-white leading-none mt-0.5">
+                <p className="text-lg font-extrabold text-foreground leading-none mt-0.5">
                   {data.totalProfessionals}
                 </p>
               </div>

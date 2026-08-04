@@ -125,10 +125,10 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
   ];
 
   return (
-    <Card className="bg-[#002623] border border-[#00453F] rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
       {/* Cabeçalho com Filtro Select e Resumo de Total */}
       <CardHeader className="border-b border-[#003B35] pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-white">
+        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
           <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
             <ShieldAlert className="h-5 w-5" />
           </div>
@@ -171,7 +171,7 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 sm:p-6 space-y-6">
+      <CardContent className="p-4  sm:p-6 space-y-6">
         {/* Resumo Interativo das 4 Faixas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {bracketsSummary.map((item) => {
@@ -180,17 +180,17 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
               <button
                 key={item.id}
                 onClick={() => setSelectedRange(isSelected ? "all" : item.id)}
-                className={`text-left border rounded-xl p-3.5 transition-all duration-200 ${isSelected ? item.activeBorder : item.normalBorder
+                className={`text-left bg-card border rounded-xl p-3.5 transition-all duration-200 ${isSelected ? item.activeBorder : item.normalBorder
                   }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-300">{item.label}</span>
+                  <span className="text-xs font-semibold text-muted-foreground">{item.label}</span>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full border ${item.badgeColor}`}>
                     {item.count} {item.count === 1 ? "título" : "títulos"}
                   </span>
                 </div>
 
-                <div className="text-lg font-extrabold text-white mt-1">
+                <div className="text-lg font-extrabold text-foreground mt-1">
                   R${" "}
                   {item.amount.toLocaleString("pt-BR", {
                     minimumFractionDigits: 2,
@@ -256,7 +256,7 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
                           </span>
                         )}
                         {item.document && (
-                          <span className="text-[10px] font-mono text-muted-foreground bg-secondary px-1.5 py-0.5 rounded border border-border">
+                          <span className="text-[10px] font-mono text-foreground bg-secondary px-1.5 py-0.5 rounded border border-border">
                             NFS-e:{" "}{item.document}
                           </span>
                         )}

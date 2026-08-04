@@ -151,7 +151,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
                         className="focus:bg-accent focus:text-accent-foreground cursor-pointer rounded-lg my-0.5"
                       >
                         <div className="flex flex-col">
-                          <span className="font-medium text-sm">{c.name}</span>
+                          <span className="font-medium text-primary text-sm">{c.name}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -204,9 +204,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
           {/* Rodapé da Sidebar com Card de Perfil e Empresa */}
           <SidebarFooter className="border-t border-sidebar-border p-4 bg-sidebar">
             {selectedCompany && (
-              <div className="bg-card border border-border rounded-xl p-3 shadow-sm flex items-center justify-between">
+              <div className="bg-sidebar border border-border rounded-xl p-3 shadow-sm flex items-center justify-between">
                 <div className="truncate space-y-0.5">
-                  <p className="text-xs font-semibold text-foreground truncate">{selectedCompany.name}</p>
+                  <p className="text-xs font-semibold text-primary truncate">{selectedCompany.name}</p>
                   <p className="text-[10px] text-muted-foreground font-mono truncate">CNPJ: {formatDocument(selectedCompany.document, selectedCompany.document_type) || "Não informado"}</p>
                 </div>
                 <div className="h-2 w-2 rounded-full bg-primary animate-pulse shrink-0" title="Empresa Ativa" />
@@ -220,7 +220,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
                   <UserButton />
                 </div>
                 <div className="flex flex-col truncate">
-                  <span className="text-xs font-medium text-foreground truncate">
+                  <span className="text-xs font-medium text-sidebar-foreground truncate">
                     {user?.fullName || user?.firstName || "Usuário"}
                   </span>
                   <span className="text-[10px] text-muted-foreground truncate">
@@ -235,10 +235,10 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
         {/* Área de Conteúdo Principal */}
         <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-background">
           {/* Top Header Bar */}
-          <header className="h-16 bg-sidebar border-b border-sidebar-border px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-sm">
+          <header className="h-16 bg-card border-b border-border px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-sm">
             <div className="flex items-center gap-3">
               <SidebarTrigger className="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-xl transition-colors duration-200" />
-              <div className="h-4 w-px bg-sidebar-border hidden sm:block" />
+              <div className="h-4 w-px bg-border hidden sm:block" />
               <div className="flex items-center gap-2">
                 <h1 className="text-base sm:text-lg font-bold text-foreground tracking-tight">
                   {activeItem ? activeItem.title : "Painel"}

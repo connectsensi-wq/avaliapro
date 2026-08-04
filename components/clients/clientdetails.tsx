@@ -35,21 +35,20 @@ export default function ClientDetails({ client }: ClientDetailsProps) {
   };
 
   return (
-    <div className="space-y-4 font-sans text-foreground py-2">
+    <div className="space-y-4 bg-card font-sans text-foreground py-2">
       {/* Header Info */}
-      <div className="flex items-center gap-4 bg-card border border-border p-4 rounded-xl">
-        <div className="w-12 h-12 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
+      <div className="flex items-center gap-4 bg-banner-via border border-border p-4 rounded-xl">
+        <div className="w-12 h-12 bg-banner-via border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
           <Users className="w-6 h-6 text-primary" />
         </div>
         <div className="overflow-hidden flex-1">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-base font-bold text-foreground truncate">{client.name}</h2>
+            <h2 className="text-base font-bold text-white truncate">{client.name}</h2>
             <Badge
-              className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${
-                client.status === "active"
-                  ? "bg-primary/10 text-primary border-primary/30"
-                  : "bg-secondary text-muted-foreground border-border"
-              }`}
+              className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${client.status === "active"
+                ? "bg-primary/10 text-primary border-primary/30"
+                : "bg-secondary text-muted-foreground border-border"
+                }`}
             >
               {client.status === "active" ? "Ativo" : "Inativo"}
             </Badge>

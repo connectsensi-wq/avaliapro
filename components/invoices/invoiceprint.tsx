@@ -185,7 +185,7 @@ export default function InvoicePrintMulti({
   return (
     <FileText
       onClick={() => handlePrint({ invoice, professionals, company })}
-      className="w-5 h-5 text-slate-600 cursor-pointer text-white transition"
+      className="w-5 h-5 text-primary cursor-pointer transition"
     />
   );
 }

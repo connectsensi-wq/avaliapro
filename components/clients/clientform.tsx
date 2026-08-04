@@ -174,28 +174,28 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
   return (
     <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground py-1">
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-input border border-border p-1 rounded-xl">
+        <TabsList className="grid w-full grid-cols-4 bg-card border border-border p-1 rounded-xl">
           <TabsTrigger
             value="basic"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Dados Básicos
           </TabsTrigger>
           <TabsTrigger
             value="address"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Endereço
           </TabsTrigger>
           <TabsTrigger
             value="contact"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Contato
           </TabsTrigger>
           <TabsTrigger
             value="additional_contacts"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Contatos Adicionais
           </TabsTrigger>
@@ -217,7 +217,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     onChange={(e) => handleChange("code", e.target.value)}
                     required
                     disabled={!!client?.code}
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
 
@@ -227,7 +227,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     value={formData.document_type?.toString() ?? "cnpj"}
                     onValueChange={(val) => handleChange("document_type", val as DocumentType)}
                   >
-                    <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                    <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -247,7 +247,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     onChange={(e) => handleChange("document", e.target.value.replace(/\D/g, ""))}
                     required
                     maxLength={formData.document_type === "cpf" ? 14 : 18}
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     value={formData.name || ""}
                     onChange={(e) => handleChange("name", e.target.value)}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-semibold"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-semibold"
                   />
                 </div>
 
@@ -268,7 +268,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   <Input
                     value={formData.fantasy_name || ""}
                     onChange={(e) => handleChange("fantasy_name", e.target.value)}
-                    className="bg-input border-border text-foreground rounded-xl text-sm"
+                    className="bg-background border-border text-foreground rounded-xl text-sm"
                   />
                 </div>
 
@@ -277,7 +277,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   <Input
                     value={formData.state_registration || ""}
                     onChange={(e) => handleChange("state_registration", e.target.value)}
-                    className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                   />
                 </div>
 
@@ -286,7 +286,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   <Input
                     value={formData.municipal_registration || ""}
                     onChange={(e) => handleChange("municipal_registration", e.target.value)}
-                    className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                   />
                 </div>
 
@@ -310,7 +310,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     value={formData.status?.toString() || "active"}
                     onValueChange={(v) => handleChange("status", v as Status)}
                   >
-                    <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                    <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -345,7 +345,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                       }
                     }}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
                   />
                   <Button
                     type="button"
@@ -375,7 +375,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   onValueChange={(v) => handleChange("address_type", v as AddressType)}
                   required
                 >
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -394,7 +394,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   value={formData.street || ""}
                   onChange={(e) => handleChange("street", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -404,7 +404,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   value={formData.number || ""}
                   onChange={(e) => handleChange("number", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -413,7 +413,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                 <Input
                   value={formData.complement || ""}
                   onChange={(e) => handleChange("complement", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -423,7 +423,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   value={formData.neighborhood || ""}
                   onChange={(e) => handleChange("neighborhood", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -433,14 +433,14 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   value={formData.city || ""}
                   onChange={(e) => handleChange("city", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
               <div className="space-y-1.5 md:col-span-2">
                 <Label className="text-xs font-medium text-muted-foreground">Estado (UF)</Label>
                 <Select value={formData.state || undefined} onValueChange={(val) => handleChange("state", val as State)}>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione um estado..." />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -468,7 +468,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                 <Input
                   value={formData.ddd || ""}
                   onChange={(e) => handleChange("ddd", e.target.value.replace(/\D/g, "").slice(0, 2))}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
               <div className="space-y-1.5 md:col-span-2">
@@ -476,7 +476,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                 <Input
                   value={formatPhone(formData.phone || "")}
                   onChange={(e) => handleChange("phone", e.target.value.replace(/\D/g, "").slice(0, 9))}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
               <div className="space-y-1.5 md:col-span-3">
@@ -485,7 +485,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   type="email"
                   value={formData.email || ""}
                   onChange={(e) => handleChange("email", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
             </CardContent>
@@ -517,7 +517,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     <Input
                       value={contact.name || ""}
                       onChange={(e) => handleContactChange(index, "name", e.target.value)}
-                      className="bg-input border-border text-foreground rounded-xl text-xs"
+                      className="bg-background border-border text-foreground rounded-xl text-xs"
                     />
                   </div>
                   <div className="space-y-1">
@@ -525,7 +525,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     <Input
                       value={contact.phone || ""}
                       onChange={(e) => handleContactChange(index, "phone", e.target.value)}
-                      className="bg-input border-border text-foreground rounded-xl text-xs font-mono"
+                      className="bg-background border-border text-foreground rounded-xl text-xs font-mono"
                     />
                   </div>
                   <div className="space-y-1">
@@ -534,7 +534,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                       type="email"
                       value={contact.email || ""}
                       onChange={(e) => handleContactChange(index, "email", e.target.value)}
-                      className="bg-input border-border text-foreground rounded-xl text-xs"
+                      className="bg-background border-border text-foreground rounded-xl text-xs"
                     />
                   </div>
                   <Button

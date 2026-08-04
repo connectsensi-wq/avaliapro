@@ -283,7 +283,7 @@ export default function AccountsReceivablePage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
       {/* Executive Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#002B27] via-[#003833] to-[#002421] border border-[#004D46] px-6 py-5 rounded-2xl shadow-md">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -292,7 +292,7 @@ export default function AccountsReceivablePage() {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Financeiro & Faturamento Hospitalar
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
               <TrendingUp className="w-6 h-6 text-primary" />
               Contas a Receber (Faturamento de Clientes)
             </h1>
@@ -303,7 +303,7 @@ export default function AccountsReceivablePage() {
 
           <Button
             onClick={exportToCSV}
-            className="bg-secondary hover:bg-secondary/80 text-primary border border-border rounded-xl text-xs font-semibold px-4 py-2.5 shadow-sm"
+            className="bg-cyan-800/80 hover:bg-cyan-800 text-white hover:scale-105 transition-all duration-200 border-border rounded-xl text-xs font-semibold"
           >
             <ArrowDownFromLine className="w-4 h-4 mr-2" />
             Exportar CSV
@@ -319,7 +319,7 @@ export default function AccountsReceivablePage() {
             placeholder="Buscar por cliente, valor, status ou documento..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="pl-10 bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+            className="pl-10 bg-banner-via border-border text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
           />
         </div>
 
@@ -328,14 +328,14 @@ export default function AccountsReceivablePage() {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-36 bg-input border-border text-foreground rounded-xl text-xs"
+            className="w-36 bg-banner-via border-border text-white rounded-xl text-xs"
           />
           <span className="text-xs text-muted-foreground">até</span>
           <Input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-36 bg-input border-border text-foreground rounded-xl text-xs"
+            className="w-36 bg-banner-via border-border text-white rounded-xl text-xs"
           />
         </div>
 
@@ -378,7 +378,7 @@ export default function AccountsReceivablePage() {
       {/* Payment Form Dialog */}
       {showPaymentForm && selectedReceivable && (
         <Dialog open={showPaymentForm} onOpenChange={() => setShowPaymentForm(false)}>
-          <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+          <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
             <DialogHeader className="border-b border-border pb-3 shrink-0">
               <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
                 <Wallet className="w-5 h-5 text-primary" />

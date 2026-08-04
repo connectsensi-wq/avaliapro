@@ -145,22 +145,22 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
   return (
     <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground">
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-input border border-border p-1 rounded-xl">
+        <TabsList className="grid w-full grid-cols-3 bg-card border border-border p-1 rounded-xl">
           <TabsTrigger
             value="basic"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Dados Pessoais
           </TabsTrigger>
           <TabsTrigger
             value="address"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Endereço
           </TabsTrigger>
           <TabsTrigger
             value="financial"
-            className="text-xs font-semibold text-muted-foreground data-[state=active]:bg-secondary data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
           >
             Dados Financeiros
           </TabsTrigger>
@@ -182,7 +182,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     onChange={(e) => handleChange("code", e.target.value)}
                     required
                     disabled={!!professional?.code}
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
                 <div className="space-y-1.5 col-span-3">
@@ -191,7 +191,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     value={formData.name || ""}
                     onChange={(e) => handleChange("name", e.target.value)}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-semibold"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-semibold"
                   />
                 </div>
               </div>
@@ -204,13 +204,13 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     onChange={(e) => handleChange("cpf", e.target.value.replace(/\D/g, "").slice(0, 11))}
                     required
                     disabled={!!professional?.cpf}
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-xs font-medium text-muted-foreground">Especialidade *</Label>
                   <Select value={formData.specialtyId?.toString() || ""} onValueChange={(v) => handleChange("specialtyId", v)} required>
-                    <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                    <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue placeholder="Selecione uma especialidade..." />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -231,7 +231,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     value={formData.registration_number || ""}
                     onChange={(e) => handleChange("registration_number", e.target.value)}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -240,7 +240,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     value={formatPhone(formData.phone || "")}
                     onChange={(e) => handleChange("phone", e.target.value.replace(/\D/g, "").slice(0, 11))}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -250,7 +250,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     value={formData.birthday || ""}
                     onChange={(e) => handleChange("birthday", e.target.value)}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                   value={formData.email || ""}
                   onChange={(e) => handleChange("email", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+                  className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
                 />
               </div>
             </CardContent>
@@ -290,13 +290,13 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                       }
                     }}
                     required
-                    className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+                    className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
                   />
                   <Button
                     type="button"
                     onClick={handleSearchCep}
                     disabled={isSearchingCep}
-                    className="bg-secondary hover:bg-secondary/80 text-primary border border-primary/30 rounded-xl px-4 text-xs font-semibold shrink-0 transition-all"
+                    className="bg-secondary hover:bg-cyan-800 text-primary hover:text-white border border-primary/30 rounded-xl px-4 text-xs font-semibold shrink-0 transition-all"
                   >
                     {isSearchingCep ? (
                       <>
@@ -316,7 +316,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
               <div className="space-y-1.5">
                 <Label className="text-xs font-medium text-muted-foreground">Tipo de Endereço *</Label>
                 <Select value={formData.address_type?.toString() || ""} onValueChange={(v) => handleChange("address_type", v)} required>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione..." />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -335,7 +335,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                   value={formData.street || ""}
                   onChange={(e) => handleChange("street", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -345,7 +345,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                   value={formData.number || ""}
                   onChange={(e) => handleChange("number", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -354,7 +354,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                 <Input
                   value={formData.complement || ""}
                   onChange={(e) => handleChange("complement", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -364,7 +364,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                   value={formData.neighborhood || ""}
                   onChange={(e) => handleChange("neighborhood", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
@@ -374,14 +374,14 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                   value={formData.city || ""}
                   onChange={(e) => handleChange("city", e.target.value)}
                   required
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
 
               <div className="space-y-1.5 md:col-span-2">
                 <Label className="text-xs font-medium text-muted-foreground">Estado *</Label>
                 <Select value={formData.state?.toString() || ""} onValueChange={(v) => handleChange("state", v)} required>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione um estado..." />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -409,7 +409,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                 <Input
                   value={formData.bank || ""}
                   onChange={(e) => handleChange("bank", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm"
+                  className="bg-background border-border text-foreground rounded-xl text-sm"
                 />
               </div>
               <div className="space-y-1.5">
@@ -417,7 +417,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                 <Input
                   value={formData.agency || ""}
                   onChange={(e) => handleChange("agency", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
               <div className="space-y-1.5">
@@ -425,13 +425,13 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                 <Input
                   value={formData.account || ""}
                   onChange={(e) => handleChange("account", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs font-medium text-muted-foreground">Tipo de Conta</Label>
                 <Select value={formData.account_type || undefined} onValueChange={(v) => handleChange("account_type", v)}>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione..." />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -452,7 +452,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
               <div className="space-y-1.5 md:col-span-1">
                 <Label className="text-xs font-medium text-muted-foreground">Tipo de Chave PIX</Label>
                 <Select value={formData.pix_key_type || undefined} onValueChange={(v) => handleChange("pix_key_type", v)}>
-                  <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                  <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione..." />
                   </SelectTrigger>
                   <SelectContent className="bg-popover border-border text-popover-foreground">
@@ -469,7 +469,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                 <Input
                   value={formData.pix_key || ""}
                   onChange={(e) => handleChange("pix_key", e.target.value)}
-                  className="bg-input border-border text-foreground rounded-xl text-sm font-mono"
+                  className="bg-background border-border text-foreground rounded-xl text-sm font-mono"
                 />
               </div>
             </CardContent>
@@ -486,13 +486,13 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                 value={formData.admin_fee_percentage}
                 onChange={(e) => handleChange("admin_fee_percentage", parseFloat(e.target.value) || 0)}
                 required
-                className="bg-input border-border text-foreground rounded-xl text-sm font-bold text-primary"
+                className="bg-background border-border text-foreground rounded-xl text-sm font-bold text-primary"
               />
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs font-medium text-muted-foreground">Status</Label>
               <Select value={formData.status || "active"} onValueChange={(v) => handleChange("status", v)}>
-                <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+                <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-border text-popover-foreground">

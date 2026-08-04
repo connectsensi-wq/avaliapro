@@ -112,25 +112,9 @@ export default function Services() {
     }
   };
 
-  const handleNew = async () => {
-    if (!selectedCompanyId) return;
-
-    try {
-      const res = await fetch(`/api/services/maxcod?companyId=${selectedCompanyId}`);
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error || "Erro ao buscar próximo código");
-
-      const newService: Partial<Service> = {
-        code: data.nextCod,
-      };
-
-      setEditingService(newService as Service);
-      setShowForm(true);
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao gerar código do Serviço");
-    }
+  const handleNew = () => {
+    setEditingService(null);
+    setShowForm(true);
   };
 
   const handleEdit = (service: Service) => {
@@ -141,7 +125,7 @@ export default function Services() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
       {/* Executive Header Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#002B27] via-[#003833] to-[#002421] border border-[#004D46] px-6 py-5 rounded-2xl shadow-md">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -150,7 +134,7 @@ export default function Services() {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Cadastros & Operacional
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
               Catálogo de Serviços
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm">
@@ -176,10 +160,10 @@ export default function Services() {
             placeholder="Buscar por código ou descrição..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+            className="pl-10 bg-banner-via border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
           />
         </div>
-        <div className="text-xs font-semibold text-muted-foreground bg-card border border-border px-4 py-2 rounded-xl">
+        <div className="text-xs font-semibold text-muted-foreground bg-banner-to border border-border px-4 py-2 rounded-xl">
           Total: <span className="text-primary font-bold">{filteredServices.length}</span> serviço(s)
         </div>
       </div>
@@ -187,7 +171,7 @@ export default function Services() {
       {/* Services List Card */}
       <Card className="bg-card border-card-border rounded-2xl shadow-md overflow-hidden">
         <CardHeader className="py-4 px-6 border-b border-border">
-          <CardTitle className="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+          <CardTitle className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
             <FileText className="w-4 h-4 text-primary" /> Lista de Serviços Cadastrados
           </CardTitle>
         </CardHeader>
@@ -213,7 +197,7 @@ export default function Services() {
                           CÓD: {service.code}
                         </span>
                       </div>
-                      <h4 className="font-semibold text-foreground text-sm sm:text-base">
+                      <h4 className="font-semibold text-foreground text-xs">
                         {service.description}
                       </h4>
                     </div>
@@ -257,7 +241,7 @@ export default function Services() {
           setEditingService(null);
         }}
       >
-        <DialogContent className="sm:max-w-md bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
+        <DialogContent className="sm:max-w-md bg-card border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
           <DialogHeader className="border-b border-border pb-3">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />

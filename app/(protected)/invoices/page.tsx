@@ -314,7 +314,7 @@ export default function InvoicesPage() {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Faturamento & NFS-e Hospitalar
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
               <FileText className="w-6 h-6 text-primary" />
               Notas Fiscais de Serviço (NFS-e)
             </h1>
@@ -325,9 +325,8 @@ export default function InvoicesPage() {
 
           <div className="flex items-center gap-3">
             <Button
-              variant="outline"
               onClick={exportToCSV}
-              className="bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+              className="bg-cyan-800/80 hover:bg-cyan-800 text-white hover:scale-105 transition-all duration-200 border-border rounded-xl text-xs font-semibold"
             >
               <ArrowDownFromLine className="w-4 h-4 mr-2" />
               Exportar CSV
@@ -393,7 +392,7 @@ export default function InvoicesPage() {
           setEditingInvoice(null);
         }}
       >
-        <DialogContent className="sm:max-w-6xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+        <DialogContent className="sm:max-w-6xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
           <DialogHeader className="border-b border-border pb-3 shrink-0">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />
@@ -418,7 +417,7 @@ export default function InvoicesPage() {
 
       {/* Details Dialog */}
       <Dialog open={!!selectedInvoice} onOpenChange={() => setSelectedInvoice(null)}>
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
           <DialogHeader className="border-b border-border pb-3 shrink-0">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />

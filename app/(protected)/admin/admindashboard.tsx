@@ -61,15 +61,15 @@ export default function AdminDashboard() {
     return (
       <div className="p-4 sm:p-6 space-y-5 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-5">
-          <div className="h-16 bg-[#002623] border border-[#00453F] rounded-2xl w-full"></div>
+          <div className="h-16 bg-slate-200 border border-slate-200 rounded-2xl w-full"></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {Array(4)
               .fill(0)
               .map((_, i) => (
-                <div key={i} className="h-24 bg-[#002623] border border-[#00453F] rounded-xl"></div>
+                <div key={i} className="h-24 bg-slate-200 border border-slate-200 rounded-xl"></div>
               ))}
           </div>
-          <div className="h-72 bg-[#002623] border border-[#00453F] rounded-2xl w-full"></div>
+          <div className="h-72 bg-slate-200 border border-slate-200 rounded-2xl w-full"></div>
         </div>
       </div>
     );
@@ -106,6 +106,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
 
       {/* Cards Financeiros & Base Operacional */}
       <FinancialCards data={financialData} />

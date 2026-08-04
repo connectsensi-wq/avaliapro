@@ -75,73 +75,72 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle className="text-lg">Filtros de Busca</CardTitle>
+        <CardTitle className="text-lg text-foreground">Filtros de Busca</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <div className="space-y-2">
-            <Label htmlFor="invoice_number">Número da Nota</Label>
+            <Label htmlFor="invoice_number" className="text-muted-foreground">Número da Nota</Label>
             <Input
               id="invoice_number"
               placeholder="Ex: 001"
               value={filters.invoice_number}
               onChange={(e) => handleInputChange('invoice_number', e.target.value)}
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
             />
           </div>
 
           <div className="space-y-2 col-span-2">
-            <Label htmlFor="client_name">Nome do Cliente</Label>
+            <Label htmlFor="client_name" className="text-muted-foreground">Nome do Cliente</Label>
             <Input
               id="client_name"
               placeholder="Digite o nome..."
               value={filters.client_name}
               onChange={(e) => handleInputChange('client_name', e.target.value)}
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="start_date">Data Inicial</Label>
+            <Label htmlFor="start_date" className="text-muted-foreground">Data Inicial</Label>
             <Input
               id="start_date"
               type="date"
               value={filters.start_date}
               onChange={(e) => handleInputChange('start_date', e.target.value)}
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="end_date">Data Final</Label>
+            <Label htmlFor="end_date" className="text-muted-foreground">Data Final</Label>
             <Input
               id="end_date"
               type="date"
               value={filters.end_date}
               onChange={(e) => handleInputChange('end_date', e.target.value)}
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="total_amount">Valor Total</Label>
+            <Label htmlFor="total_amount" className="text-muted-foreground">Valor Total</Label>
             <Input
               id="total_amount"
               type="number"
               value={filters.total_amount}
               onChange={(e) => handleInputChange('total_amount', e.target.value)}
-              className="bg-input border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="status">Status</Label>
+            <Label htmlFor="status" className="text-muted-foreground">Status</Label>
             <Select
-
               value={filters.status}
               onValueChange={(value) => handleInputChange('status', value)}
             >
-              <SelectTrigger className="bg-input border-border text-foreground rounded-xl text-sm">
+              <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                 <SelectValue placeholder="Selecione o status..." />
               </SelectTrigger>
               <SelectContent>
@@ -159,7 +158,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
             <Search className="w-4 h-4 mr-2" />
             Pesquisar
           </Button>
-          <Button variant="outline" onClick={handleClear}>
+          <Button variant="outline" onClick={handleClear} className="bg-slate-800 hover:bg-cyan-800 text-white hover:text-white">
             <RotateCcw className="w-4 h-4 mr-2" />
             Limpar Filtros
           </Button>

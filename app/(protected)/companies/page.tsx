@@ -98,7 +98,7 @@ export default function Companies() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10 font-sans text-foreground">
       {/* Banner Executivo */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[var(--banner-from)] via-[var(--banner-via)] to-[var(--banner-to)] border border-[var(--banner-border)] px-6 py-5 rounded-2xl shadow-md">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#002B27] via-[#003833] to-[#002421] border border-[#004D46] px-6 py-5 rounded-2xl shadow-md">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -107,7 +107,7 @@ export default function Companies() {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Gestão Corporativa
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
               Empresas
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm">
@@ -133,10 +133,10 @@ export default function Companies() {
             placeholder="Buscar por Razão Social, Fantasia ou CNPJ..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-input border-border text-foreground placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+            className="pl-10 bg-banner-via border-border text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
           />
         </div>
-        <div className="text-xs font-semibold text-muted-foreground bg-card border border-border px-4 py-2 rounded-xl">
+        <div className="text-xs font-semibold text-muted-foreground bg-banner-to border border-border px-4 py-2 rounded-xl">
           Total: <span className="text-primary font-bold">{filteredCompanies.length}</span> empresa(s)
         </div>
       </div>
@@ -145,7 +145,7 @@ export default function Companies() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {isLoading ? (
           Array(6).fill(0).map((_, i) => (
-            <div key={i} className="animate-pulse bg-card border border-border rounded-2xl h-48" />
+            <div key={i} className="animate-pulse bg-card border border-card rounded-2xl h-48" />
           ))
         ) : filteredCompanies.length === 0 ? (
           <div className="col-span-full p-12 text-center bg-card border border-border rounded-2xl text-muted-foreground space-y-2">
@@ -157,7 +157,7 @@ export default function Companies() {
           filteredCompanies.map((company) => (
             <Card
               key={company.id}
-              className="bg-card border-card-border hover:border-primary/40 transition-all duration-300 rounded-2xl shadow-md overflow-hidden flex flex-col justify-between"
+              className="bg-card border-border transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
             >
               <CardHeader className="pb-3 border-b border-border">
                 <div className="flex items-start justify-between gap-3">
@@ -182,8 +182,8 @@ export default function Companies() {
 
                   <Badge
                     className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${company.status === "active"
-                        ? "bg-primary/10 text-primary border-primary/30"
-                        : "bg-secondary text-muted-foreground border-border"
+                      ? "bg-primary/10 text-primary border-primary/30"
+                      : "bg-secondary text-muted-foreground border-border"
                       }`}
                   >
                     {company.status === "active" ? "Ativa" : "Inativa"}
@@ -218,7 +218,7 @@ export default function Companies() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleView(company)}
-                    className="flex-1 bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+                    className="flex-1 bg-secondary hover:bg-cyan-800 text-primary hover:text-white rounded-xl text-xs font-semibold"
                   >
                     <Eye className="w-3.5 h-3.5 mr-1.5" />
                     Ver
@@ -227,7 +227,7 @@ export default function Companies() {
                     variant="outline"
                     size="sm"
                     onClick={() => handleEdit(company)}
-                    className="flex-1 bg-secondary hover:bg-secondary/80 text-primary border-border rounded-xl text-xs font-semibold"
+                    className="flex-1 bg-secondary hover:bg-cyan-800 text-primary hover:text-white border-border rounded-xl text-xs font-semibold"
                   >
                     <Edit className="w-3.5 h-3.5 mr-1.5" />
                     Editar
@@ -247,7 +247,7 @@ export default function Companies() {
           setEditingCompany(null);
         }}
       >
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
           <DialogHeader className="border-b border-border pb-3 shrink-0">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <Building2 className="w-5 h-5 text-primary" />
@@ -273,7 +273,7 @@ export default function Companies() {
         open={!!selectedCompany}
         onOpenChange={() => setSelectedCompany(null)}
       >
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-popover border-border text-popover-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
           <DialogHeader className="border-b border-border pb-3 shrink-0">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <Building2 className="w-5 h-5 text-primary" />

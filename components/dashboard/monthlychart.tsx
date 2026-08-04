@@ -134,10 +134,10 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
   const isComparative = viewMode === "comparativo_receita" || viewMode === "comparativo_taxa_admin";
 
   return (
-    <Card className="bg-[#002623] border border-[#00453F] rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
       <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#003B35]">
         <div className="space-y-1">
-          <CardTitle className="flex items-center gap-2.5 text-base font-bold text-white">
+          <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
             <div className="p-2 rounded-lg bg-[#00F5A0]/10 border border-[#00F5A0]/20 text-[#00F5A0]">
               <BarChart2 className="h-5 w-5" />
             </div>
