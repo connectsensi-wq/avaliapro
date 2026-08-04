@@ -71,7 +71,7 @@ function ReceivableItemComponent({
           </div>
         </div>
 
-        <div className="flex sm:flex-col items-center justify-end gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+        <div className="flex flex-col items-stretch gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
           <Button
             size="sm"
             onClick={() => onOpenPayment(acc)}

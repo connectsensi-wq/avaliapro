@@ -51,7 +51,7 @@ function PayableItemComponent({
                 <Calendar className="w-3.5 h-3.5 text-muted-foreground" /> Emissão: {formatDate(acc.due_date)}
               </span>
               {acc.client_name && (
-                <span className="truncate text-foreground font-semibold">
+                <span className="truncate text-ellipsis text-foreground font-semibold">
                   • {acc.client_name}
                 </span>
               )}
@@ -65,20 +65,18 @@ function PayableItemComponent({
           <div className="flex items-center gap-2.5 pt-1">
             {receivable && (
               <span
-                className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                  receivableStatus === "paid"
-                    ? "bg-emerald-500 shadow-sm shadow-emerald-500/50"
-                    : receivableStatus === "partially_paid"
+                className={`w-2.5 h-2.5 rounded-full shrink-0 ${receivableStatus === "paid"
+                  ? "bg-emerald-500 shadow-sm shadow-emerald-500/50"
+                  : receivableStatus === "partially_paid"
                     ? "bg-amber-500 shadow-sm shadow-amber-500/50"
                     : "bg-rose-500 shadow-sm shadow-rose-500/50"
-                }`}
-                title={`Status do Recebimento do Cliente: ${
-                  receivableStatus === "paid"
-                    ? "Recebido"
-                    : receivableStatus === "partially_paid"
+                  }`}
+                title={`Status do Recebimento do Cliente: ${receivableStatus === "paid"
+                  ? "Recebido"
+                  : receivableStatus === "partially_paid"
                     ? "Parcialmente Recebido"
                     : "Pendente de Recebimento"
-                }`}
+                  }`}
               />
             )}
             <h3 className="font-bold text-foreground text-sm sm:text-base flex items-center gap-2">
@@ -106,7 +104,7 @@ function PayableItemComponent({
           </div>
         </div>
 
-        <div className="flex sm:flex-col items-center justify-end gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+        <div className="flex flex-col items-stretch gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
           <Button
             size="sm"
             onClick={() => onOpenPayment(acc)}
