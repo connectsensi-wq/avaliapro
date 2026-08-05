@@ -180,7 +180,7 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
           <Button
             variant="outline"
             onClick={handleSearch}
-            className="w-full sm:w-auto bg-primary/80 hover:bg-primary hover:text-white rounded-xl"
+            className="w-full sm:w-auto bg-sidebar-primary/80 hover:bg-sidebar-primary hover:text-white rounded-xl"
           >
             <Search className="w-4 h-4 mr-2" />
             Pesquisar

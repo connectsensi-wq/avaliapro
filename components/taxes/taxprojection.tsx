@@ -318,12 +318,12 @@ export default function TaxProjection({ invoices, installments = [], companyName
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 text-sidebar-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-sidebar-primary animate-pulse" />
               Regime de Caixa & Competência (Lucro Presumido)
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
-              <Percent className="w-6 h-6 text-primary" />
+              <Percent className="w-6 h-6 text-sidebar-primary" />
               Projeção e Apuração Tributária
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm">
@@ -601,25 +601,25 @@ export default function TaxProjection({ invoices, installments = [], companyName
         <TabsList className="w-full grid grid-cols-2 lg:grid-cols-4 bg-card border border-border p-1.5 rounded-xl gap-1 h-auto">
           <TabsTrigger
             value="pis_cofins"
-            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             PIS & COFINS (Caixa)
           </TabsTrigger>
           <TabsTrigger
             value="irpj_csll"
-            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             IRPJ & CSLL (Trimestral)
           </TabsTrigger>
           <TabsTrigger
             value="iss"
-            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             ISS (Competência)
           </TabsTrigger>
           <TabsTrigger
             value="records"
-            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             Detalhamento de Notas
           </TabsTrigger>

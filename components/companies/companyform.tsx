@@ -117,13 +117,13 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
     <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground">
       <Tabs defaultValue="basic" className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-card border border-border p-1 rounded-xl">
-          <TabsTrigger value="basic" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg">
+          <TabsTrigger value="basic" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg">
             Dados Principais
           </TabsTrigger>
-          <TabsTrigger value="address" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg">
+          <TabsTrigger value="address" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg">
             Endereço Sede
           </TabsTrigger>
-          <TabsTrigger value="contact" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg">
+          <TabsTrigger value="contact" className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg">
             Contato & Fiscal
           </TabsTrigger>
         </TabsList>
@@ -413,7 +413,7 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
         <Button
           type="submit"
           disabled={isSaving}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl text-xs shadow-md border-none"
+          className="bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold px-6 rounded-xl text-xs shadow-md border-none"
         >
           {isSaving ? "Salvando..." : company?.id ? "Atualizar" : "Criar"} Empresa
         </Button>

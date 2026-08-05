@@ -227,25 +227,25 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
         <TabsList className="grid w-full grid-cols-4 bg-card border border-border p-1 rounded-xl">
           <TabsTrigger
             value="basic"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Dados Básicos
           </TabsTrigger>
           <TabsTrigger
             value="address"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Endereço
           </TabsTrigger>
           <TabsTrigger
             value="contact"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Contato
           </TabsTrigger>
           <TabsTrigger
             value="additional_contacts"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Contatos Adicionais
           </TabsTrigger>
@@ -346,7 +346,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                       id="is_simple_national_optant"
                       checked={formData.is_simple_national_optant}
                       onCheckedChange={(c) => handleChange("is_simple_national_optant", !!c)}
-                      className="border-border data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      className="border-border data-[state=checked]:bg-sidebar-primary data-[state=checked]:text-primary-foreground"
                     />
                     <label htmlFor="is_simple_national_optant" className="text-xs text-muted-foreground font-medium cursor-pointer">
                       Optante do Simples Nacional
@@ -620,7 +620,7 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
         <Button
           type="submit"
           disabled={isSaving}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl text-xs shadow-md border-none"
+          className="bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold px-6 rounded-xl text-xs shadow-md border-none"
         >
           {isSaving ? "Salvando..." : client?.id ? "Atualizar" : "Criar"} Cliente
         </Button>

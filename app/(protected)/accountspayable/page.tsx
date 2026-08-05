@@ -163,8 +163,8 @@ export default function AccountsPayablePage() {
 
   const normalizedPayables = useMemo(() => {
     return payables.map((acc) => {
-      const dateStr = typeof acc.due_date === "string" 
-        ? acc.due_date.split("T")[0] 
+      const dateStr = typeof acc.due_date === "string"
+        ? acc.due_date.split("T")[0]
         : new Date(acc.due_date).toISOString().split("T")[0];
 
       return {
@@ -335,12 +335,12 @@ export default function AccountsPayablePage() {
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 text-sidebar-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-sidebar-primary animate-pulse" />
               Financeiro & Repasses Médicos
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
-              <TrendingDown className="w-6 h-6 text-primary" />
+              <TrendingDown className="w-6 h-6 text-sidebar-primary" />
               Contas a Pagar (Repasses a Profissionais)
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm">
@@ -361,7 +361,7 @@ export default function AccountsPayablePage() {
       {/* Filter Bar */}
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[240px]">
-          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-primary w-4 h-4" />
+          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-sidebar-primary w-4 h-4" />
           <Input
             placeholder="Buscar por profissional, valor, status ou documento..."
             value={inputValue}

@@ -334,31 +334,31 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
         <TabsList className="grid w-full grid-cols-5 bg-background border border-border p-1 rounded-xl">
           <TabsTrigger
             value="client"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg"
           >
             Tomador
           </TabsTrigger>
           <TabsTrigger
             value="service"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg"
           >
             Serviço
           </TabsTrigger>
           <TabsTrigger
             value="items"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg"
           >
             Descrição
           </TabsTrigger>
           <TabsTrigger
             value="additional"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg"
           >
             Complementares
           </TabsTrigger>
           <TabsTrigger
             value="summary"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg"
           >
             Resumo
           </TabsTrigger>
@@ -496,7 +496,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                   id="tax_retained"
                   checked={formData.tax_retained}
                   onCheckedChange={(checked) => setFormData({ ...formData, tax_retained: checked as boolean })}
-                  className="data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground border-border"
+                  className="data-[state=checked]:bg-sidebar-primary data-[state=checked]:text-primary-foreground border-border"
                 />
                 <Label htmlFor="tax_retained" className="text-xs font-semibold text-foreground cursor-pointer">
                   Imposto ISS Retido na Fonte
@@ -626,7 +626,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                     type="button"
                     onClick={addServiceItem}
                     size="sm"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-4 rounded-xl text-xs shadow-sm border-none"
+                    className="bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold px-4 rounded-xl text-xs shadow-sm border-none"
                   >
                     <Plus className="w-4 h-4 mr-1.5 stroke-[3]" />
                     Adicionar Serviço
@@ -977,7 +977,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
           <Button
             type="submit"
             disabled={isSaving}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl text-xs shadow-md border-none"
+            className="bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold px-6 rounded-xl text-xs shadow-md border-none"
           >
             {isSaving ? "Salvando..." : invoice ? "Atualizar" : "Emitir"} Nota Fiscal
           </Button>

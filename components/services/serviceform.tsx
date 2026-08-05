@@ -86,7 +86,7 @@ export default function ServiceForm({ service, onSave, onCancel }: ServiceFormPr
         <Button
           type="submit"
           disabled={isSaving}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl text-xs shadow-md border-none"
+          className="bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold px-6 rounded-xl text-xs shadow-md border-none"
         >
           {isSaving ? "Salvando..." : service?.id ? "Atualizar" : "Criar"} Serviço
         </Button>

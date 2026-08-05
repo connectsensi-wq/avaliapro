@@ -148,19 +148,19 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
         <TabsList className="grid w-full grid-cols-3 bg-card border border-border p-1 rounded-xl">
           <TabsTrigger
             value="basic"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Dados Pessoais
           </TabsTrigger>
           <TabsTrigger
             value="address"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Endereço
           </TabsTrigger>
           <TabsTrigger
             value="financial"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg transition-all"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Dados Financeiros
           </TabsTrigger>
@@ -517,7 +517,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
         <Button
           type="submit"
           disabled={isSaving}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 rounded-xl text-xs shadow-md border-none"
+          className="bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold px-6 rounded-xl text-xs shadow-md border-none"
         >
           {isSaving ? "Salvando..." : professional?.id ? "Atualizar" : "Criar"} Profissional
         </Button>

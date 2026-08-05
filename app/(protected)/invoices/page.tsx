@@ -310,12 +310,12 @@ export default function InvoicesPage() {
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 text-sidebar-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-sidebar-primary animate-pulse" />
               Faturamento & NFS-e Hospitalar
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
-              <FileText className="w-6 h-6 text-primary" />
+              <FileText className="w-6 h-6 text-sidebar-primary" />
               Notas Fiscais de Serviço (NFS-e)
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm">
@@ -334,7 +334,7 @@ export default function InvoicesPage() {
             <Button
               onClick={handleNew}
               disabled={!selectedCompanyId}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none text-xs"
+              className="bg-sidebar-primary hover:bg-sidebar-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none text-xs"
             >
               <Plus className="w-4 h-4 mr-2 stroke-[3]" />
               Emitir NFS-e

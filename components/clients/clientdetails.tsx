@@ -39,14 +39,14 @@ export default function ClientDetails({ client }: ClientDetailsProps) {
       {/* Header Info */}
       <div className="flex items-center gap-4 bg-banner-via border border-border p-4 rounded-xl">
         <div className="w-12 h-12 bg-banner-via border border-border rounded-xl flex items-center justify-center text-primary shrink-0">
-          <Users className="w-6 h-6 text-primary" />
+          <Users className="w-6 h-6 text-sidebar-primary" />
         </div>
         <div className="overflow-hidden flex-1">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-base font-bold text-white truncate">{client.name}</h2>
             <Badge
               className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border shrink-0 ${client.status === "active"
-                ? "bg-primary/10 text-primary border-primary/30"
+                ? "bg-sidebar-primary/10 text-sidebar-primary border-sidebar-primary/30"
                 : "bg-secondary text-muted-foreground border-border"
                 }`}
             >
@@ -56,7 +56,7 @@ export default function ClientDetails({ client }: ClientDetailsProps) {
           {client.fantasy_name && (
             <p className="text-xs text-muted-foreground truncate mt-0.5">{client.fantasy_name}</p>
           )}
-          <p className="text-[11px] font-mono text-primary mt-1">
+          <p className="text-[11px] font-mono text-sidebar-primary mt-1">
             {client.document_type?.toUpperCase()}: {formatDocument(client.document, client.document_type)}
           </p>
         </div>

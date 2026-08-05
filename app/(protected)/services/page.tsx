@@ -130,8 +130,8 @@ export default function Services() {
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[11px] font-semibold">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sidebar-primary/10 border border-sidebar-primary/20 text-sidebar-primary text-[11px] font-semibold">
+              <span className="w-2 h-2 rounded-full bg-sidebar-primary animate-pulse" />
               Cadastros & Operacional
             </div>
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
@@ -144,7 +144,7 @@ export default function Services() {
 
           <Button
             onClick={handleNew}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none text-xs"
+            className="bg-sidebar-primary hover:bg-sidebar-primary/90 text-primary-foreground font-bold px-5 py-2.5 rounded-xl shadow-md transition-all duration-200 hover:scale-105 border-none text-xs"
           >
             <Plus className="w-4 h-4 mr-2 stroke-[3]" />
             Novo Serviço
@@ -155,7 +155,7 @@ export default function Services() {
       {/* Search & Metric Counter Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:max-w-md">
-          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-primary w-4 h-4" />
+          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-sidebar-primary w-4 h-4" />
           <Input
             placeholder="Buscar por código ou descrição..."
             value={searchTerm}
@@ -164,7 +164,7 @@ export default function Services() {
           />
         </div>
         <div className="text-xs font-semibold text-muted-foreground bg-banner-to border border-border px-4 py-2 rounded-xl">
-          Total: <span className="text-primary font-bold">{filteredServices.length}</span> serviço(s)
+          Total: <span className="text-sidebar-primary font-bold">{filteredServices.length}</span> serviço(s)
         </div>
       </div>
 

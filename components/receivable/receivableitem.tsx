@@ -79,7 +79,7 @@ function ReceivableItemComponent({
             className={
               acc.status === "paid"
                 ? "bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs w-full sm:w-28"
-                : "bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl text-xs shadow-md border-none w-full sm:w-28"
+                : "bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs shadow-md border-none w-full sm:w-28"
             }
           >
             {acc.status === "paid" ? (
