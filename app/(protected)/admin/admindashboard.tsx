@@ -9,7 +9,6 @@ import FinancialCards from "@/components/dashboard/financialcards";
 import MonthlyChart from "@/components/dashboard/monthlychart";
 import RevenueGoalCard from "@/components/dashboard/revenuegoalcard";
 import AgingReceivablesCard from "@/components/dashboard/agingreceivablescard";
-import TaxInformations from "@/components/dashboard/taxinformation";
 
 export default function AdminDashboard() {
   const [companies, setCompanies] = useState<any[]>([]);
@@ -126,7 +125,6 @@ export default function AdminDashboard() {
 
       {/* Faixas de Vencimento de Contas a Receber em Aberto (Aging Report) */}
       <AgingReceivablesCard data={receivablesData} />
-      <TaxInformations data={receivablesData || []} />
     </div>
   );
 }

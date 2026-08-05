@@ -11,6 +11,7 @@ export interface Invoice {
   tax_retained: boolean
   operation_nature: OperationNature
   service_code: string
+  service_description?: string
   service_location: string
   is_substitute: YesNo
   substitute_number?: string

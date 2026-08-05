@@ -24,7 +24,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Trash, Plus, Search, Loader2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Trash, Plus, Search, Loader2, AlertTriangle } from "lucide-react";
 import { Client, ClientContact } from "@/src/types/client";
 import { AddressType, DocumentType, State, Status } from "@/lib/generated/prisma";
 import { addressTypes, states } from "@/lib/utils";
@@ -39,6 +46,10 @@ interface ClientFormProps {
 export default function ClientForm({ client, onSave, onCancel }: ClientFormProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [isSearchingCep, setIsSearchingCep] = useState(false);
+  const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
+  const [duplicateClientName, setDuplicateClientName] = useState("");
+  const [duplicateDocument, setDuplicateDocument] = useState("");
+  const [confirmedDuplicate, setConfirmedDuplicate] = useState(false);
   const [formData, setFormData] = useState<Partial<Client>>({
     code: client?.code || "",
     document: client?.document || "",
@@ -136,6 +147,16 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
     return numbers.slice(0, 9).replace(/(\d{5})(\d{4})/, "$1-$2");
   };
 
+  const executeSave = async () => {
+    try {
+      await onSave(formData);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSaving) return;
@@ -162,13 +183,42 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
       return;
     }
 
-    try {
-      await onSave(formData);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSaving(false);
+    // Verificar se já existe outro cliente cadastrado com o mesmo documento (CPF/CNPJ) na mesma empresa
+    const cleanDoc = (formData.document || "").replace(/\D/g, "");
+    const companyId = localStorage.getItem("selectedCompanyId");
+
+    if (companyId && cleanDoc && !confirmedDuplicate) {
+      try {
+        const res = await fetch(`/api/clients?companyId=${companyId}`);
+        if (res.ok) {
+          const existingClients: Client[] = await res.json();
+          const duplicate = existingClients.find(
+            (c) =>
+              (c.document || "").replace(/\D/g, "") === cleanDoc &&
+              c.id !== client?.id
+          );
+
+          if (duplicate) {
+            setDuplicateClientName(duplicate.name || "Cliente sem nome");
+            setDuplicateDocument(formData.document || "");
+            setShowDuplicateDialog(true);
+            setIsSaving(false);
+            return;
+          }
+        }
+      } catch (checkErr) {
+        console.error("Erro ao verificar duplicidade de cliente:", checkErr);
+      }
     }
+
+    await executeSave();
+  };
+
+  const handleConfirmDuplicateSave = async () => {
+    setShowDuplicateDialog(false);
+    setConfirmedDuplicate(true);
+    setIsSaving(true);
+    await executeSave();
   };
 
   return (
@@ -575,6 +625,46 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
           {isSaving ? "Salvando..." : client?.id ? "Atualizar" : "Criar"} Cliente
         </Button>
       </div>
+
+      {/* Dialog de Aviso para Cliente com CPF/CNPJ Duplicado */}
+      <Dialog open={showDuplicateDialog} onOpenChange={setShowDuplicateDialog}>
+        <DialogContent className="bg-card border-border text-foreground rounded-2xl max-w-md">
+          <DialogHeader className="space-y-2">
+            <DialogTitle className="flex items-center gap-2 text-base font-bold text-amber-500">
+              <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+              CPF / CNPJ Já Cadastrado
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground pt-1 leading-relaxed">
+              Já existe um cliente cadastrado nesta empresa com o mesmo número de documento (<strong>{duplicateDocument}</strong>):
+              <br />
+              <span className="font-semibold text-foreground mt-1.5 block text-sm">
+                Cliente: {duplicateClientName}
+              </span>
+              <span className="block mt-2 text-muted-foreground">
+                Deseja cancelar para corrigir ou continuar com o cadastro assim mesmo?
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-border mt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowDuplicateDialog(false)}
+              className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              onClick={handleConfirmDuplicateSave}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl text-xs shadow-md border-none"
+            >
+              Continuar com o cadastro
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </form>
   );
 }

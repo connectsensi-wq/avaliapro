@@ -39,6 +39,7 @@ import {
   ShieldCheck,
   ChevronRight,
   Sparkles,
+  Percent,
 } from "lucide-react";
 import { formatDocument } from "@/lib/utils";
 
@@ -65,6 +66,7 @@ const navigationGroups = [
       { title: "Notas Fiscais", url: "/invoices", icon: Receipt },
       { title: "Contas a Receber", url: "/accountsreceivable", icon: TrendingUp },
       { title: "Contas a Pagar", url: "/accountspayable", icon: TrendingDown },
+      { title: "Projeção de Impostos", url: "/taxes", icon: Percent },
     ],
   },
 ];

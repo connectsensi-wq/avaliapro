@@ -346,43 +346,41 @@ export default function InvoicesPage() {
       {/* Filtros */}
       <InvoiceFilters onFilter={handleFilter} />
 
-      {/* Lista */}
-      <Card className="bg-card border-card-border rounded-2xl shadow-md overflow-hidden">
-        <CardHeader className="py-4 px-6 border-b border-border flex flex-row items-center justify-between">
-          <CardTitle className="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
-            <FileText className="w-4 h-4 text-primary" /> Histórico de Notas Fiscais
-          </CardTitle>
-          <div className="text-xs font-semibold text-muted-foreground bg-secondary border border-border px-3 py-1.5 rounded-xl">
-            Exibindo: <span className="text-primary font-bold">{filteredInvoices.length}</span> nota(s)
+      {/* Cabeçalho da Lista & Contador */}
+      <div className="flex items-center justify-between px-1 pt-1">
+        <h2 className="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+          <FileText className="w-4 h-4 text-primary" /> Histórico de Notas Fiscais
+        </h2>
+        <span className="text-xs font-semibold text-muted-foreground bg-secondary border border-border px-3 py-1.5 rounded-xl font-mono">
+          Exibindo: <strong className="text-primary font-bold">{filteredInvoices.length}</strong> nota(s)
+        </span>
+      </div>
+
+      {/* Lista de Cards Individualizados de Notas Fiscais */}
+      <div className="space-y-4">
+        {isLoading ? (
+          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-border rounded-2xl">
+            <div className="animate-pulse">Carregando notas fiscais...</div>
           </div>
-        </CardHeader>
-        <CardContent className="p-0">
-          {isLoading ? (
-            <div className="p-12 text-center text-muted-foreground text-xs font-medium">
-              <div className="animate-pulse">Carregando notas fiscais...</div>
-            </div>
-          ) : filteredInvoices.length > 0 ? (
-            <div className="divide-y divide-border">
-              {filteredInvoices.map((invoice) => (
-                <InvoiceItem
-                  key={invoice.id}
-                  invoice={invoice}
-                  professionals={memoProfessionals}
-                  company={memoCompany}
-                  onEdit={handleEdit}
-                  onStatusChange={handleStatusChange}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="p-12 text-center text-muted-foreground text-sm">
-              <FileText className="h-12 w-12 text-primary opacity-70 mx-auto mb-3" />
-              <p className="font-semibold text-foreground">Nenhuma nota fiscal encontrada</p>
-              <p className="text-xs mt-1">Ajuste os filtros ou emita uma nova nota fiscal.</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        ) : filteredInvoices.length > 0 ? (
+          filteredInvoices.map((invoice) => (
+            <InvoiceItem
+              key={invoice.id}
+              invoice={invoice}
+              professionals={memoProfessionals}
+              company={memoCompany}
+              onEdit={handleEdit}
+              onStatusChange={handleStatusChange}
+            />
+          ))
+        ) : (
+          <div className="p-12 text-center text-muted-foreground bg-card border border-border rounded-2xl p-6">
+            <FileText className="h-12 w-12 text-primary opacity-70 mx-auto mb-3" />
+            <h3 className="text-base font-bold text-foreground">Nenhuma nota fiscal encontrada</h3>
+            <p className="text-xs text-muted-foreground mt-1">Ajuste os filtros ou emita uma nova nota fiscal.</p>
+          </div>
+        )}
+      </div>
 
       {/* Form Dialog */}
       <Dialog

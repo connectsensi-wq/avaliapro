@@ -394,8 +394,8 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                 </div>
 
                 {openClientSearch && (
-                  <div className="mt-2 border border-border rounded-xl bg-popover text-popover-foreground shadow-2xl max-h-80 overflow-auto">
-                    <Command className="bg-popover text-popover-foreground">
+                  <div className="mt-2 border border-border rounded-xl bg-background text-foreground shadow-2xl max-h-80 overflow-auto">
+                    <Command className="bg-background text-foreground">
                       <CommandInput placeholder="Buscar por nome ou documento..." className="text-sm" />
                       <CommandList>
                         <CommandEmpty className="p-4 text-xs text-muted-foreground text-center">
@@ -411,12 +411,16 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                                 setSelectedClient(client);
                                 setOpenClientSearch(false);
                               }}
-                              className="flex flex-col items-start py-2.5 px-3 hover:bg-secondary cursor-pointer border-b border-border/50 last:border-b-0"
+                              className="group cursor-pointer data-[selected=true]:bg-[#003833] data-[selected=true]:text-white hover:bg-[#003833] py-2.5 px-3 border-b border-border/40 last:border-b-0"
                             >
-                              <span className="font-semibold text-foreground text-sm">{client.name}</span>
-                              <span className="text-xs font-mono text-primary">
-                                {formatDocument(client.document, client.document_type)}
-                              </span>
+                              <div className="flex flex-col items-start w-full">
+                                <span className="font-semibold text-foreground group-data-[selected=true]:text-white group-hover:text-white text-sm">
+                                  {client.name}
+                                </span>
+                                <span className="text-xs font-mono text-primary group-data-[selected=true]:text-[#00F5A0] group-hover:text-[#00F5A0]">
+                                  {formatDocument(client.document, client.document_type)}
+                                </span>
+                              </div>
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -509,7 +513,7 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue id="operation_nature" placeholder="Selecione a natureza" />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
+                  <SelectContent className="bg-background border-border text-foreground rounded-xl">
                     {operationNatures.map((s) => (
                       <SelectItem key={s.value} value={s.value} className="focus:bg-accent focus:text-accent-foreground text-xs">
                         {s.label}
