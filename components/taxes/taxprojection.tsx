@@ -597,28 +597,29 @@ export default function TaxProjection({ invoices, installments = [], companyName
 
       {/* Abas com a Memória de Cálculo Detalhada */}
       <Tabs defaultValue="pis_cofins" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-card border border-border p-1 rounded-xl">
+        {/* Ajustado para w-full e flexível para telas menores */}
+        <TabsList className="w-full grid grid-cols-2 lg:grid-cols-4 bg-card border border-border p-1.5 rounded-xl gap-1 h-auto">
           <TabsTrigger
             value="pis_cofins"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             PIS & COFINS (Caixa)
           </TabsTrigger>
           <TabsTrigger
             value="irpj_csll"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             IRPJ & CSLL (Trimestral)
           </TabsTrigger>
           <TabsTrigger
             value="iss"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             ISS (Competência)
           </TabsTrigger>
           <TabsTrigger
             value="records"
-            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg"
+            className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-primary rounded-lg py-1.5 px-2 text-center truncate"
           >
             Detalhamento de Notas
           </TabsTrigger>
@@ -628,72 +629,72 @@ export default function TaxProjection({ invoices, installments = [], companyName
         <TabsContent value="pis_cofins" className="pt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Memória PIS */}
-            <Card className="bg-card border-border rounded-xl p-5 space-y-3">
-              <h3 className="font-bold text-sm text-primary flex items-center justify-between">
+            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+              <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - PIS (Regime de Caixa)</span>
-                <span className="text-xs font-mono font-normal text-muted-foreground">Alíquota: 0,65%</span>
+                <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">Alíquota: 0,65%</span>
               </h3>
               <div className="text-xs space-y-2 font-mono divide-y divide-border/60">
-                <div className="flex justify-between pt-1">
-                  <span className="text-muted-foreground">(+) Base de Cálculo (NFS-e Recebidas no Mês):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(pisCalculation.base.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-1">
+                  <span className="text-muted-foreground leading-tight">(+) Base de Cálculo (NFS-e Recebidas no Mês):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(pisCalculation.base.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(=) PIS Apurado Bruto (0,65%):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(pisCalculation.grossTax.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(=) PIS Apurado Bruto (0,65%):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(pisCalculation.grossTax.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Retenções de PIS nas Notas do Mês:</span>
-                  <strong className="text-emerald-400">- R$ {toBRLDecimal(pisCalculation.retained.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Retenções de PIS nas Notas do Mês:</span>
+                  <strong className="text-emerald-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(pisCalculation.retained.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Saldo Credor PIS Período Anterior:</span>
-                  <strong className="text-sky-400">- R$ {toBRLDecimal(prevPisCredit.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Saldo Credor PIS Período Anterior:</span>
+                  <strong className="text-sky-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(prevPisCredit.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2 text-sm font-extrabold">
+                <div className="flex items-center justify-between gap-3 pt-2 text-sm font-extrabold">
                   <span className="text-foreground">(=) PIS a Recolher no Mês:</span>
-                  <strong className="text-primary">R$ {toBRLDecimal(pisCalculation.toPay.toFixed(2))}</strong>
+                  <strong className="text-primary shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(pisCalculation.toPay.toFixed(2))}</strong>
                 </div>
                 {pisCalculation.nextCredit > 0 && (
-                  <div className="flex justify-between pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
                     <span>Saldo Credor Acumulado p/ Próximo Mês:</span>
-                    <span>R$ {toBRLDecimal(pisCalculation.nextCredit.toFixed(2))}</span>
+                    <span className="shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(pisCalculation.nextCredit.toFixed(2))}</span>
                   </div>
                 )}
               </div>
             </Card>
 
             {/* Memória COFINS */}
-            <Card className="bg-card border-border rounded-xl p-5 space-y-3">
-              <h3 className="font-bold text-sm text-primary flex items-center justify-between">
+            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+              <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - COFINS (Regime de Caixa)</span>
-                <span className="text-xs font-mono font-normal text-muted-foreground">Alíquota: 3,00%</span>
+                <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">Alíquota: 3,00%</span>
               </h3>
               <div className="text-xs space-y-2 font-mono divide-y divide-border/60">
-                <div className="flex justify-between pt-1">
-                  <span className="text-muted-foreground">(+) Base de Cálculo (NFS-e Recebidas no Mês):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(cofinsCalculation.base.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-1">
+                  <span className="text-muted-foreground leading-tight">(+) Base de Cálculo (NFS-e Recebidas no Mês):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(cofinsCalculation.base.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(=) COFINS Apurado Bruto (3,00%):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(cofinsCalculation.grossTax.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(=) COFINS Apurado Bruto (3,00%):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(cofinsCalculation.grossTax.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Retenções de COFINS nas Notas do Mês:</span>
-                  <strong className="text-emerald-400">- R$ {toBRLDecimal(cofinsCalculation.retained.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Retenções de COFINS nas Notas do Mês:</span>
+                  <strong className="text-emerald-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(cofinsCalculation.retained.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Saldo Credor COFINS Período Anterior:</span>
-                  <strong className="text-sky-400">- R$ {toBRLDecimal(prevCofinsCredit.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Saldo Credor COFINS Período Anterior:</span>
+                  <strong className="text-sky-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(prevCofinsCredit.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2 text-sm font-extrabold">
+                <div className="flex items-center justify-between gap-3 pt-2 text-sm font-extrabold">
                   <span className="text-foreground">(=) COFINS a Recolher no Mês:</span>
-                  <strong className="text-primary">R$ {toBRLDecimal(cofinsCalculation.toPay.toFixed(2))}</strong>
+                  <strong className="text-primary shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(cofinsCalculation.toPay.toFixed(2))}</strong>
                 </div>
                 {cofinsCalculation.nextCredit > 0 && (
-                  <div className="flex justify-between pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
                     <span>Saldo Credor Acumulado p/ Próximo Mês:</span>
-                    <span>R$ {toBRLDecimal(cofinsCalculation.nextCredit.toFixed(2))}</span>
+                    <span className="shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(cofinsCalculation.nextCredit.toFixed(2))}</span>
                   </div>
                 )}
               </div>
@@ -705,88 +706,88 @@ export default function TaxProjection({ invoices, installments = [], companyName
         <TabsContent value="irpj_csll" className="pt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Memória IRPJ */}
-            <Card className="bg-card border-border rounded-xl p-5 space-y-3">
-              <h3 className="font-bold text-sm text-primary flex items-center justify-between">
+            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+              <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - IRPJ (Trimestral)</span>
-                <span className="text-xs font-mono font-normal text-muted-foreground">
+                <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">
                   Presunção: 8% / 8,8%
                 </span>
               </h3>
               <div className="text-xs space-y-2 font-mono divide-y divide-border/60">
-                <div className="flex justify-between pt-1">
-                  <span className="text-muted-foreground">(+) Faturamento Bruto no Trimestre:</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(irpjCalculation.base.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-1">
+                  <span className="text-muted-foreground leading-tight">(+) Faturamento Bruto no Trimestre:</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(irpjCalculation.base.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(=) Lucro Presumido IRPJ (8% até 1.2M + 8.8% excede):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(irpjCalculation.presumption.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(=) Lucro Presumido IRPJ (8% até 1.2M + 8.8% excede):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(irpjCalculation.presumption.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(+) IRPJ Normal (15% sobre a presunção):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(irpjCalculation.basicTax.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(+) IRPJ Normal (15% sobre a presunção):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(irpjCalculation.basicTax.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(+) Adicional IRPJ (10% sobre presunção &gt; R$60k):</span>
-                  <strong className="text-purple-400">R$ {toBRLDecimal(irpjCalculation.additionalTax.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(+) Adicional IRPJ (10% sobre presunção &gt; R$60k):</span>
+                  <strong className="text-purple-400 shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(irpjCalculation.additionalTax.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Retenções IRPJ no Trimestre:</span>
-                  <strong className="text-emerald-400">- R$ {toBRLDecimal(irpjCalculation.retained.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Retenções IRPJ no Trimestre:</span>
+                  <strong className="text-emerald-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(irpjCalculation.retained.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Saldo Credor IRPJ Trimestre Anterior:</span>
-                  <strong className="text-sky-400">- R$ {toBRLDecimal(prevIrpjCredit.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Saldo Credor IRPJ Trimestre Anterior:</span>
+                  <strong className="text-sky-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(prevIrpjCredit.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2 text-sm font-extrabold">
+                <div className="flex items-center justify-between gap-3 pt-2 text-sm font-extrabold">
                   <span className="text-foreground">(=) IRPJ a Recolher no Trimestre:</span>
-                  <strong className="text-primary">R$ {toBRLDecimal(irpjCalculation.toPay.toFixed(2))}</strong>
+                  <strong className="text-primary shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(irpjCalculation.toPay.toFixed(2))}</strong>
                 </div>
                 {irpjCalculation.nextCredit > 0 && (
-                  <div className="flex justify-between pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
                     <span>Saldo Credor Acumulado p/ Próximo Trimestre:</span>
-                    <span>R$ {toBRLDecimal(irpjCalculation.nextCredit.toFixed(2))}</span>
+                    <span className="shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(irpjCalculation.nextCredit.toFixed(2))}</span>
                   </div>
                 )}
               </div>
             </Card>
 
             {/* Memória CSLL */}
-            <Card className="bg-card border-border rounded-xl p-5 space-y-3">
-              <h3 className="font-bold text-sm text-primary flex items-center justify-between">
+            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+              <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - CSLL (Trimestral)</span>
-                <span className="text-xs font-mono font-normal text-muted-foreground">
+                <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">
                   Presunção: 12% / 13,2%
                 </span>
               </h3>
               <div className="text-xs space-y-2 font-mono divide-y divide-border/60">
-                <div className="flex justify-between pt-1">
-                  <span className="text-muted-foreground">(+) Faturamento Bruto no Trimestre:</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(csllCalculation.base.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-1">
+                  <span className="text-muted-foreground leading-tight">(+) Faturamento Bruto no Trimestre:</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(csllCalculation.base.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(=) Lucro Presumido CSLL (12% até 1.2M + 13.2% excede):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(csllCalculation.presumption.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(=) Lucro Presumido CSLL (12% até 1.2M + 13.2% excede):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(csllCalculation.presumption.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(=) CSLL Apurada (9% sobre a presunção):</span>
-                  <strong className="text-foreground">R$ {toBRLDecimal(csllCalculation.grossTax.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(=) CSLL Apurada (9% sobre a presunção):</span>
+                  <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(csllCalculation.grossTax.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Retenções CSLL no Trimestre:</span>
-                  <strong className="text-emerald-400">- R$ {toBRLDecimal(csllCalculation.retained.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Retenções CSLL no Trimestre:</span>
+                  <strong className="text-emerald-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(csllCalculation.retained.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2">
-                  <span className="text-muted-foreground">(-) Saldo Credor CSLL Trimestre Anterior:</span>
-                  <strong className="text-sky-400">- R$ {toBRLDecimal(prevCsllCredit.toFixed(2))}</strong>
+                <div className="flex items-start sm:items-center justify-between gap-3 pt-2">
+                  <span className="text-muted-foreground leading-tight">(-) Saldo Credor CSLL Trimestre Anterior:</span>
+                  <strong className="text-sky-400 shrink-0 text-right whitespace-nowrap">- R$ {toBRLDecimal(prevCsllCredit.toFixed(2))}</strong>
                 </div>
-                <div className="flex justify-between pt-2 text-sm font-extrabold">
+                <div className="flex items-center justify-between gap-3 pt-2 text-sm font-extrabold">
                   <span className="text-foreground">(=) CSLL a Recolher no Trimestre:</span>
-                  <strong className="text-primary">R$ {toBRLDecimal(csllCalculation.toPay.toFixed(2))}</strong>
+                  <strong className="text-primary shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(csllCalculation.toPay.toFixed(2))}</strong>
                 </div>
                 {csllCalculation.nextCredit > 0 && (
-                  <div className="flex justify-between pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-2 text-xs font-bold text-amber-400 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
                     <span>Saldo Credor Acumulado p/ Próximo Trimestre:</span>
-                    <span>R$ {toBRLDecimal(csllCalculation.nextCredit.toFixed(2))}</span>
+                    <span className="shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(csllCalculation.nextCredit.toFixed(2))}</span>
                   </div>
                 )}
               </div>
@@ -796,19 +797,19 @@ export default function TaxProjection({ invoices, installments = [], companyName
 
         {/* Tab ISS */}
         <TabsContent value="iss" className="pt-4 space-y-4">
-          <Card className="bg-card border-border rounded-xl p-5 space-y-3">
-            <h3 className="font-bold text-sm text-primary flex items-center justify-between">
+          <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+            <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
               <span>Memória de Cálculo - ISS (Regime de Competência - Mensal)</span>
-              <span className="text-xs font-mono font-normal text-muted-foreground">Alíquota: 2,00%</span>
+              <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">Alíquota: 2,00%</span>
             </h3>
             <div className="text-xs space-y-2 font-mono divide-y divide-border/60 max-w-xl">
-              <div className="flex justify-between pt-1">
-                <span className="text-muted-foreground">(+) Base de Cálculo ISS (NFS-e EMITIDAS no Mês):</span>
-                <strong className="text-foreground">R$ {toBRLDecimal(issCalculation.base.toFixed(2))}</strong>
+              <div className="flex items-start sm:items-center justify-between gap-3 pt-1">
+                <span className="text-muted-foreground leading-tight">(+) Base de Cálculo ISS (NFS-e EMITIDAS no Mês):</span>
+                <strong className="text-foreground shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(issCalculation.base.toFixed(2))}</strong>
               </div>
-              <div className="flex justify-between pt-2 text-sm font-extrabold">
+              <div className="flex items-center justify-between gap-3 pt-2 text-sm font-extrabold">
                 <span className="text-foreground">(=) ISS a Recolher no Mês (2%):</span>
-                <strong className="text-primary">R$ {toBRLDecimal(issCalculation.toPay.toFixed(2))}</strong>
+                <strong className="text-primary shrink-0 text-right whitespace-nowrap">R$ {toBRLDecimal(issCalculation.toPay.toFixed(2))}</strong>
               </div>
             </div>
           </Card>

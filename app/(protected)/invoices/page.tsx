@@ -351,7 +351,7 @@ export default function InvoicesPage() {
         <h2 className="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
           <FileText className="w-4 h-4 text-primary" /> Histórico de Notas Fiscais
         </h2>
-        <span className="text-xs font-semibold text-muted-foreground bg-secondary border border-border px-3 py-1.5 rounded-xl font-mono">
+        <span className="text-xs font-semibold text-muted-foreground bg-secondary border border-border px-3 py-1.5 rounded-xl font-mono flex justify-end">
           Exibindo: <strong className="text-primary font-bold">{filteredInvoices.length}</strong> nota(s)
         </span>
       </div>

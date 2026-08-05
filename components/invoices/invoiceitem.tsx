@@ -45,7 +45,7 @@ function InvoiceItemComponent({
                   company={company}
                 />
               </div>
-              <span className="inline-flex items-center gap-1 font-bold text-primary bg-secondary px-2.5 py-0.5 rounded-lg border border-border">
+              <span className="inline-flex items-center gap-1 font-bold text-primary bg-secondary px-2.5 py-0.5 rounded border border-border">
                 <Receipt className="w-3.5 h-3.5" /> NFS-e #{invoice.invoice_number}
               </span>
 

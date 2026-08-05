@@ -78,69 +78,82 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
         <CardTitle className="text-lg text-foreground">Filtros de Busca</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-          <div className="space-y-2">
-            <Label htmlFor="invoice_number" className="text-muted-foreground">Número da Nota</Label>
+        {/* 
+      Grid responsivo ajustado:
+      - Mobile (default): 1 coluna (empilhado)
+      - Tablet (sm / md): 2 a 3 colunas balanceadas
+      - Desktop (lg): 6 colunas para encaixar perfeitamente todos os campos por linha
+    */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+
+          {/* Número da Nota (Ocupa 1 coluna no desktop, 1 no mobile/tablet) */}
+          <div className="space-y-2 lg:col-span-1">
+            <Label htmlFor="invoice_number" className="text-muted-foreground text-xs font-medium">Número da Nota</Label>
             <Input
               id="invoice_number"
               placeholder="Ex: 001"
               value={filters.invoice_number}
               onChange={(e) => handleInputChange('invoice_number', e.target.value)}
-              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono w-full"
             />
           </div>
 
-          <div className="space-y-2 col-span-2">
-            <Label htmlFor="client_name" className="text-muted-foreground">Nome do Cliente</Label>
+          {/* Nome do Cliente (Ganha mais destaque, ocupando 2 colunas no desktop) */}
+          <div className="space-y-2 sm:col-span-2 lg:col-span-3">
+            <Label htmlFor="client_name" className="text-muted-foreground text-xs font-medium">Nome do Cliente</Label>
             <Input
               id="client_name"
               placeholder="Digite o nome..."
               value={filters.client_name}
               onChange={(e) => handleInputChange('client_name', e.target.value)}
-              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono w-full"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="start_date" className="text-muted-foreground">Data Inicial</Label>
+          {/* Data Inicial */}
+          <div className="space-y-2 lg:col-span-1 sm:col-span-1">
+            <Label htmlFor="start_date" className="text-muted-foreground text-xs font-medium">Data Inicial</Label>
             <Input
               id="start_date"
               type="date"
               value={filters.start_date}
               onChange={(e) => handleInputChange('start_date', e.target.value)}
-              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono w-full"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="end_date" className="text-muted-foreground">Data Final</Label>
+          {/* Data Final */}
+          <div className="space-y-2 lg:col-span-1 sm:col-span-1">
+            <Label htmlFor="end_date" className="text-muted-foreground text-xs font-medium">Data Final</Label>
             <Input
               id="end_date"
               type="date"
               value={filters.end_date}
               onChange={(e) => handleInputChange('end_date', e.target.value)}
-              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1.5"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono w-full"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="total_amount" className="text-muted-foreground">Valor Total</Label>
+          {/* Valor Total */}
+          <div className="space-y-2 lg:col-span-1 sm:col-span-1">
+            <Label htmlFor="total_amount" className="text-muted-foreground text-xs font-medium">Valor Total</Label>
             <Input
               id="total_amount"
               type="number"
               value={filters.total_amount}
               onChange={(e) => handleInputChange('total_amount', e.target.value)}
-              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono flex-1"
+              className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono w-full"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="status" className="text-muted-foreground">Status</Label>
+          {/* Status (Ocupa 2 colunas no tablet/desktop para acomodar textos longos como "Pendente de Cancelamento") */}
+          <div className="space-y-2 sm:col-span-2 lg:col-span-1">
+            <Label htmlFor="status" className="text-muted-foreground text-xs font-medium">Status</Label>
             <Select
               value={filters.status}
               onValueChange={(value) => handleInputChange('status', value)}
             >
-              <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
+              <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm w-full">
                 <SelectValue placeholder="Selecione o status..." />
               </SelectTrigger>
               <SelectContent>
@@ -151,16 +164,26 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
               </SelectContent>
             </Select>
           </div>
+
         </div>
 
-        <div className="flex gap-3 justify-end">
-          <Button variant="outline" onClick={handleSearch} className="bg-primary/80 hover:bg-primary hover:text-white">
-            <Search className="w-4 h-4 mr-2" />
-            Pesquisar
-          </Button>
-          <Button variant="outline" onClick={handleClear} className="bg-slate-800 hover:bg-cyan-800 text-white hover:text-white">
+        {/* Botões de Ação: Empilhados no mobile para melhor usabilidade de toque, alinhados à direita no tablet/desktop */}
+        <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end pt-2 border-t border-border/40">
+          <Button
+            variant="outline"
+            onClick={handleClear}
+            className="w-full sm:w-auto bg-slate-800 hover:bg-cyan-800 text-white hover:text-white rounded-xl"
+          >
             <RotateCcw className="w-4 h-4 mr-2" />
             Limpar Filtros
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleSearch}
+            className="w-full sm:w-auto bg-primary/80 hover:bg-primary hover:text-white rounded-xl"
+          >
+            <Search className="w-4 h-4 mr-2" />
+            Pesquisar
           </Button>
         </div>
       </CardContent>
