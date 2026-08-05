@@ -162,37 +162,39 @@ export default function AccountsPayablePage() {
   };
 
   const normalizedPayables = useMemo(() => {
-    return payables.map((acc) => ({
-      ...acc,
-      _search: [acc.professional_name, acc.document, statusConfig[acc.status]?.label]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase(),
+    return payables.map((acc) => {
+      const dateStr = typeof acc.due_date === "string" 
+        ? acc.due_date.split("T")[0] 
+        : new Date(acc.due_date).toISOString().split("T")[0];
 
-      _amountStr: acc.amount.toFixed(2),
-      _dueDate: new Date(acc.due_date),
-    }));
+      return {
+        ...acc,
+        _search: [acc.professional_name, acc.document, acc.client_name, statusConfig[acc.status]?.label]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase(),
+        _amountStr: acc.amount.toFixed(2),
+        _dateStr: dateStr,
+      };
+    });
   }, [payables, statusConfig]);
 
   const filteredAccounts = useMemo(() => {
-    const term = deferredSearch.toLowerCase().trim();
-
-    const start = startDate ? new Date(startDate + "T00:00:00Z") : null;
-    const end = endDate ? new Date(endDate + "T23:59:59Z") : null;
+    const term = inputValue.toLowerCase().trim();
 
     return normalizedPayables.filter((acc) => {
       const matchesSearch =
         !term || acc._search.includes(term) || acc._amountStr.includes(term.replace(",", "."));
 
-      const matchesDate = (!start || acc._dueDate >= start) && (!end || acc._dueDate <= end);
+      const matchesDate = (!startDate || acc._dateStr >= startDate) && (!endDate || acc._dateStr <= endDate);
 
       return matchesSearch && matchesDate;
     });
-  }, [normalizedPayables, deferredSearch, startDate, endDate]);
+  }, [normalizedPayables, inputValue, startDate, endDate]);
 
   const handleClear = () => {
-    setSearchTerm("");
     setInputValue("");
+    setSearchTerm("");
     setStartDate("");
     setEndDate("");
   };

@@ -27,7 +27,7 @@ function ReceivableItemComponent({
   const remainingAmount = round(round(acc.amount) - round(totalPaid) - round(totalDiscount));
 
   return (
-    <Card className="bg-card border-card-border hover:border-primary/40 transition-all duration-200 rounded-2xl shadow-md overflow-hidden">
+    <Card className="bg-card py-0 border-card-border hover:border-primary/40 transition-all duration-200 rounded-2xl shadow-md overflow-hidden">
       <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex-1 min-w-0 space-y-2 w-full">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2.5">
@@ -71,7 +71,7 @@ function ReceivableItemComponent({
           </div>
         </div>
 
-        <div className="flex flex-col items-stretch gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+        <div className="flex flex-col items-stretch gap-2 sm:gap-4 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
           <Button
             size="sm"
             onClick={() => onOpenPayment(acc)}

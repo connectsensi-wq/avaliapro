@@ -155,35 +155,39 @@ export default function AccountsReceivablePage() {
   };
 
   const processedAccounts = React.useMemo(() => {
-    return receivables.map((acc) => ({
-      ...acc,
-      _search: [acc.client_name, acc.document, statusConfig[acc.status]?.label]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase(),
-      _amountStr: acc.amount.toFixed(2),
-      _dueDate: new Date(acc.due_date),
-    }));
+    return receivables.map((acc) => {
+      const dateStr = typeof acc.due_date === "string"
+        ? acc.due_date.split("T")[0]
+        : new Date(acc.due_date).toISOString().split("T")[0];
+
+      return {
+        ...acc,
+        _search: [acc.client_name, acc.document, statusConfig[acc.status]?.label]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase(),
+        _amountStr: acc.amount.toFixed(2),
+        _dateStr: dateStr,
+      };
+    });
   }, [receivables, statusConfig]);
 
   const filteredAccounts = useMemo(() => {
-    const term = searchTerm.toLowerCase().trim();
-
-    const start = startDate ? new Date(startDate + "T00:00:00Z") : null;
-    const end = endDate ? new Date(endDate + "T23:59:59Z") : null;
+    const term = inputValue.toLowerCase().trim();
 
     return processedAccounts.filter((acc) => {
       const matchesSearch =
         !term || acc._search.includes(term) || acc._amountStr.includes(term.replace(",", "."));
 
-      const matchesDate = (!start || acc._dueDate >= start) && (!end || acc._dueDate <= end);
+      const matchesDate = (!startDate || acc._dateStr >= startDate) && (!endDate || acc._dateStr <= endDate);
 
       return matchesSearch && matchesDate;
     });
-  }, [processedAccounts, searchTerm, startDate, endDate]);
+  }, [processedAccounts, inputValue, startDate, endDate]);
 
   const handleClear = () => {
     setInputValue("");
+    setSearchTerm("");
     setStartDate("");
     setEndDate("");
   };
