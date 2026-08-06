@@ -39,7 +39,7 @@ const StatusUpdater: FC<StatusUpdaterProps> = ({ invoiceId, currentStatus, onSta
   return (
     <Select value={currentStatus} onValueChange={(newStatus) => onStatusChange(invoiceId, newStatus as InvoiceStatus)}>
       <SelectTrigger className="w-auto h-auto p-0 border-none bg-transparent focus:ring-0 focus:outline-none" disabled={locked}>
-        <SelectValue asChild>
+        <SelectValue placeholder={getStatusLabel(currentStatus)}>
           <Badge className={`${config.color} border px-2.5 py-0.5 rounded-full text-[10px] font-semibold cursor-pointer hover:opacity-80 transition-opacity`}>
             {getStatusLabel(currentStatus)}
           </Badge>

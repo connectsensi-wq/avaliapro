@@ -357,14 +357,14 @@ export default function AccountsReceivablePage() {
       {/* Receivable Items List */}
       <div className="space-y-4">
         {isLoading ? (
-          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-none rounded-2xl">
+          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border-none rounded-2xl">
             <div className="animate-pulse flex flex-col items-center justify-center gap-2 text-sm font-semibold">
               <BanknoteArrowUp className="w-15 h-15 text-primary" />
               Carregando contas a receber...
             </div>
           </div>
         ) : accountsWithStatus.length === 0 ? (
-          <div className="p-12 text-center text-muted-foreground bg-card border border-border rounded-2xl p-6">
+          <div className="p-12 text-center text-muted-foreground bg-card border border-none rounded-2xl p-6">
             <Wallet className="w-12 h-12 text-primary opacity-70 mx-auto mb-3" />
             <h3 className="text-base font-bold text-foreground">Nenhuma conta a receber encontrada</h3>
             <p className="text-xs text-muted-foreground mt-1">Ajuste os filtros ou emita uma nova NFS-e.</p>

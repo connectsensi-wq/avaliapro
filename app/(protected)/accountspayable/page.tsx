@@ -400,14 +400,14 @@ export default function AccountsPayablePage() {
       {/* Payable Items List */}
       <div className="space-y-4">
         {isLoading ? (
-          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-border rounded-2xl">
+          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border-none rounded-2xl">
             <div className="animate-pulse flex flex-col items-center justify-center gap-2 text-sm font-semibold">
               <BanknoteArrowDown className="w-15 h-15 text-red-300" />
               Carregando contas a pagar...
             </div>
           </div>
         ) : filteredAccounts.length === 0 ? (
-          <div className="p-12 text-center text-muted-foreground bg-card border border-border rounded-2xl p-6">
+          <div className="p-12 text-center text-muted-foreground bg-card border border-none rounded-2xl p-6">
             <Banknote className="w-12 h-12 text-primary opacity-70 mx-auto mb-3" />
             <h3 className="text-base font-bold text-foreground">Nenhuma conta a pagar encontrada</h3>
             <p className="text-xs text-muted-foreground mt-1">Ajuste os filtros ou selecione outra empresa.</p>

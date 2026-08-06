@@ -362,7 +362,7 @@ export default function InvoicesPage() {
           <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-none shadow-xl rounded-2xl">
             <div className="animate-pulse flex flex-col items-center justify-center gap-2 text-sm font-semibold">
               <ReceiptText className="w-15 h-15 text-primary" />
-              Carregando contas a receber...
+              Carregando os movimentos de NFS-e...
             </div>
           </div>
         ) : filteredInvoices.length > 0 ? (
