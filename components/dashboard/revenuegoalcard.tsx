@@ -66,8 +66,8 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
   ];
 
   return (
-    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
-      <CardHeader className="border-b border-[#003B35] pb-1 flex flex-row items-center justify-between">
+    <Card className="bg-trasnparent backdrop-blur-2xl border border-white/60 px-4 rounded-3xl shadow-xl overflow-hidden transition-all duration-300">
+      <CardHeader className="px-0 border-b border-slate-300 pb-1 flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
           <div className="p-2 rounded-lg bg-[#00F5A0]/10 border border-[#00F5A0]/20 text-[#00F5A0]">
             <Target className="h-5 w-5" />
@@ -90,7 +90,7 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
         </span>
       </CardHeader>
 
-      <CardContent className="p-4">
+      <CardContent className="p-0">
         {/* Gráfico Gauge */}
         <div className="relative h-70 w-full -mt-15">
           <ResponsiveContainer width="100%" height="100%">
@@ -130,8 +130,8 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
 
         {/* Valores Comparativos */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-card border border-border rounded-xl p-3.5">
-            <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">
+          <div className="bg-slate-100 border-none rounded-xl p-3.5">
+            <span className="text-[8px] sm:text-[10px] font-bold text-foreground uppercase tracking-wider">
               Mês Corrente
             </span>
             <p className="text-lg font-black text-primary mt-1">
@@ -143,8 +143,8 @@ export default function RevenueGoalCard({ invoices = [] }: RevenueGoalCardProps)
             </p>
           </div>
 
-          <div className="bg-card border border-border rounded-xl p-3.5">
-            <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">
+          <div className="bg-slate-100 border-none rounded-xl p-3.5">
+            <span className="text-[8px] sm:text-[10px] font-bold text-foreground uppercase tracking-wider">
               Meta (Mês Anterior)
             </span>
             <p className="text-lg font-black text-foreground mt-1">

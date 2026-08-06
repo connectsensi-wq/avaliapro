@@ -9,6 +9,7 @@ import FinancialCards from "@/components/dashboard/financialcards";
 import MonthlyChart from "@/components/dashboard/monthlychart";
 import RevenueGoalCard from "@/components/dashboard/revenuegoalcard";
 import AgingReceivablesCard from "@/components/dashboard/agingreceivablescard";
+import { getClerkUserName } from "@/lib/get-user-name";
 
 export default function AdminDashboard() {
   const [companies, setCompanies] = useState<any[]>([]);
@@ -60,7 +61,7 @@ export default function AdminDashboard() {
     return (
       <div className="p-4 sm:p-6 space-y-5 max-w-7xl mx-auto">
         <div className="animate-pulse space-y-5">
-          <div className="h-16 bg-slate-200 border border-slate-200 rounded-2xl w-full"></div>
+          <div className="h-30 bg-slate-200 border border-slate-200 rounded-2xl w-full"></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {Array(4)
               .fill(0)
@@ -77,7 +78,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-10">
       {/* Banner Executivo de Boas-Vindas */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#002B27] via-[#003833] to-[#002421] border border-[#004D46] px-5 py-4 rounded-2xl shadow-md">
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#002B27] via-[#003833] to-[#002421] px-6 py-5 rounded-2xl shadow-md">
         <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-[#00F5A0]/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -88,6 +89,9 @@ export default function AdminDashboard() {
             <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
               Dashboard Geral
             </h1>
+            <p className="text-muted-foreground text-xs md:text-sm">
+              Análise geral dos serviços médicos prestados pela empresa
+            </p>
           </div>
 
           <div className="flex items-center gap-3 self-end sm:self-auto">

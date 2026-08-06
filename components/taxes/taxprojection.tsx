@@ -343,8 +343,8 @@ export default function TaxProjection({ invoices, installments = [], companyName
       </div>
 
       {/* Painel de Filtros de Período e Simulação de Saldo Credor */}
-      <Card className="bg-card border-border rounded-2xl shadow-md">
-        <CardHeader className="pb-3 border-b border-border">
+      <Card className="bg-card border-none px-4 rounded-2xl shadow-xl">
+        <CardHeader className="pb-3 border-b border-slate-300">
           <CardTitle className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
             <Calendar className="w-4 h-4 text-primary" /> Filtros de Apuração & Saldos Anteriores
           </CardTitle>
@@ -490,7 +490,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
       {/* Grid de Cards de Impostos Calculados */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {/* PIS */}
-        <Card className="bg-card border-border rounded-xl shadow-md p-4 space-y-2">
+        <Card className="bg-card border-none shadow-xl hover:shadow-2xl hover:-translate-y-1 rounded-xl shadow-md p-4 space-y-2 transition-all duration-300">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground uppercase tracking-wider">PIS</span>
             <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20 text-[10px]">
@@ -512,7 +512,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         </Card>
 
         {/* COFINS */}
-        <Card className="bg-card border-border rounded-xl shadow-md p-4 space-y-2">
+        <Card className="bg-card border-none shadow-xl hover:shadow-2xl hover:-translate-y-1 rounded-xl shadow-md p-4 space-y-2 transition-all duration-300">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground uppercase tracking-wider">COFINS</span>
             <Badge className="bg-sky-500/10 text-sky-400 border-sky-500/20 text-[10px]">
@@ -534,7 +534,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         </Card>
 
         {/* IRPJ */}
-        <Card className="bg-card border-border rounded-xl shadow-md p-4 space-y-2">
+        <Card className="bg-card border-none shadow-xl hover:shadow-2xl hover:-translate-y-1 rounded-xl shadow-md p-4 space-y-2 transition-all duration-300">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground uppercase tracking-wider">IRPJ</span>
             <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20 text-[10px]">
@@ -556,7 +556,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         </Card>
 
         {/* CSLL */}
-        <Card className="bg-card border-border rounded-xl shadow-md p-4 space-y-2">
+        <Card className="bg-card border-none shadow-xl hover:shadow-2xl hover:-translate-y-1 rounded-xl shadow-md p-4 space-y-2 transition-all duration-300">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground uppercase tracking-wider">CSLL</span>
             <Badge className="bg-indigo-500/10 text-indigo-400 border-indigo-500/20 text-[10px]">
@@ -578,7 +578,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         </Card>
 
         {/* ISS */}
-        <Card className="bg-card border-border rounded-xl shadow-md p-4 space-y-2">
+        <Card className="bg-card border-none shadow-xl hover:shadow-2xl hover:-translate-y-1 rounded-xl shadow-md p-4 space-y-2 transition-all duration-300">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground uppercase tracking-wider">ISS</span>
             <Badge className="bg-rose-500/10 text-rose-400 border-rose-500/20 text-[10px]">
@@ -598,7 +598,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
       {/* Abas com a Memória de Cálculo Detalhada */}
       <Tabs defaultValue="pis_cofins" className="w-full">
         {/* Ajustado para w-full e flexível para telas menores */}
-        <TabsList className="w-full grid grid-cols-2 lg:grid-cols-4 bg-card border border-border p-1.5 rounded-xl gap-1 h-auto">
+        <TabsList className="w-full grid grid-cols-2 lg:grid-cols-4 bg-card border border-none shadow-xl p-1.5 rounded-xl gap-1 h-auto">
           <TabsTrigger
             value="pis_cofins"
             className="w-full text-[11px] sm:text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg py-1.5 px-2 text-center truncate"
@@ -629,7 +629,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         <TabsContent value="pis_cofins" className="pt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Memória PIS */}
-            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+            <Card className="bg-card border-none shadow-xl rounded-xl p-4 sm:p-5 space-y-3">
               <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - PIS (Regime de Caixa)</span>
                 <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">Alíquota: 0,65%</span>
@@ -665,7 +665,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
             </Card>
 
             {/* Memória COFINS */}
-            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+            <Card className="bg-card border-none shadow-xl rounded-xl p-4 sm:p-5 space-y-3">
               <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - COFINS (Regime de Caixa)</span>
                 <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">Alíquota: 3,00%</span>
@@ -706,7 +706,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         <TabsContent value="irpj_csll" className="pt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Memória IRPJ */}
-            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+            <Card className="bg-card border-none shadow-xl rounded-xl p-4 sm:p-5 space-y-3">
               <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - IRPJ (Trimestral)</span>
                 <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">
@@ -752,7 +752,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
             </Card>
 
             {/* Memória CSLL */}
-            <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+            <Card className="bg-card border-none shadow-xl rounded-xl p-4 sm:p-5 space-y-3">
               <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
                 <span>Memória de Cálculo - CSLL (Trimestral)</span>
                 <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">
@@ -797,7 +797,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
 
         {/* Tab ISS */}
         <TabsContent value="iss" className="pt-4 space-y-4">
-          <Card className="bg-card border-border rounded-xl p-4 sm:p-5 space-y-3">
+          <Card className="bg-card border-none shadow-xl rounded-xl p-4 sm:p-5 space-y-3">
             <h3 className="font-bold text-sm text-primary flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/50 pb-2">
               <span>Memória de Cálculo - ISS (Regime de Competência - Mensal)</span>
               <span className="text-xs font-mono font-normal text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded border border-border shrink-0 self-start sm:self-auto">Alíquota: 2,00%</span>
@@ -819,7 +819,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
         <TabsContent value="records" className="pt-4 space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Recebimentos no Mês (Caixa) */}
-            <Card className="bg-card border-border rounded-xl p-4 space-y-3">
+            <Card className="bg-card border-none shadow-xl rounded-xl p-4 space-y-3">
               <h4 className="font-bold text-xs text-primary uppercase tracking-wider flex items-center justify-between">
                 <span>Recebimentos no Mês (Regime de Caixa)</span>
                 <Badge className="bg-secondary text-primary border-border text-[10px]">
@@ -854,7 +854,7 @@ export default function TaxProjection({ invoices, installments = [], companyName
             </Card>
 
             {/* NFS-e Emitidas no Mês (Competência) */}
-            <Card className="bg-card border-border rounded-xl p-4 space-y-3">
+            <Card className="bg-card border-none shadow-xl rounded-xl p-4 space-y-3">
               <h4 className="font-bold text-xs text-primary uppercase tracking-wider flex items-center justify-between">
                 <span>NFS-e Emitidas no Mês (Competência ISS)</span>
                 <Badge className="bg-secondary text-primary border-border text-[10px]">

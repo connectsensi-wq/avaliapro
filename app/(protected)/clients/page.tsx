@@ -197,7 +197,7 @@ export default function Clients() {
             .map((_, i) => (
               <div
                 key={i}
-                className="animate-pulse h-48 bg-card border border-border rounded-2xl"
+                className="animate-pulse h-48 bg-card border-none rounded-2xl"
               ></div>
             ))
           : filteredClients.length === 0 ? (
@@ -210,7 +210,7 @@ export default function Clients() {
             filteredClients.map((client) => (
               <Card
                 key={client.id}
-                className="bg-card border-border transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
+                className="bg-card border-none transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-3">
@@ -238,7 +238,7 @@ export default function Clients() {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0 space-y-3">
-                  <div className="space-y-1 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-xl border border-border">
+                  <div className="space-y-1 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-xl border-none">
                     {client.email ? (
                       <p className="truncate" title={client.email}>
                         <span className="text-muted-foreground">E-mail: </span>

@@ -157,9 +157,9 @@ export default function Companies() {
           filteredCompanies.map((company) => (
             <Card
               key={company.id}
-              className="bg-card border-border transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
+              className="bg-card border-none p-4 transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
             >
-              <CardHeader className="pb-3 border-b border-border">
+              <CardHeader className="pb-3 border-b border-slate-300">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0">

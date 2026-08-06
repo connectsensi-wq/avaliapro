@@ -185,7 +185,7 @@ export default function Specialties() {
           Array(6)
             .fill(0)
             .map((_, i) => (
-              <div key={i} className="animate-pulse h-36 bg-card border border-border rounded-2xl"></div>
+              <div key={i} className="animate-pulse h-36 bg-card border-none rounded-2xl"></div>
             ))
         ) : filteredSpecialties.length === 0 ? (
           <div className="col-span-full text-center py-12 bg-card border border-border rounded-2xl p-6">
@@ -197,7 +197,7 @@ export default function Specialties() {
           filteredSpecialties.map((specialty) => (
             <Card
               key={specialty.id}
-              className="bg-card border-border transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
+              className="bg-card border-none transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-3">
@@ -308,7 +308,7 @@ export default function Specialties() {
         open={!!deletingSpecialty}
         onOpenChange={() => setDeletingSpecialty(null)}
       >
-        <AlertDialogContent className="bg-popover border-border text-popover-foreground rounded-2xl">
+        <AlertDialogContent className="bg-popover border-none text-popover-foreground rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-base font-bold text-foreground">Excluir Especialidade</AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-muted-foreground">

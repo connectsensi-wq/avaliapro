@@ -31,12 +31,12 @@ function InvoiceItemComponent({
   const baseAmount = invoice.base_amount || invoice.total_amount || 0;
 
   return (
-    <Card className="bg-card py-0 border-card-border hover:border-primary/40 transition-all duration-200 rounded-2xl shadow-md overflow-hidden">
+    <Card className="bg-card py-0 border-none hover:shadow-2xl hover:-translate-y-1 transition-all duration-200 rounded-2xl shadow-xl overflow-hidden">
       <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         {/* Lado Esquerdo - Informações da NFS-e */}
         <div className="flex-1 min-w-0 space-y-2.5 w-full">
           {/* Barra Superior com Número da Nota, Data e Status */}
-          <div className="flex items-center justify-between gap-2 border-b border-border pb-2.5">
+          <div className="flex items-center justify-between gap-2 border-b border-slate-300 pb-2.5">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
               <div className="w-8 h-8 rounded-full flex items-center justify-center bg-primary hover:bg-cyan-800 hover:cursor-pointer transition-all duration-200">
                 <InvoicePrintMulti

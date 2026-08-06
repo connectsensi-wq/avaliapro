@@ -45,9 +45,17 @@ const StatusUpdater: FC<StatusUpdaterProps> = ({ invoiceId, currentStatus, onSta
           </Badge>
         </SelectValue>
       </SelectTrigger>
-      <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
+      <SelectContent className="bg-emerald-100 border-none text-popover-foreground rounded-xl">
         {statusOptions.map((status) => (
-          <SelectItem key={status} value={status} className="focus:bg-accent focus:text-accent-foreground text-xs">
+          <SelectItem
+            key={status}
+            value={status}
+            className="
+              focus:bg-accent 
+              focus:text-foreground 
+              text-xs text-foreground
+              hover:bg-emerald-200
+              focus:bg-emerald-300">
             {getStatusLabel(status)}
           </SelectItem>
         ))}

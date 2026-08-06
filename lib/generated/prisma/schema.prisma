@@ -148,6 +148,11 @@ model Company {
   constitution_date      DateTime?
   status                 Status       @default(active)
 
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+
   professionals       Professional[]
   clients             Client[]
   invoices            Invoice[]
@@ -188,6 +193,11 @@ model Professional {
   admin_fee_percentage Float        @default(0)
   status               Status       @default(active)
 
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+
   invoiceServiceItems InvoiceServiceItem[]
   accounts_payable    AccountsPayable[]
 
@@ -218,6 +228,11 @@ model Client {
   email                     String?
   is_simple_national_optant Boolean      @default(false)
   status                    Status       @default(active)
+
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   contacts            ClientContact[]
   invoices            Invoice[]
@@ -270,6 +285,11 @@ model Invoice {
   observations String?
   status       InvoiceStatus @default(regular)
   locked       Boolean?
+
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   accounts_receivable AccountsReceivable?
   accounts_payable    AccountsPayable[]
@@ -357,6 +377,11 @@ model PaymentInstallment {
 
   discount     Float?
   observations String?
+
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 }
 
 model PaymentPayableInstallment {
@@ -368,12 +393,22 @@ model PaymentPayableInstallment {
 
   discount     Float?
   observations String?
+
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 }
 
 model Specialty {
   id          String  @id @default(uuid())
   name        String
   description String?
+
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   professionals Professional[]
 
@@ -384,6 +419,11 @@ model Service {
   id          String @id @default(uuid())
   code        Int
   description String
+
+  created_by String?
+  updated_by String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 
   @@map("services")
 }

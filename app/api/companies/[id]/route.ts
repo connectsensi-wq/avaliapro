@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // Atualizar empresa (PUT)
 export async function PUT(
@@ -11,6 +12,8 @@ export async function PUT(
 
   try {
     const body = await req.json();
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
 
     const company = await db.company.update({
       where: { id },
@@ -37,6 +40,8 @@ export async function PUT(
           ? new Date(body.constitution_date)
           : null,
         status: body.status,
+        updated_at: now,
+        ...(userName ? { updated_by: userName } : {}),
       },
     });
 

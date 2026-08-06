@@ -169,8 +169,8 @@ export default function Services() {
       </div>
 
       {/* Services List Card */}
-      <Card className="bg-card border-card-border rounded-2xl shadow-md overflow-hidden">
-        <CardHeader className="py-4 px-6 border-b border-border">
+      <Card className="bg-card border-none p-4 rounded-2xl shadow-md overflow-hidden">
+        <CardHeader className="py-4 px-6 border-b border-slate-300">
           <CardTitle className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
             <FileText className="w-4 h-4 text-primary" /> Lista de Serviços Cadastrados
           </CardTitle>
@@ -185,7 +185,7 @@ export default function Services() {
               {filteredServices.map((service) => (
                 <div
                   key={service.id}
-                  className="p-4 sm:p-5 flex items-center justify-between hover:bg-secondary/40 transition-colors"
+                  className="p-4 sm:p-5 flex items-center border-b border-slate-300 justify-between hover:bg-secondary/40 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-11 h-11 bg-secondary border border-border rounded-xl flex items-center justify-center text-primary shrink-0 shadow-inner">
@@ -242,7 +242,7 @@ export default function Services() {
         }}
       >
         <DialogContent className="sm:max-w-md bg-card border-border text-popover-foreground shadow-2xl rounded-2xl p-6">
-          <DialogHeader className="border-b border-border pb-3">
+          <DialogHeader className="border-b border-slate-300 pb-3">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />
               {editingService?.id ? "Editar Serviço" : "Novo Serviço"}

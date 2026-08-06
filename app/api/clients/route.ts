@@ -1,5 +1,6 @@
 import db from "@/lib/db";
 import { NextResponse } from "next/server";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 
 // GET /api/clients
@@ -35,6 +36,8 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const data = await req.json();
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
 
     console.log("Dados recebidos no POST /api/clients:", data);
 
@@ -66,6 +69,9 @@ export async function POST(req: Request) {
       data: {
         ...data,
         contacts, // usa nested create
+        created_at: now,
+        updated_at: now,
+        ...(userName ? { created_by: userName, updated_by: userName } : {}),
       },
       include: {
         contacts: true, // já retorna os contatos criados

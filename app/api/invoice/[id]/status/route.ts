@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { InvoiceStatus } from "@/src/types/enums";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // declara os valores válidos
 const VALID_STATUSES: InvoiceStatus[] = [
@@ -19,6 +20,8 @@ export async function PUT(
   try {
     const body = await req.json();
     const status = body?.status;
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
 
     // validação
     if (
@@ -34,7 +37,11 @@ export async function PUT(
 
     const invoice = await db.invoice.update({
       where: { id },
-      data: { status: status as InvoiceStatus },
+      data: {
+        status: status as InvoiceStatus,
+        updated_at: now,
+        ...(userName ? { updated_by: userName } : {}),
+      },
       include: {
         client: true,
         company: true,

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // GET (opcional) - listar todas as empresas
 export async function GET() {
@@ -16,13 +17,22 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const data = await req.json();
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
 
     // Ajusta a data de constituição para Date
     if (data.constitution_date) {
       data.constitution_date = new Date(data.constitution_date);
     }
 
-    const company = await db.company.create({ data });
+    const company = await db.company.create({
+      data: {
+        ...data,
+        created_at: now,
+        updated_at: now,
+        ...(userName ? { created_by: userName, updated_by: userName } : {}),
+      },
+    });
 
     return NextResponse.json(company, { status: 201 });
   } catch (error) {

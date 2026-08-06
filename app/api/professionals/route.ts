@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
 import { clerkClient } from "@clerk/nextjs/server";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 
 // GET /api/professionals
@@ -96,11 +97,17 @@ export async function POST(req: Request) {
       publicMetadata: { role: "professional" },
     });
 
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
+
     // Criar profissional no banco e linkar com o Clerk
     const professional = await db.professional.create({
       data: {
         ...data,
         clerkUserId: user.id,
+        created_at: now,
+        updated_at: now,
+        ...(userName ? { created_by: userName, updated_by: userName } : {}),
       },
       include: { specialty: true },
     });

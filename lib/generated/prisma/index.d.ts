@@ -2466,6 +2466,10 @@ export namespace Prisma {
     email: string | null
     constitution_date: Date | null
     status: $Enums.Status | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type CompanyMaxAggregateOutputType = {
@@ -2490,6 +2494,10 @@ export namespace Prisma {
     email: string | null
     constitution_date: Date | null
     status: $Enums.Status | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type CompanyCountAggregateOutputType = {
@@ -2514,6 +2522,10 @@ export namespace Prisma {
     email: number
     constitution_date: number
     status: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -2540,6 +2552,10 @@ export namespace Prisma {
     email?: true
     constitution_date?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type CompanyMaxAggregateInputType = {
@@ -2564,6 +2580,10 @@ export namespace Prisma {
     email?: true
     constitution_date?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type CompanyCountAggregateInputType = {
@@ -2588,6 +2608,10 @@ export namespace Prisma {
     email?: true
     constitution_date?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -2685,6 +2709,10 @@ export namespace Prisma {
     email: string | null
     constitution_date: Date | null
     status: $Enums.Status
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: CompanyCountAggregateOutputType | null
     _min: CompanyMinAggregateOutputType | null
     _max: CompanyMaxAggregateOutputType | null
@@ -2726,6 +2754,10 @@ export namespace Prisma {
     email?: boolean
     constitution_date?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     professionals?: boolean | Company$professionalsArgs<ExtArgs>
     clients?: boolean | Company$clientsArgs<ExtArgs>
     invoices?: boolean | Company$invoicesArgs<ExtArgs>
@@ -2756,6 +2788,10 @@ export namespace Prisma {
     email?: boolean
     constitution_date?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2780,6 +2816,10 @@ export namespace Prisma {
     email?: boolean
     constitution_date?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectScalar = {
@@ -2804,9 +2844,13 @@ export namespace Prisma {
     email?: boolean
     constitution_date?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "document" | "document_type" | "name" | "fantasy_name" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "state_registration" | "municipal_registration" | "ddd" | "phone" | "email" | "constitution_date" | "status", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "document" | "document_type" | "name" | "fantasy_name" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "state_registration" | "municipal_registration" | "ddd" | "phone" | "email" | "constitution_date" | "status" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     professionals?: boolean | Company$professionalsArgs<ExtArgs>
     clients?: boolean | Company$clientsArgs<ExtArgs>
@@ -2849,6 +2893,10 @@ export namespace Prisma {
       email: string | null
       constitution_date: Date | null
       status: $Enums.Status
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["company"]>
     composites: {}
   }
@@ -3298,6 +3346,10 @@ export namespace Prisma {
     readonly email: FieldRef<"Company", 'String'>
     readonly constitution_date: FieldRef<"Company", 'DateTime'>
     readonly status: FieldRef<"Company", 'Status'>
+    readonly created_by: FieldRef<"Company", 'String'>
+    readonly updated_by: FieldRef<"Company", 'String'>
+    readonly created_at: FieldRef<"Company", 'DateTime'>
+    readonly updated_at: FieldRef<"Company", 'DateTime'>
   }
     
 
@@ -3872,6 +3924,10 @@ export namespace Prisma {
     state: $Enums.State | null
     admin_fee_percentage: number | null
     status: $Enums.Status | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type ProfessionalMaxAggregateOutputType = {
@@ -3902,6 +3958,10 @@ export namespace Prisma {
     state: $Enums.State | null
     admin_fee_percentage: number | null
     status: $Enums.Status | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type ProfessionalCountAggregateOutputType = {
@@ -3932,6 +3992,10 @@ export namespace Prisma {
     state: number
     admin_fee_percentage: number
     status: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -3972,6 +4036,10 @@ export namespace Prisma {
     state?: true
     admin_fee_percentage?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type ProfessionalMaxAggregateInputType = {
@@ -4002,6 +4070,10 @@ export namespace Prisma {
     state?: true
     admin_fee_percentage?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type ProfessionalCountAggregateInputType = {
@@ -4032,6 +4104,10 @@ export namespace Prisma {
     state?: true
     admin_fee_percentage?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -4149,6 +4225,10 @@ export namespace Prisma {
     state: $Enums.State | null
     admin_fee_percentage: number
     status: $Enums.Status
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: ProfessionalCountAggregateOutputType | null
     _avg: ProfessionalAvgAggregateOutputType | null
     _sum: ProfessionalSumAggregateOutputType | null
@@ -4198,6 +4278,10 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     specialty?: boolean | Professional$specialtyArgs<ExtArgs>
     invoiceServiceItems?: boolean | Professional$invoiceServiceItemsArgs<ExtArgs>
@@ -4233,6 +4317,10 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     specialty?: boolean | Professional$specialtyArgs<ExtArgs>
   }, ExtArgs["result"]["professional"]>
@@ -4265,6 +4353,10 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     specialty?: boolean | Professional$specialtyArgs<ExtArgs>
   }, ExtArgs["result"]["professional"]>
@@ -4297,9 +4389,13 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "code" | "clerkUserId" | "name" | "cpf" | "registration_number" | "specialtyId" | "phone" | "birthday" | "email" | "bank" | "agency" | "account" | "account_type" | "pix_key_type" | "pix_key" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "admin_fee_percentage" | "status", ExtArgs["result"]["professional"]>
+  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "code" | "clerkUserId" | "name" | "cpf" | "registration_number" | "specialtyId" | "phone" | "birthday" | "email" | "bank" | "agency" | "account" | "account_type" | "pix_key_type" | "pix_key" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "admin_fee_percentage" | "status" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["professional"]>
   export type ProfessionalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     specialty?: boolean | Professional$specialtyArgs<ExtArgs>
@@ -4352,6 +4448,10 @@ export namespace Prisma {
       state: $Enums.State | null
       admin_fee_percentage: number
       status: $Enums.Status
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["professional"]>
     composites: {}
   }
@@ -4806,6 +4906,10 @@ export namespace Prisma {
     readonly state: FieldRef<"Professional", 'State'>
     readonly admin_fee_percentage: FieldRef<"Professional", 'Float'>
     readonly status: FieldRef<"Professional", 'Status'>
+    readonly created_by: FieldRef<"Professional", 'String'>
+    readonly updated_by: FieldRef<"Professional", 'String'>
+    readonly created_at: FieldRef<"Professional", 'DateTime'>
+    readonly updated_at: FieldRef<"Professional", 'DateTime'>
   }
     
 
@@ -5320,6 +5424,10 @@ export namespace Prisma {
     email: string | null
     is_simple_national_optant: boolean | null
     status: $Enums.Status | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type ClientMaxAggregateOutputType = {
@@ -5345,6 +5453,10 @@ export namespace Prisma {
     email: string | null
     is_simple_national_optant: boolean | null
     status: $Enums.Status | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type ClientCountAggregateOutputType = {
@@ -5370,6 +5482,10 @@ export namespace Prisma {
     email: number
     is_simple_national_optant: number
     status: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -5397,6 +5513,10 @@ export namespace Prisma {
     email?: true
     is_simple_national_optant?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type ClientMaxAggregateInputType = {
@@ -5422,6 +5542,10 @@ export namespace Prisma {
     email?: true
     is_simple_national_optant?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type ClientCountAggregateInputType = {
@@ -5447,6 +5571,10 @@ export namespace Prisma {
     email?: true
     is_simple_national_optant?: true
     status?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -5545,6 +5673,10 @@ export namespace Prisma {
     email: string | null
     is_simple_national_optant: boolean
     status: $Enums.Status
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: ClientCountAggregateOutputType | null
     _min: ClientMinAggregateOutputType | null
     _max: ClientMaxAggregateOutputType | null
@@ -5587,6 +5719,10 @@ export namespace Prisma {
     email?: boolean
     is_simple_national_optant?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     contacts?: boolean | Client$contactsArgs<ExtArgs>
     invoices?: boolean | Client$invoicesArgs<ExtArgs>
@@ -5617,6 +5753,10 @@ export namespace Prisma {
     email?: boolean
     is_simple_national_optant?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -5643,6 +5783,10 @@ export namespace Prisma {
     email?: boolean
     is_simple_national_optant?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -5669,9 +5813,13 @@ export namespace Prisma {
     email?: boolean
     is_simple_national_optant?: boolean
     status?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "code" | "document" | "document_type" | "name" | "fantasy_name" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "state_registration" | "municipal_registration" | "ddd" | "phone" | "email" | "is_simple_national_optant" | "status", ExtArgs["result"]["client"]>
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "code" | "document" | "document_type" | "name" | "fantasy_name" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "state_registration" | "municipal_registration" | "ddd" | "phone" | "email" | "is_simple_national_optant" | "status" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     contacts?: boolean | Client$contactsArgs<ExtArgs>
@@ -5717,6 +5865,10 @@ export namespace Prisma {
       email: string | null
       is_simple_national_optant: boolean
       status: $Enums.Status
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["client"]>
     composites: {}
   }
@@ -6166,6 +6318,10 @@ export namespace Prisma {
     readonly email: FieldRef<"Client", 'String'>
     readonly is_simple_national_optant: FieldRef<"Client", 'Boolean'>
     readonly status: FieldRef<"Client", 'Status'>
+    readonly created_by: FieldRef<"Client", 'String'>
+    readonly updated_by: FieldRef<"Client", 'String'>
+    readonly created_at: FieldRef<"Client", 'DateTime'>
+    readonly updated_at: FieldRef<"Client", 'DateTime'>
   }
     
 
@@ -7762,6 +7918,10 @@ export namespace Prisma {
     observations: string | null
     status: $Enums.InvoiceStatus | null
     locked: boolean | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type InvoiceMaxAggregateOutputType = {
@@ -7788,6 +7948,10 @@ export namespace Prisma {
     observations: string | null
     status: $Enums.InvoiceStatus | null
     locked: boolean | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type InvoiceCountAggregateOutputType = {
@@ -7814,6 +7978,10 @@ export namespace Prisma {
     observations: number
     status: number
     locked: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -7858,6 +8026,10 @@ export namespace Prisma {
     observations?: true
     status?: true
     locked?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type InvoiceMaxAggregateInputType = {
@@ -7884,6 +8056,10 @@ export namespace Prisma {
     observations?: true
     status?: true
     locked?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type InvoiceCountAggregateInputType = {
@@ -7910,6 +8086,10 @@ export namespace Prisma {
     observations?: true
     status?: true
     locked?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -8023,6 +8203,10 @@ export namespace Prisma {
     observations: string | null
     status: $Enums.InvoiceStatus
     locked: boolean | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: InvoiceCountAggregateOutputType | null
     _avg: InvoiceAvgAggregateOutputType | null
     _sum: InvoiceSumAggregateOutputType | null
@@ -8068,6 +8252,10 @@ export namespace Prisma {
     observations?: boolean
     status?: boolean
     locked?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     client?: boolean | ClientDefaultArgs<ExtArgs>
     service_items?: boolean | Invoice$service_itemsArgs<ExtArgs>
@@ -8101,6 +8289,10 @@ export namespace Prisma {
     observations?: boolean
     status?: boolean
     locked?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
@@ -8129,6 +8321,10 @@ export namespace Prisma {
     observations?: boolean
     status?: boolean
     locked?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     client?: boolean | ClientDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["invoice"]>
@@ -8157,9 +8353,13 @@ export namespace Prisma {
     observations?: boolean
     status?: boolean
     locked?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "client_id" | "invoice_number" | "issue_date" | "tax_retained" | "operation_nature" | "service_code" | "service_description" | "service_location" | "is_substitute" | "substitute_number" | "from_rps" | "rps_number" | "rps_date" | "base_amount" | "tax_rate" | "iss_amount" | "total_amount" | "total_retentions" | "observations" | "status" | "locked", ExtArgs["result"]["invoice"]>
+  export type InvoiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "client_id" | "invoice_number" | "issue_date" | "tax_retained" | "operation_nature" | "service_code" | "service_description" | "service_location" | "is_substitute" | "substitute_number" | "from_rps" | "rps_number" | "rps_date" | "base_amount" | "tax_rate" | "iss_amount" | "total_amount" | "total_retentions" | "observations" | "status" | "locked" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["invoice"]>
   export type InvoiceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     client?: boolean | ClientDefaultArgs<ExtArgs>
@@ -8212,6 +8412,10 @@ export namespace Prisma {
       observations: string | null
       status: $Enums.InvoiceStatus
       locked: boolean | null
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["invoice"]>
     composites: {}
   }
@@ -8664,6 +8868,10 @@ export namespace Prisma {
     readonly observations: FieldRef<"Invoice", 'String'>
     readonly status: FieldRef<"Invoice", 'InvoiceStatus'>
     readonly locked: FieldRef<"Invoice", 'Boolean'>
+    readonly created_by: FieldRef<"Invoice", 'String'>
+    readonly updated_by: FieldRef<"Invoice", 'String'>
+    readonly created_at: FieldRef<"Invoice", 'DateTime'>
+    readonly updated_at: FieldRef<"Invoice", 'DateTime'>
   }
     
 
@@ -14139,6 +14347,10 @@ export namespace Prisma {
     amount_paid: number | null
     discount: number | null
     observations: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type PaymentInstallmentMaxAggregateOutputType = {
@@ -14148,6 +14360,10 @@ export namespace Prisma {
     amount_paid: number | null
     discount: number | null
     observations: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type PaymentInstallmentCountAggregateOutputType = {
@@ -14157,6 +14373,10 @@ export namespace Prisma {
     amount_paid: number
     discount: number
     observations: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -14178,6 +14398,10 @@ export namespace Prisma {
     amount_paid?: true
     discount?: true
     observations?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type PaymentInstallmentMaxAggregateInputType = {
@@ -14187,6 +14411,10 @@ export namespace Prisma {
     amount_paid?: true
     discount?: true
     observations?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type PaymentInstallmentCountAggregateInputType = {
@@ -14196,6 +14424,10 @@ export namespace Prisma {
     amount_paid?: true
     discount?: true
     observations?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -14292,6 +14524,10 @@ export namespace Prisma {
     amount_paid: number
     discount: number | null
     observations: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: PaymentInstallmentCountAggregateOutputType | null
     _avg: PaymentInstallmentAvgAggregateOutputType | null
     _sum: PaymentInstallmentSumAggregateOutputType | null
@@ -14320,6 +14556,10 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -14330,6 +14570,10 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -14340,6 +14584,10 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentInstallment"]>
 
@@ -14350,9 +14598,13 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type PaymentInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_receivable_id" | "payment_date" | "amount_paid" | "discount" | "observations", ExtArgs["result"]["paymentInstallment"]>
+  export type PaymentInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_receivable_id" | "payment_date" | "amount_paid" | "discount" | "observations" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["paymentInstallment"]>
   export type PaymentInstallmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts_receivable?: boolean | AccountsReceivableDefaultArgs<ExtArgs>
   }
@@ -14375,6 +14627,10 @@ export namespace Prisma {
       amount_paid: number
       discount: number | null
       observations: string | null
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["paymentInstallment"]>
     composites: {}
   }
@@ -14805,6 +15061,10 @@ export namespace Prisma {
     readonly amount_paid: FieldRef<"PaymentInstallment", 'Float'>
     readonly discount: FieldRef<"PaymentInstallment", 'Float'>
     readonly observations: FieldRef<"PaymentInstallment", 'String'>
+    readonly created_by: FieldRef<"PaymentInstallment", 'String'>
+    readonly updated_by: FieldRef<"PaymentInstallment", 'String'>
+    readonly created_at: FieldRef<"PaymentInstallment", 'DateTime'>
+    readonly updated_at: FieldRef<"PaymentInstallment", 'DateTime'>
   }
     
 
@@ -15248,6 +15508,10 @@ export namespace Prisma {
     amount_paid: number | null
     discount: number | null
     observations: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type PaymentPayableInstallmentMaxAggregateOutputType = {
@@ -15257,6 +15521,10 @@ export namespace Prisma {
     amount_paid: number | null
     discount: number | null
     observations: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type PaymentPayableInstallmentCountAggregateOutputType = {
@@ -15266,6 +15534,10 @@ export namespace Prisma {
     amount_paid: number
     discount: number
     observations: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -15287,6 +15559,10 @@ export namespace Prisma {
     amount_paid?: true
     discount?: true
     observations?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type PaymentPayableInstallmentMaxAggregateInputType = {
@@ -15296,6 +15572,10 @@ export namespace Prisma {
     amount_paid?: true
     discount?: true
     observations?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type PaymentPayableInstallmentCountAggregateInputType = {
@@ -15305,6 +15585,10 @@ export namespace Prisma {
     amount_paid?: true
     discount?: true
     observations?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -15401,6 +15685,10 @@ export namespace Prisma {
     amount_paid: number
     discount: number | null
     observations: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: PaymentPayableInstallmentCountAggregateOutputType | null
     _avg: PaymentPayableInstallmentAvgAggregateOutputType | null
     _sum: PaymentPayableInstallmentSumAggregateOutputType | null
@@ -15429,6 +15717,10 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentPayableInstallment"]>
 
@@ -15439,6 +15731,10 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentPayableInstallment"]>
 
@@ -15449,6 +15745,10 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentPayableInstallment"]>
 
@@ -15459,9 +15759,13 @@ export namespace Prisma {
     amount_paid?: boolean
     discount?: boolean
     observations?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type PaymentPayableInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_payable_id" | "payment_date" | "amount_paid" | "discount" | "observations", ExtArgs["result"]["paymentPayableInstallment"]>
+  export type PaymentPayableInstallmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "accounts_payable_id" | "payment_date" | "amount_paid" | "discount" | "observations" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["paymentPayableInstallment"]>
   export type PaymentPayableInstallmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts_payable?: boolean | AccountsPayableDefaultArgs<ExtArgs>
   }
@@ -15484,6 +15788,10 @@ export namespace Prisma {
       amount_paid: number
       discount: number | null
       observations: string | null
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["paymentPayableInstallment"]>
     composites: {}
   }
@@ -15914,6 +16222,10 @@ export namespace Prisma {
     readonly amount_paid: FieldRef<"PaymentPayableInstallment", 'Float'>
     readonly discount: FieldRef<"PaymentPayableInstallment", 'Float'>
     readonly observations: FieldRef<"PaymentPayableInstallment", 'String'>
+    readonly created_by: FieldRef<"PaymentPayableInstallment", 'String'>
+    readonly updated_by: FieldRef<"PaymentPayableInstallment", 'String'>
+    readonly created_at: FieldRef<"PaymentPayableInstallment", 'DateTime'>
+    readonly updated_at: FieldRef<"PaymentPayableInstallment", 'DateTime'>
   }
     
 
@@ -16342,18 +16654,30 @@ export namespace Prisma {
     id: string | null
     name: string | null
     description: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type SpecialtyMaxAggregateOutputType = {
     id: string | null
     name: string | null
     description: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type SpecialtyCountAggregateOutputType = {
     id: number
     name: number
     description: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -16362,18 +16686,30 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type SpecialtyMaxAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type SpecialtyCountAggregateInputType = {
     id?: true
     name?: true
     description?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -16453,6 +16789,10 @@ export namespace Prisma {
     id: string
     name: string
     description: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: SpecialtyCountAggregateOutputType | null
     _min: SpecialtyMinAggregateOutputType | null
     _max: SpecialtyMaxAggregateOutputType | null
@@ -16476,6 +16816,10 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
     professionals?: boolean | Specialty$professionalsArgs<ExtArgs>
     _count?: boolean | SpecialtyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["specialty"]>
@@ -16484,21 +16828,33 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["specialty"]>
 
   export type SpecialtySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["specialty"]>
 
   export type SpecialtySelectScalar = {
     id?: boolean
     name?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type SpecialtyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description", ExtArgs["result"]["specialty"]>
+  export type SpecialtyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["specialty"]>
   export type SpecialtyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     professionals?: boolean | Specialty$professionalsArgs<ExtArgs>
     _count?: boolean | SpecialtyCountOutputTypeDefaultArgs<ExtArgs>
@@ -16515,6 +16871,10 @@ export namespace Prisma {
       id: string
       name: string
       description: string | null
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["specialty"]>
     composites: {}
   }
@@ -16942,6 +17302,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Specialty", 'String'>
     readonly name: FieldRef<"Specialty", 'String'>
     readonly description: FieldRef<"Specialty", 'String'>
+    readonly created_by: FieldRef<"Specialty", 'String'>
+    readonly updated_by: FieldRef<"Specialty", 'String'>
+    readonly created_at: FieldRef<"Specialty", 'DateTime'>
+    readonly updated_at: FieldRef<"Specialty", 'DateTime'>
   }
     
 
@@ -17396,18 +17760,30 @@ export namespace Prisma {
     id: string | null
     code: number | null
     description: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type ServiceMaxAggregateOutputType = {
     id: string | null
     code: number | null
     description: string | null
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
   }
 
   export type ServiceCountAggregateOutputType = {
     id: number
     code: number
     description: number
+    created_by: number
+    updated_by: number
+    created_at: number
+    updated_at: number
     _all: number
   }
 
@@ -17424,18 +17800,30 @@ export namespace Prisma {
     id?: true
     code?: true
     description?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type ServiceMaxAggregateInputType = {
     id?: true
     code?: true
     description?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
   }
 
   export type ServiceCountAggregateInputType = {
     id?: true
     code?: true
     description?: true
+    created_by?: true
+    updated_by?: true
+    created_at?: true
+    updated_at?: true
     _all?: true
   }
 
@@ -17529,6 +17917,10 @@ export namespace Prisma {
     id: string
     code: number
     description: string
+    created_by: string | null
+    updated_by: string | null
+    created_at: Date | null
+    updated_at: Date | null
     _count: ServiceCountAggregateOutputType | null
     _avg: ServiceAvgAggregateOutputType | null
     _sum: ServiceSumAggregateOutputType | null
@@ -17554,27 +17946,43 @@ export namespace Prisma {
     id?: boolean
     code?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["service"]>
 
   export type ServiceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["service"]>
 
   export type ServiceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     code?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }, ExtArgs["result"]["service"]>
 
   export type ServiceSelectScalar = {
     id?: boolean
     code?: boolean
     description?: boolean
+    created_by?: boolean
+    updated_by?: boolean
+    created_at?: boolean
+    updated_at?: boolean
   }
 
-  export type ServiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "description", ExtArgs["result"]["service"]>
+  export type ServiceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "description" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["service"]>
 
   export type $ServicePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Service"
@@ -17583,6 +17991,10 @@ export namespace Prisma {
       id: string
       code: number
       description: string
+      created_by: string | null
+      updated_by: string | null
+      created_at: Date | null
+      updated_at: Date | null
     }, ExtArgs["result"]["service"]>
     composites: {}
   }
@@ -18009,6 +18421,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Service", 'String'>
     readonly code: FieldRef<"Service", 'Int'>
     readonly description: FieldRef<"Service", 'String'>
+    readonly created_by: FieldRef<"Service", 'String'>
+    readonly updated_by: FieldRef<"Service", 'String'>
+    readonly created_at: FieldRef<"Service", 'DateTime'>
+    readonly updated_at: FieldRef<"Service", 'DateTime'>
   }
     
 
@@ -18410,7 +18826,11 @@ export namespace Prisma {
     phone: 'phone',
     email: 'email',
     constitution_date: 'constitution_date',
-    status: 'status'
+    status: 'status',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
@@ -18443,7 +18863,11 @@ export namespace Prisma {
     cep: 'cep',
     state: 'state',
     admin_fee_percentage: 'admin_fee_percentage',
-    status: 'status'
+    status: 'status',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
@@ -18471,7 +18895,11 @@ export namespace Prisma {
     phone: 'phone',
     email: 'email',
     is_simple_national_optant: 'is_simple_national_optant',
-    status: 'status'
+    status: 'status',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
@@ -18511,7 +18939,11 @@ export namespace Prisma {
     total_retentions: 'total_retentions',
     observations: 'observations',
     status: 'status',
-    locked: 'locked'
+    locked: 'locked',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
@@ -18593,7 +19025,11 @@ export namespace Prisma {
     payment_date: 'payment_date',
     amount_paid: 'amount_paid',
     discount: 'discount',
-    observations: 'observations'
+    observations: 'observations',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type PaymentInstallmentScalarFieldEnum = (typeof PaymentInstallmentScalarFieldEnum)[keyof typeof PaymentInstallmentScalarFieldEnum]
@@ -18605,7 +19041,11 @@ export namespace Prisma {
     payment_date: 'payment_date',
     amount_paid: 'amount_paid',
     discount: 'discount',
-    observations: 'observations'
+    observations: 'observations',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type PaymentPayableInstallmentScalarFieldEnum = (typeof PaymentPayableInstallmentScalarFieldEnum)[keyof typeof PaymentPayableInstallmentScalarFieldEnum]
@@ -18614,7 +19054,11 @@ export namespace Prisma {
   export const SpecialtyScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    description: 'description'
+    description: 'description',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type SpecialtyScalarFieldEnum = (typeof SpecialtyScalarFieldEnum)[keyof typeof SpecialtyScalarFieldEnum]
@@ -18623,7 +19067,11 @@ export namespace Prisma {
   export const ServiceScalarFieldEnum: {
     id: 'id',
     code: 'code',
-    description: 'description'
+    description: 'description',
+    created_by: 'created_by',
+    updated_by: 'updated_by',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
   };
 
   export type ServiceScalarFieldEnum = (typeof ServiceScalarFieldEnum)[keyof typeof ServiceScalarFieldEnum]
@@ -18903,6 +19351,10 @@ export namespace Prisma {
     email?: StringNullableFilter<"Company"> | string | null
     constitution_date?: DateTimeNullableFilter<"Company"> | Date | string | null
     status?: EnumStatusFilter<"Company"> | $Enums.Status
+    created_by?: StringNullableFilter<"Company"> | string | null
+    updated_by?: StringNullableFilter<"Company"> | string | null
+    created_at?: DateTimeNullableFilter<"Company"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Company"> | Date | string | null
     professionals?: ProfessionalListRelationFilter
     clients?: ClientListRelationFilter
     invoices?: InvoiceListRelationFilter
@@ -18932,6 +19384,10 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     constitution_date?: SortOrderInput | SortOrder
     status?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     professionals?: ProfessionalOrderByRelationAggregateInput
     clients?: ClientOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
@@ -18964,6 +19420,10 @@ export namespace Prisma {
     email?: StringNullableFilter<"Company"> | string | null
     constitution_date?: DateTimeNullableFilter<"Company"> | Date | string | null
     status?: EnumStatusFilter<"Company"> | $Enums.Status
+    created_by?: StringNullableFilter<"Company"> | string | null
+    updated_by?: StringNullableFilter<"Company"> | string | null
+    created_at?: DateTimeNullableFilter<"Company"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Company"> | Date | string | null
     professionals?: ProfessionalListRelationFilter
     clients?: ClientListRelationFilter
     invoices?: InvoiceListRelationFilter
@@ -18993,6 +19453,10 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     constitution_date?: SortOrderInput | SortOrder
     status?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: CompanyCountOrderByAggregateInput
     _max?: CompanyMaxOrderByAggregateInput
     _min?: CompanyMinOrderByAggregateInput
@@ -19023,6 +19487,10 @@ export namespace Prisma {
     email?: StringNullableWithAggregatesFilter<"Company"> | string | null
     constitution_date?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
     status?: EnumStatusWithAggregatesFilter<"Company"> | $Enums.Status
+    created_by?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"Company"> | Date | string | null
   }
 
   export type ProfessionalWhereInput = {
@@ -19056,6 +19524,10 @@ export namespace Prisma {
     state?: EnumStateNullableFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatFilter<"Professional"> | number
     status?: EnumStatusFilter<"Professional"> | $Enums.Status
+    created_by?: StringNullableFilter<"Professional"> | string | null
+    updated_by?: StringNullableFilter<"Professional"> | string | null
+    created_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     specialty?: XOR<SpecialtyNullableScalarRelationFilter, SpecialtyWhereInput> | null
     invoiceServiceItems?: InvoiceServiceItemListRelationFilter
@@ -19090,6 +19562,10 @@ export namespace Prisma {
     state?: SortOrderInput | SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     specialty?: SpecialtyOrderByWithRelationInput
     invoiceServiceItems?: InvoiceServiceItemOrderByRelationAggregateInput
@@ -19127,6 +19603,10 @@ export namespace Prisma {
     state?: EnumStateNullableFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatFilter<"Professional"> | number
     status?: EnumStatusFilter<"Professional"> | $Enums.Status
+    created_by?: StringNullableFilter<"Professional"> | string | null
+    updated_by?: StringNullableFilter<"Professional"> | string | null
+    created_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     specialty?: XOR<SpecialtyNullableScalarRelationFilter, SpecialtyWhereInput> | null
     invoiceServiceItems?: InvoiceServiceItemListRelationFilter
@@ -19161,6 +19641,10 @@ export namespace Prisma {
     state?: SortOrderInput | SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: ProfessionalCountOrderByAggregateInput
     _avg?: ProfessionalAvgOrderByAggregateInput
     _max?: ProfessionalMaxOrderByAggregateInput
@@ -19199,6 +19683,10 @@ export namespace Prisma {
     state?: EnumStateNullableWithAggregatesFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatWithAggregatesFilter<"Professional"> | number
     status?: EnumStatusWithAggregatesFilter<"Professional"> | $Enums.Status
+    created_by?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
   }
 
   export type ClientWhereInput = {
@@ -19227,6 +19715,10 @@ export namespace Prisma {
     email?: StringNullableFilter<"Client"> | string | null
     is_simple_national_optant?: BoolFilter<"Client"> | boolean
     status?: EnumStatusFilter<"Client"> | $Enums.Status
+    created_by?: StringNullableFilter<"Client"> | string | null
+    updated_by?: StringNullableFilter<"Client"> | string | null
+    created_at?: DateTimeNullableFilter<"Client"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Client"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     contacts?: ClientContactListRelationFilter
     invoices?: InvoiceListRelationFilter
@@ -19256,6 +19748,10 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     is_simple_national_optant?: SortOrder
     status?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     contacts?: ClientContactOrderByRelationAggregateInput
     invoices?: InvoiceOrderByRelationAggregateInput
@@ -19288,6 +19784,10 @@ export namespace Prisma {
     email?: StringNullableFilter<"Client"> | string | null
     is_simple_national_optant?: BoolFilter<"Client"> | boolean
     status?: EnumStatusFilter<"Client"> | $Enums.Status
+    created_by?: StringNullableFilter<"Client"> | string | null
+    updated_by?: StringNullableFilter<"Client"> | string | null
+    created_at?: DateTimeNullableFilter<"Client"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Client"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     contacts?: ClientContactListRelationFilter
     invoices?: InvoiceListRelationFilter
@@ -19317,6 +19817,10 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     is_simple_national_optant?: SortOrder
     status?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: ClientCountOrderByAggregateInput
     _max?: ClientMaxOrderByAggregateInput
     _min?: ClientMinOrderByAggregateInput
@@ -19348,6 +19852,10 @@ export namespace Prisma {
     email?: StringNullableWithAggregatesFilter<"Client"> | string | null
     is_simple_national_optant?: BoolWithAggregatesFilter<"Client"> | boolean
     status?: EnumStatusWithAggregatesFilter<"Client"> | $Enums.Status
+    created_by?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"Client"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"Client"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"Client"> | Date | string | null
   }
 
   export type ClientContactWhereInput = {
@@ -19432,6 +19940,10 @@ export namespace Prisma {
     observations?: StringNullableFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
     locked?: BoolNullableFilter<"Invoice"> | boolean | null
+    created_by?: StringNullableFilter<"Invoice"> | string | null
+    updated_by?: StringNullableFilter<"Invoice"> | string | null
+    created_at?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     service_items?: InvoiceServiceItemListRelationFilter
@@ -19464,6 +19976,10 @@ export namespace Prisma {
     observations?: SortOrderInput | SortOrder
     status?: SortOrder
     locked?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     client?: ClientOrderByWithRelationInput
     service_items?: InvoiceServiceItemOrderByRelationAggregateInput
@@ -19499,6 +20015,10 @@ export namespace Prisma {
     observations?: StringNullableFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
     locked?: BoolNullableFilter<"Invoice"> | boolean | null
+    created_by?: StringNullableFilter<"Invoice"> | string | null
+    updated_by?: StringNullableFilter<"Invoice"> | string | null
+    created_at?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Invoice"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     client?: XOR<ClientScalarRelationFilter, ClientWhereInput>
     service_items?: InvoiceServiceItemListRelationFilter
@@ -19531,6 +20051,10 @@ export namespace Prisma {
     observations?: SortOrderInput | SortOrder
     status?: SortOrder
     locked?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: InvoiceCountOrderByAggregateInput
     _avg?: InvoiceAvgOrderByAggregateInput
     _max?: InvoiceMaxOrderByAggregateInput
@@ -19565,6 +20089,10 @@ export namespace Prisma {
     observations?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusWithAggregatesFilter<"Invoice"> | $Enums.InvoiceStatus
     locked?: BoolNullableWithAggregatesFilter<"Invoice"> | boolean | null
+    created_by?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"Invoice"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   }
 
   export type InvoiceServiceItemWhereInput = {
@@ -19956,6 +20484,10 @@ export namespace Prisma {
     amount_paid?: FloatFilter<"PaymentInstallment"> | number
     discount?: FloatNullableFilter<"PaymentInstallment"> | number | null
     observations?: StringNullableFilter<"PaymentInstallment"> | string | null
+    created_by?: StringNullableFilter<"PaymentInstallment"> | string | null
+    updated_by?: StringNullableFilter<"PaymentInstallment"> | string | null
+    created_at?: DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
     accounts_receivable?: XOR<AccountsReceivableScalarRelationFilter, AccountsReceivableWhereInput>
   }
 
@@ -19966,6 +20498,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrderInput | SortOrder
     observations?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     accounts_receivable?: AccountsReceivableOrderByWithRelationInput
   }
 
@@ -19979,6 +20515,10 @@ export namespace Prisma {
     amount_paid?: FloatFilter<"PaymentInstallment"> | number
     discount?: FloatNullableFilter<"PaymentInstallment"> | number | null
     observations?: StringNullableFilter<"PaymentInstallment"> | string | null
+    created_by?: StringNullableFilter<"PaymentInstallment"> | string | null
+    updated_by?: StringNullableFilter<"PaymentInstallment"> | string | null
+    created_at?: DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
     accounts_receivable?: XOR<AccountsReceivableScalarRelationFilter, AccountsReceivableWhereInput>
   }, "id">
 
@@ -19989,6 +20529,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrderInput | SortOrder
     observations?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: PaymentInstallmentCountOrderByAggregateInput
     _avg?: PaymentInstallmentAvgOrderByAggregateInput
     _max?: PaymentInstallmentMaxOrderByAggregateInput
@@ -20006,6 +20550,10 @@ export namespace Prisma {
     amount_paid?: FloatWithAggregatesFilter<"PaymentInstallment"> | number
     discount?: FloatNullableWithAggregatesFilter<"PaymentInstallment"> | number | null
     observations?: StringNullableWithAggregatesFilter<"PaymentInstallment"> | string | null
+    created_by?: StringNullableWithAggregatesFilter<"PaymentInstallment"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"PaymentInstallment"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"PaymentInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"PaymentInstallment"> | Date | string | null
   }
 
   export type PaymentPayableInstallmentWhereInput = {
@@ -20018,6 +20566,10 @@ export namespace Prisma {
     amount_paid?: FloatFilter<"PaymentPayableInstallment"> | number
     discount?: FloatNullableFilter<"PaymentPayableInstallment"> | number | null
     observations?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    created_by?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    updated_by?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    created_at?: DateTimeNullableFilter<"PaymentPayableInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"PaymentPayableInstallment"> | Date | string | null
     accounts_payable?: XOR<AccountsPayableScalarRelationFilter, AccountsPayableWhereInput>
   }
 
@@ -20028,6 +20580,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrderInput | SortOrder
     observations?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     accounts_payable?: AccountsPayableOrderByWithRelationInput
   }
 
@@ -20041,6 +20597,10 @@ export namespace Prisma {
     amount_paid?: FloatFilter<"PaymentPayableInstallment"> | number
     discount?: FloatNullableFilter<"PaymentPayableInstallment"> | number | null
     observations?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    created_by?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    updated_by?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    created_at?: DateTimeNullableFilter<"PaymentPayableInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"PaymentPayableInstallment"> | Date | string | null
     accounts_payable?: XOR<AccountsPayableScalarRelationFilter, AccountsPayableWhereInput>
   }, "id">
 
@@ -20051,6 +20611,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrderInput | SortOrder
     observations?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: PaymentPayableInstallmentCountOrderByAggregateInput
     _avg?: PaymentPayableInstallmentAvgOrderByAggregateInput
     _max?: PaymentPayableInstallmentMaxOrderByAggregateInput
@@ -20068,6 +20632,10 @@ export namespace Prisma {
     amount_paid?: FloatWithAggregatesFilter<"PaymentPayableInstallment"> | number
     discount?: FloatNullableWithAggregatesFilter<"PaymentPayableInstallment"> | number | null
     observations?: StringNullableWithAggregatesFilter<"PaymentPayableInstallment"> | string | null
+    created_by?: StringNullableWithAggregatesFilter<"PaymentPayableInstallment"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"PaymentPayableInstallment"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"PaymentPayableInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"PaymentPayableInstallment"> | Date | string | null
   }
 
   export type SpecialtyWhereInput = {
@@ -20077,6 +20645,10 @@ export namespace Prisma {
     id?: StringFilter<"Specialty"> | string
     name?: StringFilter<"Specialty"> | string
     description?: StringNullableFilter<"Specialty"> | string | null
+    created_by?: StringNullableFilter<"Specialty"> | string | null
+    updated_by?: StringNullableFilter<"Specialty"> | string | null
+    created_at?: DateTimeNullableFilter<"Specialty"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Specialty"> | Date | string | null
     professionals?: ProfessionalListRelationFilter
   }
 
@@ -20084,6 +20656,10 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     professionals?: ProfessionalOrderByRelationAggregateInput
   }
 
@@ -20094,6 +20670,10 @@ export namespace Prisma {
     NOT?: SpecialtyWhereInput | SpecialtyWhereInput[]
     name?: StringFilter<"Specialty"> | string
     description?: StringNullableFilter<"Specialty"> | string | null
+    created_by?: StringNullableFilter<"Specialty"> | string | null
+    updated_by?: StringNullableFilter<"Specialty"> | string | null
+    created_at?: DateTimeNullableFilter<"Specialty"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Specialty"> | Date | string | null
     professionals?: ProfessionalListRelationFilter
   }, "id">
 
@@ -20101,6 +20681,10 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: SpecialtyCountOrderByAggregateInput
     _max?: SpecialtyMaxOrderByAggregateInput
     _min?: SpecialtyMinOrderByAggregateInput
@@ -20113,6 +20697,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Specialty"> | string
     name?: StringWithAggregatesFilter<"Specialty"> | string
     description?: StringNullableWithAggregatesFilter<"Specialty"> | string | null
+    created_by?: StringNullableWithAggregatesFilter<"Specialty"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"Specialty"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"Specialty"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"Specialty"> | Date | string | null
   }
 
   export type ServiceWhereInput = {
@@ -20122,12 +20710,20 @@ export namespace Prisma {
     id?: StringFilter<"Service"> | string
     code?: IntFilter<"Service"> | number
     description?: StringFilter<"Service"> | string
+    created_by?: StringNullableFilter<"Service"> | string | null
+    updated_by?: StringNullableFilter<"Service"> | string | null
+    created_at?: DateTimeNullableFilter<"Service"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Service"> | Date | string | null
   }
 
   export type ServiceOrderByWithRelationInput = {
     id?: SortOrder
     code?: SortOrder
     description?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
   }
 
   export type ServiceWhereUniqueInput = Prisma.AtLeast<{
@@ -20137,12 +20733,20 @@ export namespace Prisma {
     NOT?: ServiceWhereInput | ServiceWhereInput[]
     code?: IntFilter<"Service"> | number
     description?: StringFilter<"Service"> | string
+    created_by?: StringNullableFilter<"Service"> | string | null
+    updated_by?: StringNullableFilter<"Service"> | string | null
+    created_at?: DateTimeNullableFilter<"Service"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Service"> | Date | string | null
   }, "id">
 
   export type ServiceOrderByWithAggregationInput = {
     id?: SortOrder
     code?: SortOrder
     description?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    created_at?: SortOrderInput | SortOrder
+    updated_at?: SortOrderInput | SortOrder
     _count?: ServiceCountOrderByAggregateInput
     _avg?: ServiceAvgOrderByAggregateInput
     _max?: ServiceMaxOrderByAggregateInput
@@ -20157,6 +20761,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Service"> | string
     code?: IntWithAggregatesFilter<"Service"> | number
     description?: StringWithAggregatesFilter<"Service"> | string
+    created_by?: StringNullableWithAggregatesFilter<"Service"> | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"Service"> | string | null
+    created_at?: DateTimeNullableWithAggregatesFilter<"Service"> | Date | string | null
+    updated_at?: DateTimeNullableWithAggregatesFilter<"Service"> | Date | string | null
   }
 
   export type CompanyCreateInput = {
@@ -20181,6 +20789,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalCreateNestedManyWithoutCompanyInput
     clients?: ClientCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
@@ -20210,6 +20822,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutCompanyInput
     clients?: ClientUncheckedCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
@@ -20239,6 +20855,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUpdateManyWithoutCompanyNestedInput
     clients?: ClientUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
@@ -20268,6 +20888,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUncheckedUpdateManyWithoutCompanyNestedInput
     clients?: ClientUncheckedUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
@@ -20297,6 +20921,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type CompanyUpdateManyMutationInput = {
@@ -20321,6 +20949,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type CompanyUncheckedUpdateManyInput = {
@@ -20345,6 +20977,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ProfessionalCreateInput = {
@@ -20373,6 +21009,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutProfessionalsInput
     specialty?: SpecialtyCreateNestedOneWithoutProfessionalsInput
     invoiceServiceItems?: InvoiceServiceItemCreateNestedManyWithoutProfessionalInput
@@ -20407,6 +21047,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedCreateNestedManyWithoutProfessionalInput
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutProfessionalInput
   }
@@ -20437,6 +21081,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutProfessionalsNestedInput
     specialty?: SpecialtyUpdateOneWithoutProfessionalsNestedInput
     invoiceServiceItems?: InvoiceServiceItemUpdateManyWithoutProfessionalNestedInput
@@ -20471,6 +21119,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedUpdateManyWithoutProfessionalNestedInput
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutProfessionalNestedInput
   }
@@ -20503,6 +21155,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ProfessionalUpdateManyMutationInput = {
@@ -20531,6 +21187,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ProfessionalUncheckedUpdateManyInput = {
@@ -20561,6 +21221,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ClientCreateInput = {
@@ -20585,6 +21249,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutClientsInput
     contacts?: ClientContactCreateNestedManyWithoutClientInput
     invoices?: InvoiceCreateNestedManyWithoutClientInput
@@ -20614,6 +21282,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     contacts?: ClientContactUncheckedCreateNestedManyWithoutClientInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutClientInput
@@ -20641,6 +21313,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutClientsNestedInput
     contacts?: ClientContactUpdateManyWithoutClientNestedInput
     invoices?: InvoiceUpdateManyWithoutClientNestedInput
@@ -20670,6 +21346,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contacts?: ClientContactUncheckedUpdateManyWithoutClientNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutClientNestedInput
@@ -20698,6 +21378,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ClientUpdateManyMutationInput = {
@@ -20722,6 +21406,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ClientUncheckedUpdateManyInput = {
@@ -20747,6 +21435,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ClientContactCreateInput = {
@@ -20826,6 +21518,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutInvoicesInput
     client: ClientCreateNestedOneWithoutInvoicesInput
     service_items?: InvoiceServiceItemCreateNestedManyWithoutInvoiceInput
@@ -20858,6 +21554,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     service_items?: InvoiceServiceItemUncheckedCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedOneWithoutInvoiceInput
@@ -20886,6 +21586,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutInvoicesNestedInput
     client?: ClientUpdateOneRequiredWithoutInvoicesNestedInput
     service_items?: InvoiceServiceItemUpdateManyWithoutInvoiceNestedInput
@@ -20918,6 +21622,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     service_items?: InvoiceServiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateOneWithoutInvoiceNestedInput
@@ -20948,6 +21656,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type InvoiceUpdateManyMutationInput = {
@@ -20972,6 +21684,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceUncheckedUpdateManyInput = {
@@ -20998,6 +21714,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceServiceItemCreateInput = {
@@ -21411,6 +22131,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     accounts_receivable: AccountsReceivableCreateNestedOneWithoutInstallmentsInput
   }
 
@@ -21421,6 +22145,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentInstallmentUpdateInput = {
@@ -21429,6 +22157,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts_receivable?: AccountsReceivableUpdateOneRequiredWithoutInstallmentsNestedInput
   }
 
@@ -21439,6 +22171,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentInstallmentCreateManyInput = {
@@ -21448,6 +22184,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentInstallmentUpdateManyMutationInput = {
@@ -21456,6 +22196,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentInstallmentUncheckedUpdateManyInput = {
@@ -21465,6 +22209,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentPayableInstallmentCreateInput = {
@@ -21473,6 +22221,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     accounts_payable: AccountsPayableCreateNestedOneWithoutInstallmentsInput
   }
 
@@ -21483,6 +22235,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentPayableInstallmentUpdateInput = {
@@ -21491,6 +22247,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts_payable?: AccountsPayableUpdateOneRequiredWithoutInstallmentsNestedInput
   }
 
@@ -21501,6 +22261,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentPayableInstallmentCreateManyInput = {
@@ -21510,6 +22274,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentPayableInstallmentUpdateManyMutationInput = {
@@ -21518,6 +22286,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedUpdateManyInput = {
@@ -21527,12 +22299,20 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SpecialtyCreateInput = {
     id?: string
     name: string
     description?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalCreateNestedManyWithoutSpecialtyInput
   }
 
@@ -21540,6 +22320,10 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutSpecialtyInput
   }
 
@@ -21547,6 +22331,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUpdateManyWithoutSpecialtyNestedInput
   }
 
@@ -21554,6 +22342,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUncheckedUpdateManyWithoutSpecialtyNestedInput
   }
 
@@ -21561,60 +22353,100 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type SpecialtyUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SpecialtyUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ServiceCreateInput = {
     id?: string
     code: number
     description: string
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ServiceUncheckedCreateInput = {
     id?: string
     code: number
     description: string
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ServiceUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: IntFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ServiceUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: IntFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ServiceCreateManyInput = {
     id?: string
     code: number
     description: string
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ServiceUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: IntFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ServiceUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     code?: IntFieldUpdateOperationsInput | number
     description?: StringFieldUpdateOperationsInput | string
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -21763,6 +22595,10 @@ export namespace Prisma {
     email?: SortOrder
     constitution_date?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type CompanyMaxOrderByAggregateInput = {
@@ -21787,6 +22623,10 @@ export namespace Prisma {
     email?: SortOrder
     constitution_date?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type CompanyMinOrderByAggregateInput = {
@@ -21811,6 +22651,10 @@ export namespace Prisma {
     email?: SortOrder
     constitution_date?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -21976,6 +22820,10 @@ export namespace Prisma {
     state?: SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ProfessionalAvgOrderByAggregateInput = {
@@ -22010,6 +22858,10 @@ export namespace Prisma {
     state?: SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ProfessionalMinOrderByAggregateInput = {
@@ -22040,6 +22892,10 @@ export namespace Prisma {
     state?: SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ProfessionalSumOrderByAggregateInput = {
@@ -22120,6 +22976,10 @@ export namespace Prisma {
     email?: SortOrder
     is_simple_national_optant?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ClientMaxOrderByAggregateInput = {
@@ -22145,6 +23005,10 @@ export namespace Prisma {
     email?: SortOrder
     is_simple_national_optant?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ClientMinOrderByAggregateInput = {
@@ -22170,6 +23034,10 @@ export namespace Prisma {
     email?: SortOrder
     is_simple_national_optant?: SortOrder
     status?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -22280,6 +23148,10 @@ export namespace Prisma {
     observations?: SortOrder
     status?: SortOrder
     locked?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type InvoiceAvgOrderByAggregateInput = {
@@ -22314,6 +23186,10 @@ export namespace Prisma {
     observations?: SortOrder
     status?: SortOrder
     locked?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type InvoiceMinOrderByAggregateInput = {
@@ -22340,6 +23216,10 @@ export namespace Prisma {
     observations?: SortOrder
     status?: SortOrder
     locked?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type InvoiceSumOrderByAggregateInput = {
@@ -22785,6 +23665,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrder
     observations?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type PaymentInstallmentAvgOrderByAggregateInput = {
@@ -22799,6 +23683,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrder
     observations?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type PaymentInstallmentMinOrderByAggregateInput = {
@@ -22808,6 +23696,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrder
     observations?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type PaymentInstallmentSumOrderByAggregateInput = {
@@ -22827,6 +23719,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrder
     observations?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type PaymentPayableInstallmentAvgOrderByAggregateInput = {
@@ -22841,6 +23737,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrder
     observations?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type PaymentPayableInstallmentMinOrderByAggregateInput = {
@@ -22850,6 +23750,10 @@ export namespace Prisma {
     amount_paid?: SortOrder
     discount?: SortOrder
     observations?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type PaymentPayableInstallmentSumOrderByAggregateInput = {
@@ -22861,18 +23765,30 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type SpecialtyMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type SpecialtyMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -22890,6 +23806,10 @@ export namespace Prisma {
     id?: SortOrder
     code?: SortOrder
     description?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ServiceAvgOrderByAggregateInput = {
@@ -22900,12 +23820,20 @@ export namespace Prisma {
     id?: SortOrder
     code?: SortOrder
     description?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ServiceMinOrderByAggregateInput = {
     id?: SortOrder
     code?: SortOrder
     description?: SortOrder
+    created_by?: SortOrder
+    updated_by?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
   }
 
   export type ServiceSumOrderByAggregateInput = {
@@ -24429,6 +25357,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     specialty?: SpecialtyCreateNestedOneWithoutProfessionalsInput
     invoiceServiceItems?: InvoiceServiceItemCreateNestedManyWithoutProfessionalInput
     accounts_payable?: AccountsPayableCreateNestedManyWithoutProfessionalInput
@@ -24461,6 +25393,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedCreateNestedManyWithoutProfessionalInput
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutProfessionalInput
   }
@@ -24497,6 +25433,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     contacts?: ClientContactCreateNestedManyWithoutClientInput
     invoices?: InvoiceCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableCreateNestedManyWithoutClientInput
@@ -24524,6 +25464,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     contacts?: ClientContactUncheckedCreateNestedManyWithoutClientInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutClientInput
@@ -24561,6 +25505,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     client: ClientCreateNestedOneWithoutInvoicesInput
     service_items?: InvoiceServiceItemCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsCreateNestedOneWithoutInvoiceInput
@@ -24591,6 +25539,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     service_items?: InvoiceServiceItemUncheckedCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedOneWithoutInvoiceInput
@@ -24736,6 +25688,10 @@ export namespace Prisma {
     state?: EnumStateNullableFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatFilter<"Professional"> | number
     status?: EnumStatusFilter<"Professional"> | $Enums.Status
+    created_by?: StringNullableFilter<"Professional"> | string | null
+    updated_by?: StringNullableFilter<"Professional"> | string | null
+    created_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
   }
 
   export type ClientUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -24780,6 +25736,10 @@ export namespace Prisma {
     email?: StringNullableFilter<"Client"> | string | null
     is_simple_national_optant?: BoolFilter<"Client"> | boolean
     status?: EnumStatusFilter<"Client"> | $Enums.Status
+    created_by?: StringNullableFilter<"Client"> | string | null
+    updated_by?: StringNullableFilter<"Client"> | string | null
+    created_at?: DateTimeNullableFilter<"Client"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Client"> | Date | string | null
   }
 
   export type InvoiceUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -24825,6 +25785,10 @@ export namespace Prisma {
     observations?: StringNullableFilter<"Invoice"> | string | null
     status?: EnumInvoiceStatusFilter<"Invoice"> | $Enums.InvoiceStatus
     locked?: BoolNullableFilter<"Invoice"> | boolean | null
+    created_by?: StringNullableFilter<"Invoice"> | string | null
+    updated_by?: StringNullableFilter<"Invoice"> | string | null
+    created_at?: DateTimeNullableFilter<"Invoice"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"Invoice"> | Date | string | null
   }
 
   export type AccountsReceivableUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -24918,6 +25882,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     clients?: ClientCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     accounts_receivable?: AccountsReceivableCreateNestedManyWithoutCompanyInput
@@ -24946,6 +25914,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     clients?: ClientUncheckedCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutCompanyInput
@@ -24961,12 +25933,20 @@ export namespace Prisma {
     id?: string
     name: string
     description?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type SpecialtyUncheckedCreateWithoutProfessionalsInput = {
     id?: string
     name: string
     description?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type SpecialtyCreateOrConnectWithoutProfessionalsInput = {
@@ -25077,6 +26057,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clients?: ClientUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     accounts_receivable?: AccountsReceivableUpdateManyWithoutCompanyNestedInput
@@ -25105,6 +26089,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     clients?: ClientUncheckedUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutCompanyNestedInput
@@ -25126,12 +26114,20 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SpecialtyUncheckedUpdateWithoutProfessionalsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceServiceItemUpsertWithWhereUniqueWithoutProfessionalInput = {
@@ -25201,6 +26197,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
     accounts_receivable?: AccountsReceivableCreateNestedManyWithoutCompanyInput
@@ -25229,6 +26229,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutCompanyInput
@@ -25286,6 +26290,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutInvoicesInput
     service_items?: InvoiceServiceItemCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsCreateNestedOneWithoutInvoiceInput
@@ -25316,6 +26324,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     service_items?: InvoiceServiceItemUncheckedCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedOneWithoutInvoiceInput
@@ -25405,6 +26417,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
     accounts_receivable?: AccountsReceivableUpdateManyWithoutCompanyNestedInput
@@ -25433,6 +26449,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUncheckedUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutCompanyNestedInput
@@ -25520,6 +26540,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutClientsInput
     invoices?: InvoiceCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableCreateNestedManyWithoutClientInput
@@ -25548,6 +26572,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     invoices?: InvoiceUncheckedCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutClientInput
   }
@@ -25590,6 +26618,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutClientsNestedInput
     invoices?: InvoiceUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUpdateManyWithoutClientNestedInput
@@ -25618,6 +26650,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invoices?: InvoiceUncheckedUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -25644,6 +26680,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalCreateNestedManyWithoutCompanyInput
     clients?: ClientCreateNestedManyWithoutCompanyInput
     accounts_receivable?: AccountsReceivableCreateNestedManyWithoutCompanyInput
@@ -25672,6 +26712,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutCompanyInput
     clients?: ClientUncheckedCreateNestedManyWithoutCompanyInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutCompanyInput
@@ -25705,6 +26749,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutClientsInput
     contacts?: ClientContactCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableCreateNestedManyWithoutClientInput
@@ -25733,6 +26781,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     contacts?: ClientContactUncheckedCreateNestedManyWithoutClientInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedManyWithoutClientInput
   }
@@ -25917,6 +26969,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUpdateManyWithoutCompanyNestedInput
     clients?: ClientUpdateManyWithoutCompanyNestedInput
     accounts_receivable?: AccountsReceivableUpdateManyWithoutCompanyNestedInput
@@ -25945,6 +27001,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUncheckedUpdateManyWithoutCompanyNestedInput
     clients?: ClientUncheckedUpdateManyWithoutCompanyNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutCompanyNestedInput
@@ -25984,6 +27044,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutClientsNestedInput
     contacts?: ClientContactUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUpdateManyWithoutClientNestedInput
@@ -26012,6 +27076,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contacts?: ClientContactUncheckedUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -26154,6 +27222,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutInvoicesInput
     client: ClientCreateNestedOneWithoutInvoicesInput
     retentions?: RetentionsCreateNestedOneWithoutInvoiceInput
@@ -26185,6 +27257,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     retentions?: RetentionsUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutInvoiceInput
@@ -26221,6 +27297,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutProfessionalsInput
     specialty?: SpecialtyCreateNestedOneWithoutProfessionalsInput
     accounts_payable?: AccountsPayableCreateNestedManyWithoutProfessionalInput
@@ -26254,6 +27334,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
@@ -26295,6 +27379,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutInvoicesNestedInput
     client?: ClientUpdateOneRequiredWithoutInvoicesNestedInput
     retentions?: RetentionsUpdateOneWithoutInvoiceNestedInput
@@ -26326,6 +27414,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     retentions?: RetentionsUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -26368,6 +27460,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutProfessionalsNestedInput
     specialty?: SpecialtyUpdateOneWithoutProfessionalsNestedInput
     accounts_payable?: AccountsPayableUpdateManyWithoutProfessionalNestedInput
@@ -26401,6 +27497,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
@@ -26426,6 +27526,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutInvoicesInput
     client: ClientCreateNestedOneWithoutInvoicesInput
     service_items?: InvoiceServiceItemCreateNestedManyWithoutInvoiceInput
@@ -26457,6 +27561,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     service_items?: InvoiceServiceItemUncheckedCreateNestedManyWithoutInvoiceInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutInvoiceInput
@@ -26500,6 +27608,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutInvoicesNestedInput
     client?: ClientUpdateOneRequiredWithoutInvoicesNestedInput
     service_items?: InvoiceServiceItemUpdateManyWithoutInvoiceNestedInput
@@ -26531,6 +27643,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     service_items?: InvoiceServiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -26558,6 +27674,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalCreateNestedManyWithoutCompanyInput
     clients?: ClientCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
@@ -26586,6 +27706,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutCompanyInput
     clients?: ClientUncheckedCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
@@ -26619,6 +27743,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutInvoicesInput
     client: ClientCreateNestedOneWithoutInvoicesInput
     service_items?: InvoiceServiceItemCreateNestedManyWithoutInvoiceInput
@@ -26650,6 +27778,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     service_items?: InvoiceServiceItemUncheckedCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutInvoiceInput
@@ -26682,6 +27814,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutClientsInput
     contacts?: ClientContactCreateNestedManyWithoutClientInput
     invoices?: InvoiceCreateNestedManyWithoutClientInput
@@ -26710,6 +27846,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     contacts?: ClientContactUncheckedCreateNestedManyWithoutClientInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutClientInput
   }
@@ -26725,6 +27865,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentInstallmentUncheckedCreateWithoutAccounts_receivableInput = {
@@ -26733,6 +27877,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentInstallmentCreateOrConnectWithoutAccounts_receivableInput = {
@@ -26778,6 +27926,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUpdateManyWithoutCompanyNestedInput
     clients?: ClientUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
@@ -26806,6 +27958,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUncheckedUpdateManyWithoutCompanyNestedInput
     clients?: ClientUncheckedUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
@@ -26845,6 +28001,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutInvoicesNestedInput
     client?: ClientUpdateOneRequiredWithoutInvoicesNestedInput
     service_items?: InvoiceServiceItemUpdateManyWithoutInvoiceNestedInput
@@ -26876,6 +28036,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     service_items?: InvoiceServiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -26914,6 +28078,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutClientsNestedInput
     contacts?: ClientContactUpdateManyWithoutClientNestedInput
     invoices?: InvoiceUpdateManyWithoutClientNestedInput
@@ -26942,6 +28110,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contacts?: ClientContactUncheckedUpdateManyWithoutClientNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutClientNestedInput
   }
@@ -26972,6 +28144,10 @@ export namespace Prisma {
     amount_paid?: FloatFilter<"PaymentInstallment"> | number
     discount?: FloatNullableFilter<"PaymentInstallment"> | number | null
     observations?: StringNullableFilter<"PaymentInstallment"> | string | null
+    created_by?: StringNullableFilter<"PaymentInstallment"> | string | null
+    updated_by?: StringNullableFilter<"PaymentInstallment"> | string | null
+    created_at?: DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"PaymentInstallment"> | Date | string | null
   }
 
   export type CompanyCreateWithoutAccounts_payableInput = {
@@ -26996,6 +28172,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalCreateNestedManyWithoutCompanyInput
     clients?: ClientCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceCreateNestedManyWithoutCompanyInput
@@ -27024,6 +28204,10 @@ export namespace Prisma {
     email?: string | null
     constitution_date?: Date | string | null
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutCompanyInput
     clients?: ClientUncheckedCreateNestedManyWithoutCompanyInput
     invoices?: InvoiceUncheckedCreateNestedManyWithoutCompanyInput
@@ -27057,6 +28241,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutInvoicesInput
     client: ClientCreateNestedOneWithoutInvoicesInput
     service_items?: InvoiceServiceItemCreateNestedManyWithoutInvoiceInput
@@ -27088,6 +28276,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     service_items?: InvoiceServiceItemUncheckedCreateNestedManyWithoutInvoiceInput
     retentions?: RetentionsUncheckedCreateNestedOneWithoutInvoiceInput
     accounts_receivable?: AccountsReceivableUncheckedCreateNestedOneWithoutInvoiceInput
@@ -27124,6 +28316,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutProfessionalsInput
     specialty?: SpecialtyCreateNestedOneWithoutProfessionalsInput
     invoiceServiceItems?: InvoiceServiceItemCreateNestedManyWithoutProfessionalInput
@@ -27157,6 +28353,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
@@ -27171,6 +28371,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedCreateWithoutAccounts_payableInput = {
@@ -27179,6 +28383,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentPayableInstallmentCreateOrConnectWithoutAccounts_payableInput = {
@@ -27224,6 +28432,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUpdateManyWithoutCompanyNestedInput
     clients?: ClientUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUpdateManyWithoutCompanyNestedInput
@@ -27252,6 +28464,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     constitution_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     professionals?: ProfessionalUncheckedUpdateManyWithoutCompanyNestedInput
     clients?: ClientUncheckedUpdateManyWithoutCompanyNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutCompanyNestedInput
@@ -27291,6 +28507,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutInvoicesNestedInput
     client?: ClientUpdateOneRequiredWithoutInvoicesNestedInput
     service_items?: InvoiceServiceItemUpdateManyWithoutInvoiceNestedInput
@@ -27322,6 +28542,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     service_items?: InvoiceServiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateOneWithoutInvoiceNestedInput
@@ -27364,6 +28588,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutProfessionalsNestedInput
     specialty?: SpecialtyUpdateOneWithoutProfessionalsNestedInput
     invoiceServiceItems?: InvoiceServiceItemUpdateManyWithoutProfessionalNestedInput
@@ -27397,6 +28625,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
@@ -27426,6 +28658,10 @@ export namespace Prisma {
     amount_paid?: FloatFilter<"PaymentPayableInstallment"> | number
     discount?: FloatNullableFilter<"PaymentPayableInstallment"> | number | null
     observations?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    created_by?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    updated_by?: StringNullableFilter<"PaymentPayableInstallment"> | string | null
+    created_at?: DateTimeNullableFilter<"PaymentPayableInstallment"> | Date | string | null
+    updated_at?: DateTimeNullableFilter<"PaymentPayableInstallment"> | Date | string | null
   }
 
   export type AccountsReceivableCreateWithoutInstallmentsInput = {
@@ -27610,6 +28846,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     company: CompanyCreateNestedOneWithoutProfessionalsInput
     invoiceServiceItems?: InvoiceServiceItemCreateNestedManyWithoutProfessionalInput
     accounts_payable?: AccountsPayableCreateNestedManyWithoutProfessionalInput
@@ -27642,6 +28882,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedCreateNestedManyWithoutProfessionalInput
     accounts_payable?: AccountsPayableUncheckedCreateNestedManyWithoutProfessionalInput
   }
@@ -27699,6 +28943,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ClientCreateManyCompanyInput = {
@@ -27723,6 +28971,10 @@ export namespace Prisma {
     email?: string | null
     is_simple_national_optant?: boolean
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type InvoiceCreateManyCompanyInput = {
@@ -27748,6 +29000,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type AccountsReceivableCreateManyCompanyInput = {
@@ -27805,6 +29061,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     specialty?: SpecialtyUpdateOneWithoutProfessionalsNestedInput
     invoiceServiceItems?: InvoiceServiceItemUpdateManyWithoutProfessionalNestedInput
     accounts_payable?: AccountsPayableUpdateManyWithoutProfessionalNestedInput
@@ -27837,6 +29097,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedUpdateManyWithoutProfessionalNestedInput
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutProfessionalNestedInput
   }
@@ -27868,6 +29132,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ClientUpdateWithoutCompanyInput = {
@@ -27892,6 +29160,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contacts?: ClientContactUpdateManyWithoutClientNestedInput
     invoices?: InvoiceUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUpdateManyWithoutClientNestedInput
@@ -27919,6 +29191,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     contacts?: ClientContactUncheckedUpdateManyWithoutClientNestedInput
     invoices?: InvoiceUncheckedUpdateManyWithoutClientNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateManyWithoutClientNestedInput
@@ -27946,6 +29222,10 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     is_simple_national_optant?: BoolFieldUpdateOperationsInput | boolean
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type InvoiceUpdateWithoutCompanyInput = {
@@ -27970,6 +29250,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     client?: ClientUpdateOneRequiredWithoutInvoicesNestedInput
     service_items?: InvoiceServiceItemUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUpdateOneWithoutInvoiceNestedInput
@@ -28000,6 +29284,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     service_items?: InvoiceServiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateOneWithoutInvoiceNestedInput
@@ -28029,6 +29317,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AccountsReceivableUpdateWithoutCompanyInput = {
@@ -28250,6 +29542,10 @@ export namespace Prisma {
     observations?: string | null
     status?: $Enums.InvoiceStatus
     locked?: boolean | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type AccountsReceivableCreateManyClientInput = {
@@ -28309,6 +29605,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutInvoicesNestedInput
     service_items?: InvoiceServiceItemUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUpdateOneWithoutInvoiceNestedInput
@@ -28339,6 +29639,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     service_items?: InvoiceServiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
     retentions?: RetentionsUncheckedUpdateOneWithoutInvoiceNestedInput
     accounts_receivable?: AccountsReceivableUncheckedUpdateOneWithoutInvoiceNestedInput
@@ -28368,6 +29672,10 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
     locked?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AccountsReceivableUpdateWithoutClientInput = {
@@ -28518,6 +29826,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentInstallmentUpdateWithoutAccounts_receivableInput = {
@@ -28526,6 +29838,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentInstallmentUncheckedUpdateWithoutAccounts_receivableInput = {
@@ -28534,6 +29850,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentInstallmentUncheckedUpdateManyWithoutAccounts_receivableInput = {
@@ -28542,6 +29862,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentPayableInstallmentCreateManyAccounts_payableInput = {
@@ -28550,6 +29874,10 @@ export namespace Prisma {
     amount_paid: number
     discount?: number | null
     observations?: string | null
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type PaymentPayableInstallmentUpdateWithoutAccounts_payableInput = {
@@ -28558,6 +29886,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedUpdateWithoutAccounts_payableInput = {
@@ -28566,6 +29898,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaymentPayableInstallmentUncheckedUpdateManyWithoutAccounts_payableInput = {
@@ -28574,6 +29910,10 @@ export namespace Prisma {
     amount_paid?: FloatFieldUpdateOperationsInput | number
     discount?: NullableFloatFieldUpdateOperationsInput | number | null
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ProfessionalCreateManySpecialtyInput = {
@@ -28603,6 +29943,10 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    created_by?: string | null
+    updated_by?: string | null
+    created_at?: Date | string | null
+    updated_at?: Date | string | null
   }
 
   export type ProfessionalUpdateWithoutSpecialtyInput = {
@@ -28631,6 +29975,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutProfessionalsNestedInput
     invoiceServiceItems?: InvoiceServiceItemUpdateManyWithoutProfessionalNestedInput
     accounts_payable?: AccountsPayableUpdateManyWithoutProfessionalNestedInput
@@ -28663,6 +30011,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     invoiceServiceItems?: InvoiceServiceItemUncheckedUpdateManyWithoutProfessionalNestedInput
     accounts_payable?: AccountsPayableUncheckedUpdateManyWithoutProfessionalNestedInput
   }
@@ -28694,6 +30046,10 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    created_by?: NullableStringFieldUpdateOperationsInput | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

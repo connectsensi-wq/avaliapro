@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // GET: listar todas as invoices
 export async function GET(req: Request) {
@@ -135,10 +136,16 @@ export async function POST(req: Request) {
     body.rps_date = body.rps_date ? new Date(body.rps_date) : null;
     body.accounts_receivable.due_date =  body.accounts_receivable.due_date ? new Date(body.accounts_receivable.due_date) : null
 
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
+
     const invoice = await db.invoice.create({
       data: {
         ...body, // só dados válidos de Invoice
         issue_date: new Date(body.issue_date),
+        created_at: now,
+        updated_at: now,
+        ...(userName ? { created_by: userName, updated_by: userName } : {}),
 
         // Criar itens relacionados (InvoiceServiceItem)
         service_items: body.service_items

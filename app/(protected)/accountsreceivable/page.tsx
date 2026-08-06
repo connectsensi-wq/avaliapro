@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, RotateCcw, ArrowDownFromLine, TrendingUp, Wallet } from "lucide-react";
+import { Search, RotateCcw, ArrowDownFromLine, TrendingUp, Wallet, BanknoteArrowUp } from "lucide-react";
 import { format } from "date-fns";
 import { AccountsReceivable } from "@/src/types/payment";
 import { Client } from "@/src/types/client";
@@ -323,7 +323,7 @@ export default function AccountsReceivablePage() {
             placeholder="Buscar por cliente, valor, status ou documento..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="pl-10 bg-banner-via border-border text-white placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
+            className="pl-10 border-border placeholder:text-muted-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
           />
         </div>
 
@@ -332,14 +332,14 @@ export default function AccountsReceivablePage() {
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-36 bg-banner-via border-border text-white rounded-xl text-xs"
+            className="w-36 border-border rounded-xl text-xs"
           />
           <span className="text-xs text-muted-foreground">até</span>
           <Input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-36 bg-banner-via border-border text-white rounded-xl text-xs"
+            className="w-36 border-border rounded-xl text-xs"
           />
         </div>
 
@@ -347,7 +347,7 @@ export default function AccountsReceivablePage() {
           variant="outline"
           size="sm"
           onClick={handleClear}
-          className="bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-foreground border-border rounded-xl text-xs font-semibold"
+          className="h-9 bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-foreground border-border rounded-xl text-xs font-semibold"
         >
           <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
           Limpar Filtros
@@ -357,8 +357,11 @@ export default function AccountsReceivablePage() {
       {/* Receivable Items List */}
       <div className="space-y-4">
         {isLoading ? (
-          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-border rounded-2xl">
-            <div className="animate-pulse">Carregando contas a receber...</div>
+          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-none rounded-2xl">
+            <div className="animate-pulse flex flex-col items-center justify-center gap-2 text-sm font-semibold">
+              <BanknoteArrowUp className="w-15 h-15 text-primary" />
+              Carregando contas a receber...
+            </div>
           </div>
         ) : accountsWithStatus.length === 0 ? (
           <div className="p-12 text-center text-muted-foreground bg-card border border-border rounded-2xl p-6">

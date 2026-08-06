@@ -7,7 +7,7 @@ import { Label } from "../ui/label";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Button } from "../ui/button";
-import { RotateCcw, Search } from "lucide-react";
+import { Funnel, RotateCcw, Search } from "lucide-react";
 import { Input } from "../ui/input";
 
 export interface InvoiceFiltersData {
@@ -73,17 +73,21 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
   };
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-6 border-none shadow-xl">
       <CardHeader>
-        <CardTitle className="text-lg text-foreground">Filtros de Busca</CardTitle>
+        <CardTitle className="text-lg text-foreground flex items-center gap-2">
+          <Funnel className="mr-2 h-5 w-5" />
+          Filtros de Busca
+
+        </CardTitle>
       </CardHeader>
       <CardContent>
         {/* 
-      Grid responsivo ajustado:
-      - Mobile (default): 1 coluna (empilhado)
-      - Tablet (sm / md): 2 a 3 colunas balanceadas
-      - Desktop (lg): 6 colunas para encaixar perfeitamente todos os campos por linha
-    */}
+        Grid responsivo:
+        - Mobile (default): 1 coluna (empilhado)
+        - Tablet (sm / md): 2 a 3 colunas balanceadas
+        - Desktop (lg): 6 colunas para encaixar perfeitamente todos os campos por linha
+      */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
 
           {/* Número da Nota (Ocupa 1 coluna no desktop, 1 no mobile/tablet) */}
@@ -169,14 +173,12 @@ const InvoiceFilters: FC<InvoiceFiltersProps> = ({ onFilter }) => {
 
         {/* Botões de Ação: Empilhados no mobile para melhor usabilidade de toque, alinhados à direita no tablet/desktop */}
         <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end pt-2 border-t border-border/40">
-          <Button
-            variant="outline"
+          <button
             onClick={handleClear}
-            className="w-full sm:w-auto bg-slate-800 hover:bg-cyan-800 text-white hover:text-white rounded-xl"
+            className="text-[11px] text-slate-400 hover:text-foreground underline transition-colors"
           >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Limpar Filtros
-          </Button>
+            Limpar filtro
+          </button>
           <Button
             variant="outline"
             onClick={handleSearch}

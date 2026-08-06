@@ -15,7 +15,7 @@ import { Service } from "@/src/types/entities";
 import { InvoiceStatus } from "@/src/types/enums";
 import { Invoice } from "@/src/types/invoice";
 import { Professional } from "@/src/types/professional";
-import { ArrowDownFromLine, Edit, FileText, Lock, Plus } from "lucide-react";
+import { ArrowDownFromLine, Edit, FileText, Lock, Plus, ReceiptText } from "lucide-react";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
@@ -359,8 +359,11 @@ export default function InvoicesPage() {
       {/* Lista de Cards Individualizados de Notas Fiscais */}
       <div className="space-y-4">
         {isLoading ? (
-          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-border rounded-2xl">
-            <div className="animate-pulse">Carregando notas fiscais...</div>
+          <div className="p-12 text-center text-muted-foreground text-xs font-medium bg-card border border-none shadow-xl rounded-2xl">
+            <div className="animate-pulse flex flex-col items-center justify-center gap-2 text-sm font-semibold">
+              <ReceiptText className="w-15 h-15 text-primary" />
+              Carregando contas a receber...
+            </div>
           </div>
         ) : filteredInvoices.length > 0 ? (
           filteredInvoices.map((invoice) => (
@@ -390,7 +393,7 @@ export default function InvoicesPage() {
           setEditingInvoice(null);
         }}
       >
-        <DialogContent className="sm:max-w-6xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+        <DialogContent className="sm:max-w-6xl max-h-[90vh] flex flex-col bg-card border-none text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
           <DialogHeader className="border-b border-border pb-3 shrink-0">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />
@@ -415,7 +418,7 @@ export default function InvoicesPage() {
 
       {/* Details Dialog */}
       <Dialog open={!!selectedInvoice} onOpenChange={() => setSelectedInvoice(null)}>
-        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-card border-border text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
+        <DialogContent className="sm:max-w-4xl max-h-[90vh] flex flex-col bg-card border-none shadow-xl text-foreground shadow-2xl rounded-2xl overflow-hidden p-5 sm:p-6">
           <DialogHeader className="border-b border-border pb-3 shrink-0">
             <DialogTitle className="text-lg font-bold text-foreground flex items-center gap-2">
               <FileText className="w-5 h-5 text-primary" />

@@ -39,10 +39,10 @@ function PayableItemComponent({
   };
 
   return (
-    <Card className="bg-card py-0 border-card-border hover:border-primary/40 transition-all duration-200 rounded-2xl shadow-md overflow-hidden">
+    <Card className="bg-card py-0 border-none hover:shadow-2xl hover:-translate-y-1 transition-all duration-200 rounded-2xl shadow-xl overflow-hidden">
       <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex-1 min-w-0 space-y-2 w-full">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2.5">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-300 pb-2.5">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
               <span className="inline-flex items-center gap-1 font-bold text-primary bg-secondary px-2 py-0.5 rounded border border-border">
                 <FileText className="w-3.5 h-3.5" /> NFS-e #{acc.document}

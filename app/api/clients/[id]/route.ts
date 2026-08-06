@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // PUT - atualizar cliente
 export async function PUT(
@@ -11,6 +12,8 @@ export async function PUT(
 
   try {
     const data = await req.json();
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
 
     // Converter datas se vierem como string
     if (data.constitution_date) {
@@ -25,6 +28,8 @@ export async function PUT(
       where: { id },
       data: {
         ...data,
+        updated_at: now,
+        ...(userName ? { updated_by: userName } : {}),
         contacts: {
           deleteMany: contactsData
             .filter((c: any) => c.delete)

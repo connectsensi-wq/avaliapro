@@ -134,11 +134,11 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
   const isComparative = viewMode === "comparativo_receita" || viewMode === "comparativo_taxa_admin";
 
   return (
-    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
-      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[#003B35]">
+    <Card className="bg-transparent backdrop-blur-2xl border border-white/60 rounded-3xl shadow-xl overflow-hidden py-8 px-4 transition-all duration-300">
+      <CardHeader className="px-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-300">
         <div className="space-y-1">
           <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
-            <div className="p-2 rounded-lg bg-[#00F5A0]/10 border border-[#00F5A0]/20 text-[#00F5A0]">
+            <div className="p-2 rounded-lg bg-emerald-600/10 border border-emerald-600/20 text-emerald-600">
               <BarChart2 className="h-5 w-5" />
             </div>
             Desempenho Operacional Mensal
@@ -194,14 +194,14 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-6">
+      <CardContent className="pt-6 px-0">
         <ResponsiveContainer width="100%" height={305}>
           <BarChart
             // 1. Removido o layout="vertical"
             data={chartData}
             barCategoryGap="18%"
             barGap={3}
-            margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
+            margin={{ top: 10, right: -20, left: -10, bottom: 10 }}
           >
             <defs>
               {/* 5. Gradientes ajustados para baixo -> cima (y1="1" y2="0") */}
@@ -291,7 +291,7 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
                 dataKey="payable"
                 fill="url(#barSky)"
                 name={`Taxa Admin ${activeYear}`}
-                radius={[6, 6, 0, 0]}
+                radius={[10, 10, 0, 0]}
                 barSize={30}
               />
             )}
@@ -301,7 +301,7 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
                 dataKey="payable"
                 fill="url(#barSky)"
                 name={`Taxa Admin ${activeYear}`}
-                radius={[6, 6, 0, 0]}
+                radius={[10, 10, 0, 0]}
                 barSize={18}
               />
             )}

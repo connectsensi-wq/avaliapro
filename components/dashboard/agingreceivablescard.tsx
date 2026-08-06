@@ -125,10 +125,10 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
   ];
 
   return (
-    <Card className="bg-card border border-border rounded-2xl shadow-lg shadow-black/20 overflow-hidden">
+    <Card className="bg-white/70 backdrop-blur-xl border border-white/60 p-4 rounded-3xl shadow-xl overflow-hidden transition-all duration-300">
       {/* Cabeçalho com Filtro Select e Resumo de Total */}
-      <CardHeader className="border-b border-[#003B35] pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <CardTitle className="flex items-center gap-2.5 text-base font-bold text-foreground">
+      <CardHeader className="px-0 py-4 border-b border-slate-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <CardTitle className="px-0 flex items-center gap-2.5 text-base font-bold text-foreground">
           <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
             <ShieldAlert className="h-5 w-5" />
           </div>
@@ -161,7 +161,7 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
             </select>
           </div>
 
-          <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
+          <span className="hidden sm:flex text-xs font-bold px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
             R${" "}
             {totalOverdueAmount.toLocaleString("pt-BR", {
               minimumFractionDigits: 2,
@@ -171,7 +171,7 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
         </div>
       </CardHeader>
 
-      <CardContent className="p-4  sm:p-6 space-y-6">
+      <CardContent className="px-0  sm:p-6 space-y-6">
         {/* Resumo Interativo das 4 Faixas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {bracketsSummary.map((item) => {
@@ -205,14 +205,14 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
         {/* Lista Detalhada dos Títulos Vencidos */}
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between border-b border-[#003B35] pb-2">
-            <h4 className="text-xs font-bold text-[#00F5A0] uppercase tracking-wider flex items-center gap-2">
+            <h4 className="text-xs font-bold text-emerald-500 uppercase tracking-wider flex items-center gap-2">
               <FileText className="w-3.5 h-3.5" />
               Detalhamento dos Títulos Vencidos ({filteredList.length})
             </h4>
             {selectedRange !== "all" && (
               <button
                 onClick={() => setSelectedRange("all")}
-                className="text-[11px] text-slate-400 hover:text-white underline transition-colors"
+                className="text-[11px] text-slate-400 hover:text-foreground underline transition-colors"
               >
                 Limpar filtro
               </button>
@@ -246,7 +246,7 @@ export default function AgingReceivablesCard({ data = [] }: AgingReceivablesCard
                 return (
                   <div
                     key={item.id}
-                    className="p-3.5 sm:p-4 rounded-xl bg-card border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-border/80 transition-all shadow-sm"
+                    className="p-3.5 sm:p-4 rounded-xl bg-white border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-border/80 transition-all shadow-sm"
                   >
                     <div className="space-y-1 overflow-hidden">
                       <div className="flex flex-wrap items-center gap-2">

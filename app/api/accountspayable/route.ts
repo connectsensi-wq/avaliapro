@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // GET
 // GET: listar todas as accountsPayable
@@ -128,6 +129,9 @@ export async function POST(req: Request) {
       );
     }
 
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
+
     const result = await db.$transaction(async (tx) => {
 
       const payable = await tx.accountsPayable.findUnique({
@@ -166,6 +170,9 @@ export async function POST(req: Request) {
           payment_date: new Date(payment_date),
           discount,
           observations: observations?.trim() || null,
+          created_at: now,
+          updated_at: now,
+          ...(userName ? { created_by: userName, updated_by: userName } : {}),
         },
       });
 

@@ -226,7 +226,7 @@ export default function ProfessionalsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {isLoading
           ? Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="animate-pulse h-48 bg-card border border-border rounded-2xl"></div>
+            <div key={i} className="animate-pulse h-48 bg-card border-none rounded-2xl"></div>
           ))
           : filteredProfessionals.length === 0 ? (
             <div className="col-span-full text-center py-12 bg-card border border-border rounded-2xl p-6">
@@ -238,7 +238,7 @@ export default function ProfessionalsPage() {
             filteredProfessionals.map((professional) => (
               <Card
                 key={professional.id}
-                className="bg-card border-border transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
+                className="bg-card border-none transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 hover:overflow-hidden flex flex-col justify-between"
               >
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-3">
@@ -266,7 +266,7 @@ export default function ProfessionalsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0 space-y-3">
-                  <div className="space-y-1 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-xl border border-border">
+                  <div className="space-y-1 text-xs text-muted-foreground bg-secondary/50 p-3 rounded-xl border-none">
                     <p className="font-mono flex justify-between">
                       <span className="text-muted-foreground">CPF:</span>
                       <span className="text-foreground font-semibold">{formatCpf(professional.cpf) || "N/A"}</span>

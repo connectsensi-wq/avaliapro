@@ -1,7 +1,8 @@
-  import { NextResponse } from "next/server";
-  import db from "@/lib/db";
+import { NextResponse } from "next/server";
+import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
-  // GET: listar todas as accountsPayable
+// GET: listar todas as accountsPayable
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -69,6 +70,9 @@ export async function POST(req: Request) {
       );
     }
 
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
+
     // 🔄 TRANSACTION (CRÍTICO)
     const result = await db.$transaction(async (tx) => {
 
@@ -108,6 +112,9 @@ export async function POST(req: Request) {
           payment_date: new Date(payment_date),
           discount,
           observations: observations || null,
+          created_at: now,
+          updated_at: now,
+          ...(userName ? { created_by: userName, updated_by: userName } : {}),
         },
       });
 

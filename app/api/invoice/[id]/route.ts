@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import db from "@/lib/db";
+import { getClerkUserName, getBRTDate } from "@/lib/get-user-name";
 
 // PUT: atualizar uma invoice
 export async function PUT(
@@ -14,6 +15,8 @@ export async function PUT(
 
   try {
     const body = await req.json();
+    const userName = await getClerkUserName();
+    const now = getBRTDate();
 
     const sanitizeNumber = (value: any) => round2(Number(value) || 0);
 
@@ -44,6 +47,8 @@ export async function PUT(
         base_amount: sanitizeNumber(body.base_amount),
         iss_amount: sanitizeNumber(body.iss_amount),
         total_retentions: sanitizeNumber(body.total_retentions),
+        updated_at: now,
+        ...(userName ? { updated_by: userName } : {}),
 
         // relacionamento client
         client: body.client_id

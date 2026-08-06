@@ -63,9 +63,9 @@ export default function TaxesPage() {
 
   if (isLoading) {
     return (
-      <div className="p-12 text-center text-muted-foreground bg-card border border-border rounded-2xl space-y-2 max-w-7xl mx-auto">
+      <div className="p-12 text-center text-muted-foreground bg-card border border-none shadow-xl rounded-2xl space-y-2 max-w-7xl mx-auto">
         <Percent className="w-8 h-8 text-primary animate-spin mx-auto" />
-        <p className="font-semibold text-foreground text-sm">Carregando projeção de impostos...</p>
+        <p className="font-semibold text-muted-foreground text-sm">Carregando projeção de impostos...</p>
       </div>
     );
   }
