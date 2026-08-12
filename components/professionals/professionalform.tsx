@@ -267,20 +267,20 @@ export default function ProfessionalForm({
   const existingCpfMatch =
     !professional?.id && cleanTypedCpf.length === 11
       ? existingProfessionals.find(
-          (p) => (p.cpf || "").replace(/\D/g, "") === cleanTypedCpf
-        )
+        (p) => (p.cpf || "").replace(/\D/g, "") === cleanTypedCpf
+      )
       : null;
 
   const existingEmailMatch =
     !professional?.id &&
-    formData.email &&
-    formData.email.includes("@") &&
-    !existingCpfMatch
+      formData.email &&
+      formData.email.includes("@") &&
+      !existingCpfMatch
       ? existingProfessionals.find(
-          (p) =>
-            p.email?.toLowerCase().trim() ===
-            formData.email?.toLowerCase().trim()
-        )
+        (p) =>
+          p.email?.toLowerCase().trim() ===
+          formData.email?.toLowerCase().trim()
+      )
       : null;
 
   return (
@@ -380,9 +380,9 @@ export default function ProfessionalForm({
                     <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue placeholder="Selecione uma especialidade..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border text-popover-foreground">
+                    <SelectContent className="bg-popover border-border text-foreground">
                       {specialties.map((s) => (
-                        <SelectItem key={s.id} value={s.id} className="focus:bg-accent focus:text-accent-foreground">
+                        <SelectItem key={s.id} value={s.id} className="focus:bg-primary focus:text-white text-xs">
                           {s.name}
                         </SelectItem>
                       ))}
@@ -502,9 +502,9 @@ export default function ProfessionalForm({
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {addressTypes.map((a) => (
-                      <SelectItem key={a.value} value={a.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={a.value} value={a.value} className="focus:bg-primary focus:text-white text-xs">
                         {a.label}
                       </SelectItem>
                     ))}
@@ -567,9 +567,9 @@ export default function ProfessionalForm({
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione um estado..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {states.map((s) => (
-                      <SelectItem key={s.value} value={s.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={s.value} value={s.value} className="focus:bg-primary focus:text-white text-xs">
                         {s.label}
                       </SelectItem>
                     ))}
@@ -617,10 +617,10 @@ export default function ProfessionalForm({
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
-                    <SelectItem value="corrente" className="focus:bg-accent focus:text-accent-foreground">Corrente</SelectItem>
-                    <SelectItem value="poupanca" className="focus:bg-accent focus:text-accent-foreground">Poupança</SelectItem>
-                    <SelectItem value="pagamento" className="focus:bg-accent focus:text-accent-foreground">Pagamento</SelectItem>
+                  <SelectContent className="bg-popover border-border text-foreground">
+                    <SelectItem value="corrente" className="focus:bg-primary focus:text-white text-xs">Corrente</SelectItem>
+                    <SelectItem value="poupanca" className="focus:bg-primary focus:text-white text-xs">Poupança</SelectItem>
+                    <SelectItem value="pagamento" className="focus:bg-primary focus:text-white text-xs">Pagamento</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -638,9 +638,9 @@ export default function ProfessionalForm({
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {pixKeyTypes.map((t) => (
-                      <SelectItem key={t.value} value={t.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={t.value} value={t.value} className="focus:bg-primary focus:text-white text-xs">
                         {t.label}
                       </SelectItem>
                     ))}
@@ -678,9 +678,9 @@ export default function ProfessionalForm({
                 <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-popover border-border text-popover-foreground">
-                  <SelectItem value="active" className="focus:bg-accent focus:text-accent-foreground">Ativo</SelectItem>
-                  <SelectItem value="inactive" className="focus:bg-accent focus:text-accent-foreground">Inativo</SelectItem>
+                <SelectContent className="bg-popover border-border text-foreground">
+                  <SelectItem value="active" className="focus:bg-primary focus:text-white text-xs">Ativo</SelectItem>
+                  <SelectItem value="inactive" className="focus:bg-primary focus:text-white text-xs">Inativo</SelectItem>
                 </SelectContent>
               </Select>
             </div>

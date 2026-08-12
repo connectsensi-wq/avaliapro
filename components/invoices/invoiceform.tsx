@@ -513,9 +513,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue id="operation_nature" placeholder="Selecione a natureza" />
                   </SelectTrigger>
-                  <SelectContent className="bg-background border-border text-foreground rounded-xl">
+                  <SelectContent className="bg-popover border-border text-foreground rounded-xl">
                     {operationNatures.map((s) => (
-                      <SelectItem key={s.value} value={s.value} className="focus:bg-accent focus:text-accent-foreground text-xs">
+                      <SelectItem key={s.value} value={s.value} className="focus:bg-primary focus:text-white text-xs">
                         {s.label}
                       </SelectItem>
                     ))}
@@ -530,9 +530,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                     <SelectTrigger className="w-full bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue placeholder="Selecione o serviço..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
+                    <SelectContent className="bg-popover border-border text-foreground rounded-xl">
                       {services.map((service) => (
-                        <SelectItem key={service.id} value={service.code.toString()} className="focus:bg-accent focus:text-accent-foreground text-xs">
+                        <SelectItem key={service.id} value={service.code.toString()} className="focus:bg-primary focus:text-white text-xs">
                           {service.code} - {service.description}
                         </SelectItem>
                       ))}
@@ -548,9 +548,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                     <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue placeholder="Selecione o estado..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
+                    <SelectContent className="bg-popover border-border text-foreground rounded-xl">
                       {states.map((state) => (
-                        <SelectItem key={state.value} value={state.value} className="focus:bg-accent focus:text-accent-foreground text-xs">
+                        <SelectItem key={state.value} value={state.value} className="focus:bg-primary focus:text-white text-xs">
                           {state.value} - {state.label}
                         </SelectItem>
                       ))}
@@ -597,17 +597,23 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                     />
                   </div>
                   <div className="md:col-span-2 space-y-1.5">
-                    <Label className="text-xs font-medium text-muted-foreground">Profissional Médico *</Label>
+                    <Label className="text-xs font-medium text-muted-foreground">Adicione o Profissional *</Label>
                     <Select value={currentService.professional_id} onValueChange={handleProfessionalChange}>
                       <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                         <SelectValue placeholder="Selecione um profissional..." />
                       </SelectTrigger>
-                      <SelectContent className="bg-popover border-border text-popover-foreground rounded-xl">
-                        {professionals.map((prof) => (
-                          <SelectItem key={prof.id} value={prof.id} className="focus:bg-accent focus:text-accent-foreground text-xs">
-                            {prof.name}
-                          </SelectItem>
-                        ))}
+                      <SelectContent className="bg-popover border-border text-foreground rounded-xl">
+                        {professionals
+                          .filter((prof) => prof.status === "active")
+                          .map((prof) => (
+                            <SelectItem
+                              key={prof.id}
+                              value={prof.id}
+                              className="focus:bg-primary focus:text-white text-xs"
+                            >
+                              {prof.name}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   </div>

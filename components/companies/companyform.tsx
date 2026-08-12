@@ -155,9 +155,9 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                     <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border text-popover-foreground">
-                      <SelectItem value="cnpj">CNPJ</SelectItem>
-                      <SelectItem value="cpf">CPF</SelectItem>
+                    <SelectContent className="bg-popover border-border text-foreground">
+                      <SelectItem value="cnpj" className="focus:bg-primary focus:text-white text-xs">CNPJ</SelectItem>
+                      <SelectItem value="cpf" className="focus:bg-primary focus:text-white text-xs">CPF</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -243,9 +243,9 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {addressTypes.map((a) => (
-                      <SelectItem key={a.value} value={a.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={a.value} value={a.value} className="focus:bg-primary focus:text-white text-xs">
                         {a.label}
                       </SelectItem>
                     ))}
@@ -308,9 +308,9 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione um estado..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {states.map((s) => (
-                      <SelectItem key={s.value} value={s.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={s.value} value={s.value} className="focus:bg-primary focus:text-white text-xs">
                         {s.label}
                       </SelectItem>
                     ))}
@@ -389,9 +389,9 @@ export default function CompanyForm({ company, onSave, onCancel }: CompanyFormPr
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
-                    <SelectItem value="active" className="focus:bg-accent focus:text-accent-foreground">Ativo</SelectItem>
-                    <SelectItem value="inactive" className="focus:bg-accent focus:text-accent-foreground">Inativo</SelectItem>
+                  <SelectContent className="bg-popover border-border text-foreground">
+                    <SelectItem value="active" className="focus:bg-primary focus:text-white text-xs">Ativo</SelectItem>
+                    <SelectItem value="inactive" className="focus:bg-primary focus:text-white text-xs">Inativo</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -23,6 +23,7 @@ export async function GET(req: Request) {
         name: true,
         cpf: true,
         registration_number: true,
+        status: true,
         bank: true,
         account_type: true,
         agency: true,
@@ -30,12 +31,11 @@ export async function GET(req: Request) {
         pix_key_type: true,
         pix_key: true,
         admin_fee_percentage: true,
+        specialtyId: true,
       },
     });
 
-    return NextResponse.json(professionals
-
-    );
+    return NextResponse.json(professionals);
   } catch (error) {
     console.error("GET /professionals error:", error);
     return NextResponse.json({ error: "Erro ao buscar professionals" }, { status: 500 });

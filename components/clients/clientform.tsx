@@ -280,9 +280,9 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border text-popover-foreground">
+                    <SelectContent className="bg-popover border-border text-foreground">
                       {Object.values(DocumentType).map((d) => (
-                        <SelectItem key={d} value={d} className="focus:bg-accent focus:text-accent-foreground">
+                        <SelectItem key={d} value={d} className="focus:bg-primary focus:text-white">
                           {d.toUpperCase()}
                         </SelectItem>
                       ))}
@@ -363,9 +363,9 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                     <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-popover border-border text-popover-foreground">
-                      <SelectItem value="active" className="focus:bg-accent focus:text-accent-foreground">Ativo</SelectItem>
-                      <SelectItem value="inactive" className="focus:bg-accent focus:text-accent-foreground">Inativo</SelectItem>
+                    <SelectContent className="bg-popover border-border text-foreground">
+                      <SelectItem value="active" className="focus:bg-primary focus:text-white">Ativo</SelectItem>
+                      <SelectItem value="inactive" className="focus:bg-primary focus:text-white">Inativo</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -428,9 +428,9 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {addressTypes.map((t) => (
-                      <SelectItem key={t.value} value={t.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={t.value} value={t.value} className="focus:bg-primary focus:text-white">
                         {t.label}
                       </SelectItem>
                     ))}
@@ -493,9 +493,9 @@ export default function ClientForm({ client, onSave, onCancel }: ClientFormProps
                   <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
                     <SelectValue placeholder="Selecione um estado..." />
                   </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
+                  <SelectContent className="bg-popover border-border text-foreground">
                     {states.map((s) => (
-                      <SelectItem key={s.value} value={s.value} className="focus:bg-accent focus:text-accent-foreground">
+                      <SelectItem key={s.value} value={s.value} className="focus:bg-primary focus:text-white">
                         {s.label}
                       </SelectItem>
                     ))}
