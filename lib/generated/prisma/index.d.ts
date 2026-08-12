@@ -3924,6 +3924,13 @@ export namespace Prisma {
     state: $Enums.State | null
     admin_fee_percentage: number | null
     status: $Enums.Status | null
+    certificate_type: string | null
+    certificate_subject: string | null
+    certificate_cpf: string | null
+    certificate_issuer: string | null
+    certificate_serial_number: string | null
+    certificate_valid_from: Date | null
+    certificate_valid_to: Date | null
     created_by: string | null
     updated_by: string | null
     created_at: Date | null
@@ -3958,6 +3965,13 @@ export namespace Prisma {
     state: $Enums.State | null
     admin_fee_percentage: number | null
     status: $Enums.Status | null
+    certificate_type: string | null
+    certificate_subject: string | null
+    certificate_cpf: string | null
+    certificate_issuer: string | null
+    certificate_serial_number: string | null
+    certificate_valid_from: Date | null
+    certificate_valid_to: Date | null
     created_by: string | null
     updated_by: string | null
     created_at: Date | null
@@ -3992,6 +4006,13 @@ export namespace Prisma {
     state: number
     admin_fee_percentage: number
     status: number
+    certificate_type: number
+    certificate_subject: number
+    certificate_cpf: number
+    certificate_issuer: number
+    certificate_serial_number: number
+    certificate_valid_from: number
+    certificate_valid_to: number
     created_by: number
     updated_by: number
     created_at: number
@@ -4036,6 +4057,13 @@ export namespace Prisma {
     state?: true
     admin_fee_percentage?: true
     status?: true
+    certificate_type?: true
+    certificate_subject?: true
+    certificate_cpf?: true
+    certificate_issuer?: true
+    certificate_serial_number?: true
+    certificate_valid_from?: true
+    certificate_valid_to?: true
     created_by?: true
     updated_by?: true
     created_at?: true
@@ -4070,6 +4098,13 @@ export namespace Prisma {
     state?: true
     admin_fee_percentage?: true
     status?: true
+    certificate_type?: true
+    certificate_subject?: true
+    certificate_cpf?: true
+    certificate_issuer?: true
+    certificate_serial_number?: true
+    certificate_valid_from?: true
+    certificate_valid_to?: true
     created_by?: true
     updated_by?: true
     created_at?: true
@@ -4104,6 +4139,13 @@ export namespace Prisma {
     state?: true
     admin_fee_percentage?: true
     status?: true
+    certificate_type?: true
+    certificate_subject?: true
+    certificate_cpf?: true
+    certificate_issuer?: true
+    certificate_serial_number?: true
+    certificate_valid_from?: true
+    certificate_valid_to?: true
     created_by?: true
     updated_by?: true
     created_at?: true
@@ -4225,6 +4267,13 @@ export namespace Prisma {
     state: $Enums.State | null
     admin_fee_percentage: number
     status: $Enums.Status
+    certificate_type: string | null
+    certificate_subject: string | null
+    certificate_cpf: string | null
+    certificate_issuer: string | null
+    certificate_serial_number: string | null
+    certificate_valid_from: Date | null
+    certificate_valid_to: Date | null
     created_by: string | null
     updated_by: string | null
     created_at: Date | null
@@ -4278,6 +4327,13 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    certificate_type?: boolean
+    certificate_subject?: boolean
+    certificate_cpf?: boolean
+    certificate_issuer?: boolean
+    certificate_serial_number?: boolean
+    certificate_valid_from?: boolean
+    certificate_valid_to?: boolean
     created_by?: boolean
     updated_by?: boolean
     created_at?: boolean
@@ -4317,6 +4373,13 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    certificate_type?: boolean
+    certificate_subject?: boolean
+    certificate_cpf?: boolean
+    certificate_issuer?: boolean
+    certificate_serial_number?: boolean
+    certificate_valid_from?: boolean
+    certificate_valid_to?: boolean
     created_by?: boolean
     updated_by?: boolean
     created_at?: boolean
@@ -4353,6 +4416,13 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    certificate_type?: boolean
+    certificate_subject?: boolean
+    certificate_cpf?: boolean
+    certificate_issuer?: boolean
+    certificate_serial_number?: boolean
+    certificate_valid_from?: boolean
+    certificate_valid_to?: boolean
     created_by?: boolean
     updated_by?: boolean
     created_at?: boolean
@@ -4389,13 +4459,20 @@ export namespace Prisma {
     state?: boolean
     admin_fee_percentage?: boolean
     status?: boolean
+    certificate_type?: boolean
+    certificate_subject?: boolean
+    certificate_cpf?: boolean
+    certificate_issuer?: boolean
+    certificate_serial_number?: boolean
+    certificate_valid_from?: boolean
+    certificate_valid_to?: boolean
     created_by?: boolean
     updated_by?: boolean
     created_at?: boolean
     updated_at?: boolean
   }
 
-  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "code" | "clerkUserId" | "name" | "cpf" | "registration_number" | "specialtyId" | "phone" | "birthday" | "email" | "bank" | "agency" | "account" | "account_type" | "pix_key_type" | "pix_key" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "admin_fee_percentage" | "status" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["professional"]>
+  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "code" | "clerkUserId" | "name" | "cpf" | "registration_number" | "specialtyId" | "phone" | "birthday" | "email" | "bank" | "agency" | "account" | "account_type" | "pix_key_type" | "pix_key" | "address_type" | "street" | "number" | "complement" | "neighborhood" | "city" | "cep" | "state" | "admin_fee_percentage" | "status" | "certificate_type" | "certificate_subject" | "certificate_cpf" | "certificate_issuer" | "certificate_serial_number" | "certificate_valid_from" | "certificate_valid_to" | "created_by" | "updated_by" | "created_at" | "updated_at", ExtArgs["result"]["professional"]>
   export type ProfessionalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     specialty?: boolean | Professional$specialtyArgs<ExtArgs>
@@ -4448,6 +4525,13 @@ export namespace Prisma {
       state: $Enums.State | null
       admin_fee_percentage: number
       status: $Enums.Status
+      certificate_type: string | null
+      certificate_subject: string | null
+      certificate_cpf: string | null
+      certificate_issuer: string | null
+      certificate_serial_number: string | null
+      certificate_valid_from: Date | null
+      certificate_valid_to: Date | null
       created_by: string | null
       updated_by: string | null
       created_at: Date | null
@@ -4906,6 +4990,13 @@ export namespace Prisma {
     readonly state: FieldRef<"Professional", 'State'>
     readonly admin_fee_percentage: FieldRef<"Professional", 'Float'>
     readonly status: FieldRef<"Professional", 'Status'>
+    readonly certificate_type: FieldRef<"Professional", 'String'>
+    readonly certificate_subject: FieldRef<"Professional", 'String'>
+    readonly certificate_cpf: FieldRef<"Professional", 'String'>
+    readonly certificate_issuer: FieldRef<"Professional", 'String'>
+    readonly certificate_serial_number: FieldRef<"Professional", 'String'>
+    readonly certificate_valid_from: FieldRef<"Professional", 'DateTime'>
+    readonly certificate_valid_to: FieldRef<"Professional", 'DateTime'>
     readonly created_by: FieldRef<"Professional", 'String'>
     readonly updated_by: FieldRef<"Professional", 'String'>
     readonly created_at: FieldRef<"Professional", 'DateTime'>
@@ -18864,6 +18955,13 @@ export namespace Prisma {
     state: 'state',
     admin_fee_percentage: 'admin_fee_percentage',
     status: 'status',
+    certificate_type: 'certificate_type',
+    certificate_subject: 'certificate_subject',
+    certificate_cpf: 'certificate_cpf',
+    certificate_issuer: 'certificate_issuer',
+    certificate_serial_number: 'certificate_serial_number',
+    certificate_valid_from: 'certificate_valid_from',
+    certificate_valid_to: 'certificate_valid_to',
     created_by: 'created_by',
     updated_by: 'updated_by',
     created_at: 'created_at',
@@ -19524,6 +19622,13 @@ export namespace Prisma {
     state?: EnumStateNullableFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatFilter<"Professional"> | number
     status?: EnumStatusFilter<"Professional"> | $Enums.Status
+    certificate_type?: StringNullableFilter<"Professional"> | string | null
+    certificate_subject?: StringNullableFilter<"Professional"> | string | null
+    certificate_cpf?: StringNullableFilter<"Professional"> | string | null
+    certificate_issuer?: StringNullableFilter<"Professional"> | string | null
+    certificate_serial_number?: StringNullableFilter<"Professional"> | string | null
+    certificate_valid_from?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    certificate_valid_to?: DateTimeNullableFilter<"Professional"> | Date | string | null
     created_by?: StringNullableFilter<"Professional"> | string | null
     updated_by?: StringNullableFilter<"Professional"> | string | null
     created_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
@@ -19562,6 +19667,13 @@ export namespace Prisma {
     state?: SortOrderInput | SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    certificate_type?: SortOrderInput | SortOrder
+    certificate_subject?: SortOrderInput | SortOrder
+    certificate_cpf?: SortOrderInput | SortOrder
+    certificate_issuer?: SortOrderInput | SortOrder
+    certificate_serial_number?: SortOrderInput | SortOrder
+    certificate_valid_from?: SortOrderInput | SortOrder
+    certificate_valid_to?: SortOrderInput | SortOrder
     created_by?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
@@ -19603,6 +19715,13 @@ export namespace Prisma {
     state?: EnumStateNullableFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatFilter<"Professional"> | number
     status?: EnumStatusFilter<"Professional"> | $Enums.Status
+    certificate_type?: StringNullableFilter<"Professional"> | string | null
+    certificate_subject?: StringNullableFilter<"Professional"> | string | null
+    certificate_cpf?: StringNullableFilter<"Professional"> | string | null
+    certificate_issuer?: StringNullableFilter<"Professional"> | string | null
+    certificate_serial_number?: StringNullableFilter<"Professional"> | string | null
+    certificate_valid_from?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    certificate_valid_to?: DateTimeNullableFilter<"Professional"> | Date | string | null
     created_by?: StringNullableFilter<"Professional"> | string | null
     updated_by?: StringNullableFilter<"Professional"> | string | null
     created_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
@@ -19641,6 +19760,13 @@ export namespace Prisma {
     state?: SortOrderInput | SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    certificate_type?: SortOrderInput | SortOrder
+    certificate_subject?: SortOrderInput | SortOrder
+    certificate_cpf?: SortOrderInput | SortOrder
+    certificate_issuer?: SortOrderInput | SortOrder
+    certificate_serial_number?: SortOrderInput | SortOrder
+    certificate_valid_from?: SortOrderInput | SortOrder
+    certificate_valid_to?: SortOrderInput | SortOrder
     created_by?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
     created_at?: SortOrderInput | SortOrder
@@ -19683,6 +19809,13 @@ export namespace Prisma {
     state?: EnumStateNullableWithAggregatesFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatWithAggregatesFilter<"Professional"> | number
     status?: EnumStatusWithAggregatesFilter<"Professional"> | $Enums.Status
+    certificate_type?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    certificate_subject?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    certificate_cpf?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    certificate_issuer?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    certificate_serial_number?: StringNullableWithAggregatesFilter<"Professional"> | string | null
+    certificate_valid_from?: DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
+    certificate_valid_to?: DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
     created_by?: StringNullableWithAggregatesFilter<"Professional"> | string | null
     updated_by?: StringNullableWithAggregatesFilter<"Professional"> | string | null
     created_at?: DateTimeNullableWithAggregatesFilter<"Professional"> | Date | string | null
@@ -21009,6 +21142,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -21047,6 +21187,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -21081,6 +21228,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21119,6 +21273,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21155,6 +21316,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -21187,6 +21355,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21221,6 +21396,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22820,6 +23002,13 @@ export namespace Prisma {
     state?: SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    certificate_type?: SortOrder
+    certificate_subject?: SortOrder
+    certificate_cpf?: SortOrder
+    certificate_issuer?: SortOrder
+    certificate_serial_number?: SortOrder
+    certificate_valid_from?: SortOrder
+    certificate_valid_to?: SortOrder
     created_by?: SortOrder
     updated_by?: SortOrder
     created_at?: SortOrder
@@ -22858,6 +23047,13 @@ export namespace Prisma {
     state?: SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    certificate_type?: SortOrder
+    certificate_subject?: SortOrder
+    certificate_cpf?: SortOrder
+    certificate_issuer?: SortOrder
+    certificate_serial_number?: SortOrder
+    certificate_valid_from?: SortOrder
+    certificate_valid_to?: SortOrder
     created_by?: SortOrder
     updated_by?: SortOrder
     created_at?: SortOrder
@@ -22892,6 +23088,13 @@ export namespace Prisma {
     state?: SortOrder
     admin_fee_percentage?: SortOrder
     status?: SortOrder
+    certificate_type?: SortOrder
+    certificate_subject?: SortOrder
+    certificate_cpf?: SortOrder
+    certificate_issuer?: SortOrder
+    certificate_serial_number?: SortOrder
+    certificate_valid_from?: SortOrder
+    certificate_valid_to?: SortOrder
     created_by?: SortOrder
     updated_by?: SortOrder
     created_at?: SortOrder
@@ -25357,6 +25560,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -25393,6 +25603,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -25688,6 +25905,13 @@ export namespace Prisma {
     state?: EnumStateNullableFilter<"Professional"> | $Enums.State | null
     admin_fee_percentage?: FloatFilter<"Professional"> | number
     status?: EnumStatusFilter<"Professional"> | $Enums.Status
+    certificate_type?: StringNullableFilter<"Professional"> | string | null
+    certificate_subject?: StringNullableFilter<"Professional"> | string | null
+    certificate_cpf?: StringNullableFilter<"Professional"> | string | null
+    certificate_issuer?: StringNullableFilter<"Professional"> | string | null
+    certificate_serial_number?: StringNullableFilter<"Professional"> | string | null
+    certificate_valid_from?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    certificate_valid_to?: DateTimeNullableFilter<"Professional"> | Date | string | null
     created_by?: StringNullableFilter<"Professional"> | string | null
     updated_by?: StringNullableFilter<"Professional"> | string | null
     created_at?: DateTimeNullableFilter<"Professional"> | Date | string | null
@@ -27297,6 +27521,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -27334,6 +27565,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -27460,6 +27698,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27497,6 +27742,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28316,6 +28568,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -28353,6 +28612,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -28588,6 +28854,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28625,6 +28898,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28846,6 +29126,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -28882,6 +29169,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -28943,6 +29237,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -29061,6 +29362,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29097,6 +29405,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29132,6 +29447,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29943,6 +30265,13 @@ export namespace Prisma {
     state?: $Enums.State | null
     admin_fee_percentage?: number
     status?: $Enums.Status
+    certificate_type?: string | null
+    certificate_subject?: string | null
+    certificate_cpf?: string | null
+    certificate_issuer?: string | null
+    certificate_serial_number?: string | null
+    certificate_valid_from?: Date | string | null
+    certificate_valid_to?: Date | string | null
     created_by?: string | null
     updated_by?: string | null
     created_at?: Date | string | null
@@ -29975,6 +30304,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30011,6 +30347,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30046,6 +30389,13 @@ export namespace Prisma {
     state?: NullableEnumStateFieldUpdateOperationsInput | $Enums.State | null
     admin_fee_percentage?: FloatFieldUpdateOperationsInput | number
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    certificate_type?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_subject?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_cpf?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_issuer?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_serial_number?: NullableStringFieldUpdateOperationsInput | string | null
+    certificate_valid_from?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    certificate_valid_to?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_by?: NullableStringFieldUpdateOperationsInput | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

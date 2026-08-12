@@ -4,10 +4,9 @@ import { clerkClient } from "@clerk/nextjs/server";
 // PUT - Desbloqueia (desbane) um usuário Clerk
 export async function PUT(
   req: Request,
-  context: any
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { params } = context;
-  const { id: clerkUserId } = params;
+  const { id: clerkUserId } = await context.params;
 
   try {
     if (!clerkUserId) {

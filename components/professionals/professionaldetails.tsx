@@ -17,6 +17,8 @@ import {
   Hash,
   KeyRound,
   Loader2,
+  ShieldCheck,
+  FileCheck,
 } from "lucide-react";
 import { Professional } from "@/src/types/professional";
 import { Specialty } from "@/lib/generated/prisma";
@@ -162,6 +164,78 @@ export default function ProfessionalDetails({ professional, specialties }: Profe
             <MapPin className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
             <p className="leading-relaxed text-foreground">{getFullAddress()}</p>
           </div>
+        </div>
+
+        {/* Certificado Digital */}
+        <div className="bg-card border border-border rounded-xl p-4 sm:col-span-2 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-primary" /> Certificado Digital (ICP-Brasil)
+            </h3>
+            {professional.certificate_valid_to ? (
+              <div className="flex items-center gap-2">
+                <Badge className="text-[10px] font-bold px-2 py-0.5 bg-primary/10 text-primary border-primary/30">
+                  Tipo {professional.certificate_type || "A1"}
+                </Badge>
+                {new Date() > new Date(professional.certificate_valid_to) ? (
+                  <Badge className="text-[10px] font-bold px-2 py-0.5 bg-red-500/10 text-red-500 border-red-500/30">
+                    Expirado
+                  </Badge>
+                ) : Math.ceil(
+                    (new Date(professional.certificate_valid_to).getTime() - Date.now()) /
+                      (1000 * 60 * 60 * 24)
+                  ) <= 30 ? (
+                  <Badge className="text-[10px] font-bold px-2 py-0.5 bg-amber-500/10 text-amber-500 border-amber-500/30">
+                    Expira em {Math.ceil((new Date(professional.certificate_valid_to).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} dias
+                  </Badge>
+                ) : (
+                  <Badge className="text-[10px] font-bold px-2 py-0.5 bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                    Válido
+                  </Badge>
+                )}
+              </div>
+            ) : (
+              <Badge className="text-[10px] font-medium px-2 py-0.5 bg-secondary text-muted-foreground border-border">
+                Não cadastrado
+              </Badge>
+            )}
+          </div>
+
+          {professional.certificate_valid_to ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-muted-foreground pt-1">
+              <p className="flex items-center gap-2 truncate" title={professional.certificate_subject || undefined}>
+                <UserCheck className="w-3.5 h-3.5 text-primary shrink-0" /> Titular:{" "}
+                <span className="text-foreground font-semibold truncate">{professional.certificate_subject || "N/A"}</span>
+              </p>
+              <p className="flex items-center gap-2 font-mono">
+                <FileCheck className="w-3.5 h-3.5 text-primary shrink-0" /> CPF Certificado:{" "}
+                <span className="text-foreground font-semibold">{formatCpf(professional.certificate_cpf || "") || "N/A"}</span>
+              </p>
+              <p className="flex items-center gap-2 truncate" title={professional.certificate_issuer || undefined}>
+                <Building2 className="w-3.5 h-3.5 text-primary shrink-0" /> Emissor (AC):{" "}
+                <span className="text-foreground truncate">{professional.certificate_issuer || "N/A"}</span>
+              </p>
+              <p className="flex items-center gap-2 font-mono truncate" title={professional.certificate_serial_number || undefined}>
+                <Hash className="w-3.5 h-3.5 text-primary shrink-0" /> Nº Série:{" "}
+                <span className="text-foreground truncate">{professional.certificate_serial_number || "N/A"}</span>
+              </p>
+              <p className="flex items-center gap-2 md:col-span-2">
+                <Calendar className="w-3.5 h-3.5 text-primary shrink-0" /> Validade:{" "}
+                <span className="text-foreground font-medium">
+                  {professional.certificate_valid_from ? new Date(professional.certificate_valid_from).toLocaleDateString("pt-BR") : "N/A"} até {new Date(professional.certificate_valid_to).toLocaleDateString("pt-BR")}
+                </span>
+                {new Date() <= new Date(professional.certificate_valid_to) && (
+                  <span className="text-[11px] text-muted-foreground ml-auto">
+                    ({Math.ceil((new Date(professional.certificate_valid_to).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} dias restantes)
+                  </span>
+                )}
+              </p>
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground italic">
+              Nenhum certificado digital A1 ou A3 vinculado a este profissional.
+            </p>
+          )}
         </div>
       </div>
 

@@ -193,6 +193,15 @@ model Professional {
   admin_fee_percentage Float        @default(0)
   status               Status       @default(active)
 
+  // 🔹 Certificado Digital
+  certificate_type          String?
+  certificate_subject       String?
+  certificate_cpf           String?
+  certificate_issuer        String?
+  certificate_serial_number String?
+  certificate_valid_from    DateTime?
+  certificate_valid_to      DateTime?
+
   created_by String?
   updated_by String?
   created_at DateTime? @default(now())

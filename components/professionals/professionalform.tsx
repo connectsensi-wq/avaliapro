@@ -11,7 +11,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Specialty, State } from "@/lib/generated/prisma";
 import { addressTypes, formatCpf, formatPhone, pixKeyTypes, states } from "@/lib/utils";
 import { toast } from "sonner";
-import { Search, Loader2 } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  ShieldCheck,
+  FileCheck,
+  Trash2,
+  RefreshCw,
+  Upload,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  AlertTriangle,
+  AlertCircle,
+  FileKey,
+  Calendar,
+  Building2,
+  Hash,
+  UserCheck,
+} from "lucide-react";
 
 interface ProfessionalFormProps {
   professional?: Professional | null;
@@ -48,10 +66,106 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
     state: professional?.state || null,
     admin_fee_percentage: professional?.admin_fee_percentage || 0,
     status: professional?.status || "active",
+
+    // 🔹 Certificado Digital
+    certificate_type: professional?.certificate_type || null,
+    certificate_subject: professional?.certificate_subject || null,
+    certificate_cpf: professional?.certificate_cpf || null,
+    certificate_issuer: professional?.certificate_issuer || null,
+    certificate_serial_number: professional?.certificate_serial_number || null,
+    certificate_valid_from: professional?.certificate_valid_from || null,
+    certificate_valid_to: professional?.certificate_valid_to || null,
   });
+
+  // 🔹 Estados locais para upload e validação de certificado
+  const [selectedCertType, setSelectedCertType] = useState<"A1" | "A3">("A1");
+  const [certFile, setCertFile] = useState<File | null>(null);
+  const [certPassword, setCertPassword] = useState("");
+  const [showCertPassword, setShowCertPassword] = useState(false);
+  const [isValidatingCert, setIsValidatingCert] = useState(false);
+  const [isReplacingCert, setIsReplacingCert] = useState(false);
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleValidateCertificate = async () => {
+    const cleanCpf = (formData.cpf || "").replace(/\D/g, "");
+    if (!cleanCpf) {
+      toast.error("Por favor, preencha o CPF na aba 'Dados Pessoais' antes de validar o certificado.");
+      return;
+    }
+
+    if (!certFile) {
+      toast.error("Por favor, selecione o arquivo do certificado.");
+      return;
+    }
+
+    if (selectedCertType === "A1" && !certPassword) {
+      toast.error("Por favor, informe a senha do certificado A1 (.pfx/.p12).");
+      return;
+    }
+
+    setIsValidatingCert(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", certFile);
+      fd.append("password", certPassword);
+      fd.append("professionalCpf", cleanCpf);
+      fd.append("certificateType", selectedCertType);
+
+      const res = await fetch("/api/professionals/validate-certificate", {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Erro ao validar certificado.");
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        certificate_type: data.data.certificate_type,
+        certificate_subject: data.data.certificate_subject,
+        certificate_cpf: data.data.certificate_cpf,
+        certificate_issuer: data.data.certificate_issuer,
+        certificate_serial_number: data.data.certificate_serial_number,
+        certificate_valid_from: data.data.certificate_valid_from,
+        certificate_valid_to: data.data.certificate_valid_to,
+      }));
+
+      setCertFile(null);
+      setCertPassword("");
+      setIsReplacingCert(false);
+
+      toast.success("Certificado digital validado e vinculado com sucesso!");
+      if (data.data.isExpired) {
+        toast.warning("Atenção: Este certificado digital já se encontra expirado.");
+      }
+    } catch (error: any) {
+      console.error("Erro na validação do certificado:", error);
+      toast.error(error.message || "Falha na validação do certificado.");
+    } finally {
+      setIsValidatingCert(false);
+    }
+  };
+
+  const handleRemoveCertificate = () => {
+    setFormData((prev) => ({
+      ...prev,
+      certificate_type: null,
+      certificate_subject: null,
+      certificate_cpf: null,
+      certificate_issuer: null,
+      certificate_serial_number: null,
+      certificate_valid_from: null,
+      certificate_valid_to: null,
+    }));
+    setCertFile(null);
+    setCertPassword("");
+    setIsReplacingCert(false);
+    toast.success("Certificado digital removido.");
   };
 
   const handleSearchCep = async () => {
@@ -145,7 +259,7 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
   return (
     <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground">
       <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-card border border-border p-1 rounded-xl">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 bg-card border border-border p-1 rounded-xl gap-1">
           <TabsTrigger
             value="basic"
             className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
@@ -163,6 +277,16 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
             className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all"
           >
             Dados Financeiros
+          </TabsTrigger>
+          <TabsTrigger
+            value="certificate"
+            className="text-xs font-semibold text-foreground data-[state=active]:bg-input data-[state=active]:text-sidebar-primary rounded-lg transition-all flex items-center justify-center gap-1.5"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span>Certificado Digital</span>
+            {formData.certificate_valid_to && (
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+            )}
           </TabsTrigger>
         </TabsList>
 
@@ -502,6 +626,326 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
               </Select>
             </div>
           </div>
+        </TabsContent>
+
+        {/* Certificado Digital */}
+        <TabsContent value="certificate" className="space-y-4 pt-2">
+          {formData.certificate_valid_to && !isReplacingCert ? (
+            /* Visualização do Certificado Cadastrado */
+            <Card className="bg-card border-border rounded-xl shadow-inner overflow-hidden">
+              <CardHeader className="pb-3 border-b border-border bg-secondary/30">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                      <ShieldCheck className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xs font-bold text-foreground uppercase tracking-wider">
+                        Certificado Digital Vinculado
+                      </CardTitle>
+                      <p className="text-[11px] text-muted-foreground">
+                        Padrão ICP-Brasil validado com o cadastro
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                      Tipo {formData.certificate_type || "A1"}
+                    </span>
+                    {new Date() > new Date(formData.certificate_valid_to) ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-red-500/10 text-red-500 border border-red-500/30">
+                        <AlertTriangle className="w-3 h-3" /> Expirado
+                      </span>
+                    ) : Math.ceil(
+                      (new Date(formData.certificate_valid_to).getTime() - Date.now()) /
+                      (1000 * 60 * 60 * 24)
+                    ) <= 30 ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/30">
+                        <AlertCircle className="w-3 h-3" /> Expira em{" "}
+                        {Math.ceil(
+                          (new Date(formData.certificate_valid_to).getTime() - Date.now()) /
+                          (1000 * 60 * 60 * 24)
+                        )}{" "}
+                        dias
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">
+                        <CheckCircle2 className="w-3 h-3" /> Válido
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="pt-4 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1 bg-secondary/40 p-3 rounded-xl border border-border">
+                    <Label className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <UserCheck className="w-3.5 h-3.5 text-primary" /> Titular do Certificado
+                    </Label>
+                    <p className="text-xs font-bold text-foreground truncate">
+                      {formData.certificate_subject || "Não informado"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1 bg-secondary/40 p-3 rounded-xl border border-border">
+                    <Label className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <FileCheck className="w-3.5 h-3.5 text-primary" /> CPF do Titular
+                    </Label>
+                    <p className="text-xs font-mono font-bold text-foreground flex items-center justify-between">
+                      <span>{formatCpf(formData.certificate_cpf || "") || "Não informado"}</span>
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-sans font-semibold">
+                        ✓ CPF Conferido
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-1 bg-secondary/40 p-3 rounded-xl border border-border">
+                    <Label className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-primary" /> Autoridade Emissora (AC)
+                    </Label>
+                    <p className="text-xs font-semibold text-foreground truncate">
+                      {formData.certificate_issuer || "Autoridade Certificadora"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1 bg-secondary/40 p-3 rounded-xl border border-border">
+                    <Label className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <Hash className="w-3.5 h-3.5 text-primary" /> Número de Série
+                    </Label>
+                    <p className="text-xs font-mono text-muted-foreground truncate" title={formData.certificate_serial_number || ""}>
+                      {formData.certificate_serial_number || "N/A"}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1 bg-secondary/40 p-3 rounded-xl border border-border md:col-span-2">
+                    <Label className="text-[11px] font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-primary" /> Período de Vigência / Validade
+                    </Label>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-foreground">
+                        {formData.certificate_valid_from
+                          ? new Date(formData.certificate_valid_from).toLocaleDateString("pt-BR")
+                          : "N/A"}{" "}
+                        até{" "}
+                        {formData.certificate_valid_to
+                          ? new Date(formData.certificate_valid_to).toLocaleDateString("pt-BR")
+                          : "N/A"}
+                      </span>
+                      <span className="text-[11px] text-muted-foreground">
+                        {formData.certificate_valid_to &&
+                          (new Date() > new Date(formData.certificate_valid_to)
+                            ? "Certificado expirado"
+                            : `${Math.ceil(
+                              (new Date(formData.certificate_valid_to).getTime() - Date.now()) /
+                              (1000 * 60 * 60 * 24)
+                            )} dias restantes`)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-border">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsReplacingCert(true)}
+                    className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold gap-1.5"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5 text-primary" />
+                    Substituir Certificado
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRemoveCertificate}
+                    className="bg-red-500/10 hover:bg-red-500/20 text-red-500 border-red-500/30 rounded-xl text-xs font-semibold gap-1.5"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Excluir Certificado
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            /* Formulário de Upload e Validação de Certificado */
+            <Card className="bg-card border-border rounded-xl shadow-inner">
+              <CardHeader className="pb-2 border-b border-border">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-xs font-bold text-primary uppercase tracking-wider">
+                      Registrar Certificado Digital (A1 / A3)
+                    </CardTitle>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">
+                      Anexe o certificado para validação automática com o CPF do profissional
+                    </p>
+                  </div>
+                  {isReplacingCert && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setIsReplacingCert(false);
+                        setCertFile(null);
+                        setCertPassword("");
+                      }}
+                      className="text-xs text-muted-foreground hover:text-foreground h-7"
+                    >
+                      Cancelar Substituição
+                    </Button>
+                  )}
+                </div>
+              </CardHeader>
+
+              <CardContent className="pt-4 space-y-4">
+                {/* Nota informativa de segurança */}
+                <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 text-xs text-muted-foreground flex items-start gap-2.5">
+                  <FileKey className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
+                    <span className="font-semibold text-foreground">Privacidade e Segurança:</span>
+                    <p className="text-[11px] leading-relaxed">
+                      O arquivo e a senha são utilizados apenas para validação e leitura dos metadados
+                      (titularidade, CPF e data de validade). Nenhum arquivo binário ou senha será armazenado no banco de dados.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Tipo de Certificado */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-muted-foreground">Tipo de Certificado *</Label>
+                    <Select
+                      value={selectedCertType}
+                      onValueChange={(v: "A1" | "A3") => setSelectedCertType(v)}
+                    >
+                      <SelectTrigger className="bg-background border-border text-foreground rounded-xl text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-popover border-border text-popover-foreground">
+                        <SelectItem value="A1" className="focus:bg-accent focus:text-accent-foreground">
+                          A1 (Arquivo de Software .pfx / .p12)
+                        </SelectItem>
+                        <SelectItem value="A3" className="focus:bg-accent focus:text-accent-foreground">
+                          A3 (Arquivo .cer / .crt / .p7b / .pem / .pfx)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Senha do Certificado (se A1 ou arquivo com senha) */}
+                  <div className="space-y-1.5">
+                    <Label className="text-xs font-medium text-muted-foreground">
+                      Senha do Certificado {selectedCertType === "A1" ? "*" : "(Opcional se houver)"}
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        type={showCertPassword ? "text" : "password"}
+                        placeholder={selectedCertType === "A1" ? "Digite a senha do certificado..." : "Senha (se aplicável)..."}
+                        value={certPassword}
+                        onChange={(e) => setCertPassword(e.target.value)}
+                        className="bg-background border-border text-foreground pr-9 rounded-xl text-sm font-mono"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCertPassword(!showCertPassword)}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      >
+                        {showCertPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Upload do Arquivo */}
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-medium text-muted-foreground">
+                    Arquivo do Certificado (.pfx, .p12, .cer, .crt, .pem, .p7b) *
+                  </Label>
+                  <div className="border-2 border-dashed border-border hover:border-primary/50 bg-background/50 rounded-xl p-4 transition-all text-center">
+                    <input
+                      type="file"
+                      id="cert-file-upload"
+                      accept=".pfx,.p12,.cer,.crt,.pem,.p7b,.der"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) setCertFile(file);
+                      }}
+                    />
+
+                    {certFile ? (
+                      <div className="flex items-center justify-between bg-card border border-border p-3 rounded-xl">
+                        <div className="flex items-center gap-3 overflow-hidden text-left">
+                          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                            <FileKey className="w-5 h-5" />
+                          </div>
+                          <div className="overflow-hidden">
+                            <p className="text-xs font-bold text-foreground truncate">{certFile.name}</p>
+                            <p className="text-[11px] text-muted-foreground">
+                              {(certFile.size / 1024).toFixed(1)} KB
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setCertFile(null)}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-500/10 h-8 px-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <label
+                        htmlFor="cert-file-upload"
+                        className="cursor-pointer flex flex-col items-center justify-center gap-2 py-3"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center text-primary">
+                          <Upload className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold text-foreground">
+                            Clique para selecionar ou arraste o arquivo do certificado
+                          </p>
+                          <p className="text-[11px] text-muted-foreground mt-0.5">
+                            Extensões aceitas: .pfx, .p12, .cer, .crt, .pem, .p7b
+                          </p>
+                        </div>
+                      </label>
+                    )}
+                  </div>
+                </div>
+
+                {/* Botão de Validação */}
+                <div className="pt-2">
+                  <Button
+                    type="button"
+                    onClick={handleValidateCertificate}
+                    disabled={isValidatingCert || !certFile}
+                    className="w-full bg-sidebar-primary hover:bg-sidebar-primary/90 text-primary-foreground font-bold rounded-xl text-xs py-2.5 shadow-md flex items-center justify-center gap-2 border-none"
+                  >
+                    {isValidatingCert ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Validando Certificado com CPF...
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-4 h-4" />
+                        Validar e Vincular Certificado
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
 

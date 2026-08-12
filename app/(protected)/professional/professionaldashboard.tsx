@@ -1,7 +1,7 @@
 "use client";
 
 import FinancialCards from "@/components/dashboard/financialcards";
-import MonthBirthday from "@/components/dashboard/monthbirthday";
+import MonthBirthday from "@/components/professionals/monthbirthday";
 import MonthlyChart from "@/components/dashboard/monthlychart";
 import TaxInformations from "@/components/dashboard/taxinformation";
 import { Professional } from "@/src/types/professional";

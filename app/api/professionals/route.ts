@@ -51,6 +51,26 @@ export async function POST(req: Request) {
     if (data.birthday) {
       data.birthday = new Date(data.birthday);
     }
+    if (data.certificate_valid_from) {
+      data.certificate_valid_from = new Date(data.certificate_valid_from);
+    } else {
+      data.certificate_valid_from = null;
+    }
+    if (data.certificate_valid_to) {
+      data.certificate_valid_to = new Date(data.certificate_valid_to);
+    } else {
+      data.certificate_valid_to = null;
+    }
+
+    // Sanitiza strings vazias para null
+    if (!data.specialtyId) data.specialtyId = null;
+    if (!data.account_type) data.account_type = null;
+    if (!data.pix_key_type) data.pix_key_type = null;
+    if (!data.address_type) data.address_type = null;
+    if (!data.state) data.state = null;
+    if (data.admin_fee_percentage !== undefined) {
+      data.admin_fee_percentage = parseFloat(data.admin_fee_percentage) || 0;
+    }
 
      // Verifica se já existe cliente com mesmo documento (CPF/CNPJ)
     const existingCpf = await db.professional.findFirst({

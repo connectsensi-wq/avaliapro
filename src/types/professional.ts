@@ -48,6 +48,15 @@ export interface Professional {
   admin_fee_percentage: number;
   status: Status;
 
+  // 🔹 Certificado Digital
+  certificate_type?: "A1" | "A3" | string | null;
+  certificate_subject?: string | null;
+  certificate_cpf?: string | null;
+  certificate_issuer?: string | null;
+  certificate_serial_number?: string | null;
+  certificate_valid_from?: string | Date | null;
+  certificate_valid_to?: string | Date | null;
+
   invoiceServiceItems?: InvoiceServiceItem[]
   accounts_payable?: AccountsPayable[]
 }

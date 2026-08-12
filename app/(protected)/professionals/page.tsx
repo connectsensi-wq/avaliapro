@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, UserCheck, Search, Edit, Eye } from "lucide-react";
+import { Plus, UserCheck, Search, Edit, Eye, ShieldCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,8 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ProfessionalForm from "@/components/professionals/professionalform";
 import ProfessionalDetails from "@/components/professionals/professionaldetails";
+import MonthBirthday from "@/components/professionals/monthbirthday";
+import ExpiringCertificates from "@/components/professionals/expiringcertificates";
 import { Professional } from "@/src/types/professional";
 import { Specialty } from "@/lib/generated/prisma";
 import { toast } from "sonner";
@@ -48,20 +50,44 @@ export default function ProfessionalsPage() {
           fetch(`/api/specialties`),
         ]);
 
-        const profData = await profRes.json();
-        const specData = await specRes.json();
+        let profData: any[] = [];
+        let specData: any[] = [];
 
-        setProfessionals(profData);
-        setFilteredProfessionals(profData);
-        setSpecialties(specData);
+        if (profRes.ok) {
+          try {
+            const text = await profRes.text();
+            profData = text ? JSON.parse(text) : [];
+          } catch (e) {
+            console.error("Erro ao ler JSON de profissionais:", e);
+          }
+        }
+
+        if (specRes.ok) {
+          try {
+            const text = await specRes.text();
+            specData = text ? JSON.parse(text) : [];
+          } catch (e) {
+            console.error("Erro ao ler JSON de especialidades:", e);
+          }
+        }
+
+        const safeProfList = Array.isArray(profData) ? profData : [];
+        const safeSpecList = Array.isArray(specData) ? specData : [];
+
+        setProfessionals(safeProfList);
+        setFilteredProfessionals(safeProfList);
+        setSpecialties(safeSpecList);
       } else {
         setProfessionals([]);
         setFilteredProfessionals([]);
       }
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
+      setProfessionals([]);
+      setFilteredProfessionals([]);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -69,6 +95,11 @@ export default function ProfessionalsPage() {
   }, [loadData]);
 
   const filterProfessionals = useCallback(() => {
+    if (!Array.isArray(professionals)) {
+      setFilteredProfessionals([]);
+      return;
+    }
+
     const filtered = professionals.filter((p) => {
       const nameMatch = p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
 
@@ -121,12 +152,12 @@ export default function ProfessionalsPage() {
       }
 
       toast.success(
-        `Profissional ${editingProfessional ? "atualizado" : "criado"} com sucesso!`
+        `Profissional ${editingProfessional?.id ? "atualizado" : "criado"} com sucesso!`
       );
 
       setShowForm(false);
       setEditingProfessional(null);
-      loadData();
+      await loadData();
     } catch (error: any) {
       console.error("Erro ao salvar profissional:", error);
       toast.error(error.message || "Erro ao salvar profissional.");
@@ -206,6 +237,12 @@ export default function ProfessionalsPage() {
         </div>
       </div>
 
+      {/* Widgets Informativos: Aniversariantes do Mês & Certificados a Vencer */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <MonthBirthday data={professionals} />
+        <ExpiringCertificates data={professionals} />
+      </div>
+
       {/* Search & Metric Counter Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:max-w-md">
@@ -279,6 +316,22 @@ export default function ProfessionalsPage() {
                       <span className="text-muted-foreground">Taxa Admin:</span>
                       <span className="text-primary font-bold">{professional.admin_fee_percentage}%</span>
                     </p>
+                    <div className="flex justify-between items-center pt-1 border-t border-border/40 text-[11px]">
+                      <span className="text-muted-foreground flex items-center gap-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-primary" /> Certificado:
+                      </span>
+                      {professional.certificate_valid_to ? (
+                        new Date() > new Date(professional.certificate_valid_to) ? (
+                          <span className="text-red-500 font-bold">Expirado</span>
+                        ) : (
+                          <span className="text-emerald-500 font-bold">
+                            {professional.certificate_type || "A1"} (Ativo)
+                          </span>
+                        )
+                      ) : (
+                        <span className="text-muted-foreground">Não cadastrado</span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex gap-2 pt-1">
                     <Button
