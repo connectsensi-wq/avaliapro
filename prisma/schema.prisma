@@ -167,15 +167,15 @@ model Professional {
   company              Company       @relation(fields: [companyId], references: [id])
   companyId            String
   code                 String
-  clerkUserId          String?       @unique
+  clerkUserId          String?
   name                 String
-  cpf                  String        @unique
+  cpf                  String
   registration_number  String?
   specialty            Specialty?    @relation(fields: [specialtyId], references: [id])
   specialtyId          String?
   phone                String?
   birthday             DateTime?
-  email                String?       @unique
+  email                String?
   bank                 String?
   agency               String?
   account              String?

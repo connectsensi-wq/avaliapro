@@ -19686,19 +19686,19 @@ export namespace Prisma {
 
   export type ProfessionalWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    clerkUserId?: string
-    cpf?: string
-    email?: string
     AND?: ProfessionalWhereInput | ProfessionalWhereInput[]
     OR?: ProfessionalWhereInput[]
     NOT?: ProfessionalWhereInput | ProfessionalWhereInput[]
     companyId?: StringFilter<"Professional"> | string
     code?: StringFilter<"Professional"> | string
+    clerkUserId?: StringNullableFilter<"Professional"> | string | null
     name?: StringFilter<"Professional"> | string
+    cpf?: StringFilter<"Professional"> | string
     registration_number?: StringNullableFilter<"Professional"> | string | null
     specialtyId?: StringNullableFilter<"Professional"> | string | null
     phone?: StringNullableFilter<"Professional"> | string | null
     birthday?: DateTimeNullableFilter<"Professional"> | Date | string | null
+    email?: StringNullableFilter<"Professional"> | string | null
     bank?: StringNullableFilter<"Professional"> | string | null
     agency?: StringNullableFilter<"Professional"> | string | null
     account?: StringNullableFilter<"Professional"> | string | null
@@ -19730,7 +19730,7 @@ export namespace Prisma {
     specialty?: XOR<SpecialtyNullableScalarRelationFilter, SpecialtyWhereInput> | null
     invoiceServiceItems?: InvoiceServiceItemListRelationFilter
     accounts_payable?: AccountsPayableListRelationFilter
-  }, "id" | "clerkUserId" | "cpf" | "email">
+  }, "id">
 
   export type ProfessionalOrderByWithAggregationInput = {
     id?: SortOrder

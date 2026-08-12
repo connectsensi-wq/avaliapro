@@ -372,6 +372,7 @@ export default function ProfessionalsPage() {
               onSave={handleSave}
               onCancel={() => { setShowForm(false); setEditingProfessional(null); }}
               specialties={specialties}
+              existingProfessionals={professionals}
             />
           </div>
         </DialogContent>

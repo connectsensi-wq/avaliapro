@@ -34,11 +34,18 @@ import {
 interface ProfessionalFormProps {
   professional?: Professional | null;
   specialties: Specialty[];
+  existingProfessionals?: Professional[];
   onSave: (data: Partial<Professional>) => void;
   onCancel: () => void;
 }
 
-export default function ProfessionalForm({ professional, specialties, onSave, onCancel }: ProfessionalFormProps) {
+export default function ProfessionalForm({
+  professional,
+  specialties,
+  existingProfessionals = [],
+  onSave,
+  onCancel,
+}: ProfessionalFormProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [isSearchingCep, setIsSearchingCep] = useState(false);
   const [formData, setFormData] = useState<Partial<Professional>>({
@@ -256,6 +263,26 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
     }
   }, [professional]);
 
+  const cleanTypedCpf = (formData.cpf || "").replace(/\D/g, "");
+  const existingCpfMatch =
+    !professional?.id && cleanTypedCpf.length === 11
+      ? existingProfessionals.find(
+          (p) => (p.cpf || "").replace(/\D/g, "") === cleanTypedCpf
+        )
+      : null;
+
+  const existingEmailMatch =
+    !professional?.id &&
+    formData.email &&
+    formData.email.includes("@") &&
+    !existingCpfMatch
+      ? existingProfessionals.find(
+          (p) =>
+            p.email?.toLowerCase().trim() ===
+            formData.email?.toLowerCase().trim()
+        )
+      : null;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 font-sans text-foreground">
       <Tabs defaultValue="basic" className="w-full">
@@ -330,6 +357,22 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                     disabled={!!professional?.cpf}
                     className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm font-mono"
                   />
+                  {existingCpfMatch && (
+                    <div className="flex items-start gap-2 p-2.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs mt-1.5">
+                      <UserCheck className="w-4 h-4 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-semibold text-sky-300">
+                          Profissional já cadastrado:{" "}
+                        </span>
+                        <span className="text-foreground font-medium">
+                          {existingCpfMatch.name}
+                        </span>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          Este novo registro será vinculado ao mesmo login do profissional no sistema.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-xs font-medium text-muted-foreground">Especialidade *</Label>
@@ -388,6 +431,22 @@ export default function ProfessionalForm({ professional, specialties, onSave, on
                   required
                   className="bg-background border-border text-foreground focus:ring-1 focus:ring-ring rounded-xl text-sm"
                 />
+                {existingEmailMatch && (
+                  <div className="flex items-start gap-2 p-2.5 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs mt-1.5">
+                    <UserCheck className="w-4 h-4 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-semibold text-sky-300">
+                        E-mail já cadastrado:{" "}
+                      </span>
+                      <span className="text-foreground font-medium">
+                        {existingEmailMatch.name}
+                      </span>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        O novo cadastro reutilizará a conta de login existente deste profissional.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

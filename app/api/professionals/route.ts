@@ -72,59 +72,85 @@ export async function POST(req: Request) {
       data.admin_fee_percentage = parseFloat(data.admin_fee_percentage) || 0;
     }
 
-     // Verifica se já existe cliente com mesmo documento (CPF/CNPJ)
-    const existingCpf = await db.professional.findFirst({
-      where: {
-        cpf: data.cpf,
-      },
-    });
+    const cleanCpf = (data.cpf || "").replace(/\D/g, "");
+    const targetUsername = cleanCpf ? `user_${cleanCpf}` : undefined;
 
-    if (existingCpf) {
-      return NextResponse.json(
-        { error: "Já existe um profissional com este CPF/CNPJ." },
-        { status: 400 }
-      );
-    }
+    // 🔹 Consultar Clerk primeiramente por username e por e-mail antes de tentar criar novo usuário
+    let clerkUserId: string | null = null;
+    try {
+      const client = await clerkClient();
 
-    // Verifica se já existe cliente com mesmo e-mail
-    if (data.email) {
-      const existingEmail = await db.professional.findFirst({
-        where: {
-          email: data.email,
-        },
-      });
-
-      if (existingEmail) {
-        return NextResponse.json(
-          { error: "Já existe um profissional com este e-mail." },
-          { status: 400 }
-        );
+      // 1. Consulta por username no Clerk
+      if (targetUsername) {
+        try {
+          const userListByUsername = await client.users.getUserList({
+            username: [targetUsername],
+          });
+          if (userListByUsername.data && userListByUsername.data.length > 0) {
+            clerkUserId = userListByUsername.data[0].id;
+            console.log(`[Clerk] Usuário existente encontrado por username (${targetUsername}): ${clerkUserId}`);
+          }
+        } catch (err) {
+          console.warn("[Clerk] Erro ao buscar por username:", err);
+        }
       }
-    }
 
-    // Criar usuário no Clerk
-    const names = data.name.trim().split(" ");
-    const firstName = names[0];
-    const lastName = names.length > 1 ? names[names.length - 1] : "";
-    
-    const client = await clerkClient()
-    const user = await client.users.createUser({
-      emailAddress: [data.email],
-      firstName: firstName,
-      username: `user_${data.cpf}`,
-      lastName: lastName,
-      password: "Viusion@2025Secure", // senha temporária
-      publicMetadata: { role: "professional" },
-    });
+      // 2. Se não encontrou por username e foi informado e-mail, consulta por e-mail no Clerk
+      if (!clerkUserId && data.email) {
+        try {
+          const userListByEmail = await client.users.getUserList({
+            emailAddress: [data.email],
+          });
+          if (userListByEmail.data && userListByEmail.data.length > 0) {
+            clerkUserId = userListByEmail.data[0].id;
+            console.log(`[Clerk] Usuário existente encontrado por e-mail (${data.email}): ${clerkUserId}`);
+          }
+        } catch (err) {
+          console.warn("[Clerk] Erro ao buscar por email:", err);
+        }
+      }
+
+      // 3. Se não existe no Clerk, cria o novo usuário
+      if (!clerkUserId) {
+        const names = (data.name || "").trim().split(" ");
+        const firstName = names[0] || "Profissional";
+        const lastName = names.length > 1 ? names[names.length - 1] : "";
+
+        try {
+          const user = await client.users.createUser({
+            emailAddress: data.email ? [data.email] : undefined,
+            firstName: firstName,
+            username: targetUsername,
+            lastName: lastName,
+            password: "Vision@2025Secure", // senha temporária padrão
+            publicMetadata: { role: "professional" },
+          });
+          clerkUserId = user.id;
+          console.log(`[Clerk] Novo usuário criado com sucesso: ${clerkUserId}`);
+        } catch (createErr: any) {
+          console.warn("[Clerk] Aviso ao tentar criar usuário:", createErr?.message || createErr);
+
+          // Caso de fallback: se já existia com e-mail ou username
+          if (data.email) {
+            const retryUsers = await client.users.getUserList({ emailAddress: [data.email] });
+            if (retryUsers.data && retryUsers.data.length > 0) {
+              clerkUserId = retryUsers.data[0].id;
+            }
+          }
+        }
+      }
+    } catch (clerkErr) {
+      console.warn("Aviso ao interagir com o Clerk:", clerkErr);
+    }
 
     const userName = await getClerkUserName();
     const now = getBRTDate();
 
-    // Criar profissional no banco e linkar com o Clerk
+    // 🔹 Criar profissional no banco de dados com clerkUserId vinculado
     const professional = await db.professional.create({
       data: {
         ...data,
-        clerkUserId: user.id,
+        clerkUserId: clerkUserId,
         created_at: now,
         updated_at: now,
         ...(userName ? { created_by: userName, updated_by: userName } : {}),
