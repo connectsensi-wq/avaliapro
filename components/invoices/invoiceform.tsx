@@ -904,9 +904,9 @@ export default function InvoiceForm({ invoice, clients, professionals, services,
                   </div>
                 </div>
 
-                <div className="p-3 bg-secondary/80 border border-border rounded-xl flex items-center justify-between">
+                <div className="p-3 bg-secondary/90 border border-border rounded-xl flex items-center justify-between">
                   <span className="text-xs font-bold text-foreground">Total das Retenções:</span>
-                  <span className="text-sm font-extrabold text-amber-400 font-mono">
+                  <span className="text-sm font-extrabold text-orange-500 font-mono">
                     R$ {toBRLDecimal(totalRetentions.toFixed(2))}
                   </span>
                 </div>

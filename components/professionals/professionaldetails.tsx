@@ -108,8 +108,8 @@ export default function ProfessionalDetails({ professional, specialties }: Profe
             {getSpecialtyName(professional.specialtyId)}
           </p>
           <p className="text-[11px] font-mono text-muted-foreground mt-1">
-            Código: <span className="text-foreground font-semibold">#{professional.code}</span> | CRM/Reg:{" "}
-            <span className="text-foreground font-semibold">{professional.registration_number}</span>
+            Código: <span className="font-semibold">#{professional.code}</span> | CRM/Reg:{" "}
+            <span className="font-semibold">{professional.registration_number}</span>
           </p>
         </div>
       </div>
@@ -182,9 +182,9 @@ export default function ProfessionalDetails({ professional, specialties }: Profe
                     Expirado
                   </Badge>
                 ) : Math.ceil(
-                    (new Date(professional.certificate_valid_to).getTime() - Date.now()) /
-                      (1000 * 60 * 60 * 24)
-                  ) <= 30 ? (
+                  (new Date(professional.certificate_valid_to).getTime() - Date.now()) /
+                  (1000 * 60 * 60 * 24)
+                ) <= 30 ? (
                   <Badge className="text-[10px] font-bold px-2 py-0.5 bg-amber-500/10 text-amber-500 border-amber-500/30">
                     Expira em {Math.ceil((new Date(professional.certificate_valid_to).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} dias
                   </Badge>

@@ -288,7 +288,7 @@ export default function ProfessionalsPage() {
                           {professional.name}
                         </CardTitle>
                         <p className="text-xs text-primary font-semibold truncate">
-                          {professional.specialty?.name || "Sem Especialidade"}
+                          {professional.specialty?.name || "Sem Especialidade"} - Registro: {professional.registration_number || "N/A"}
                         </p>
                       </div>
                     </div>
