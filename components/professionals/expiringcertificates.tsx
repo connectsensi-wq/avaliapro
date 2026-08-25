@@ -9,7 +9,6 @@ import {
   FileKey,
   AlertTriangle,
   AlertCircle,
-  Calendar,
 } from "lucide-react";
 import { Professional } from "@/src/types/professional";
 import { formatCpf } from "@/lib/utils";

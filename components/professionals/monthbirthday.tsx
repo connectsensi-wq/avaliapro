@@ -105,6 +105,13 @@ export default function MonthBirthday({ data }: BirthdayProps) {
                         <span className="text-xs font-bold text-foreground truncate">
                           {p.name}
                         </span>
+                        {
+                          p.status === "inactive" && (
+                            <div className="ml-2 bg-gray-200 px-2 py-0.5 border b-1 text-[10px] rounded-full text-gray-400 font-bold">
+                              Inativo
+                            </div>
+                          )
+                        }
                         {isToday && (
                           <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.2 rounded-full bg-primary text-primary-foreground">
                             <Sparkles className="w-3 h-3" /> Hoje!
