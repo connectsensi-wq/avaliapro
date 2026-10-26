@@ -5,8 +5,17 @@ import InvoiceFilters from "@/components/invoices/invoicefilters";
 import InvoiceForm from "@/components/invoices/invoiceform";
 import InvoiceItem from "@/components/invoices/invoiceitem";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { formatDate } from "@/lib/utils";
 import { Client } from "@/src/types/client";
@@ -15,7 +24,7 @@ import { Service } from "@/src/types/entities";
 import { InvoiceStatus } from "@/src/types/enums";
 import { Invoice } from "@/src/types/invoice";
 import { Professional } from "@/src/types/professional";
-import { ArrowDownFromLine, Edit, FileText, Lock, Plus, ReceiptText } from "lucide-react";
+import { AlertTriangle, ArrowDownFromLine, FileText, Plus, ReceiptText } from "lucide-react";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
@@ -24,6 +33,8 @@ export default function InvoicesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
+  const [deletingInvoice, setDeletingInvoice] = useState<Invoice | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [clients, setClients] = useState<Client[]>([]);
@@ -238,6 +249,29 @@ export default function InvoicesPage() {
     setShowForm(true);
   }, []);
 
+  const handleDeleteInvoice = async () => {
+    if (!deletingInvoice) return;
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/invoice/${deletingInvoice.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao excluir nota fiscal");
+
+      toast.success("Nota fiscal e suas dependências excluídas com sucesso!");
+      setInvoices((prev) => prev.filter((inv) => inv.id !== deletingInvoice.id));
+      setDeletingInvoice(null);
+      await loadData();
+    } catch (err: any) {
+      console.error("Erro ao excluir nota fiscal:", err);
+      toast.error(err.message || "Erro ao excluir nota fiscal.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const exportToCSV = () => {
     if (!filteredInvoices.length) {
       toast.error("Nenhuma nota fiscal para exportar");
@@ -374,6 +408,7 @@ export default function InvoicesPage() {
               company={memoCompany}
               onEdit={handleEdit}
               onStatusChange={handleStatusChange}
+              onDelete={setDeletingInvoice}
             />
           ))
         ) : (
@@ -437,6 +472,45 @@ export default function InvoicesPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Alert */}
+      <AlertDialog
+        open={!!deletingInvoice}
+        onOpenChange={(open) => {
+          if (!open) setDeletingInvoice(null);
+        }}
+      >
+        <AlertDialogContent className="bg-card border-border text-foreground rounded-2xl max-w-md p-6 shadow-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-base font-bold text-destructive flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Excluir Nota Fiscal
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-xs text-muted-foreground pt-1.5 leading-relaxed">
+              Tem certeza que deseja excluir a NFS-e #
+              <strong className="text-foreground"> {deletingInvoice?.invoice_number}</strong>?
+              <br /><br />
+              <span className="text-destructive font-medium">Atenção:</span> Esta ação é irreversível e excluirá em cascata todas as dependências geradas por esta nota (contas a receber, contas a pagar, parcelas e retenções).
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2 sm:justify-end pt-3">
+            <AlertDialogCancel
+              disabled={isDeleting}
+              onClick={() => setDeletingInvoice(null)}
+              className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold"
+            >
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteInvoice}
+              disabled={isDeleting}
+              className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl text-xs font-bold border-none"
+            >
+              {isDeleting ? "Excluindo..." : "Confirmar Exclusão"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

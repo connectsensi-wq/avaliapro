@@ -220,7 +220,7 @@ export async function PUT(
   }
 }
 
-// DELETE: excluir uma invoice (Next 15 correto)
+// DELETE: excluir uma invoice com exclusão em cascata das suas dependências
 export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> }
@@ -228,17 +228,72 @@ export async function DELETE(
   const { id } = await context.params;
 
   try {
-    await db.invoice.delete({
-      where: { id },
+    await db.$transaction(async (tx) => {
+      // 1. Busca a invoice e as contas vinculadas
+      const invoice = await tx.invoice.findUnique({
+        where: { id },
+        include: {
+          accounts_receivable: {
+            select: { id: true },
+          },
+          accounts_payable: {
+            select: { id: true },
+          },
+        },
+      });
+
+      if (!invoice) {
+        throw new Error("Nota fiscal não encontrada");
+      }
+
+      // 2. Exclui parcelas da conta a receber (se houver)
+      if (invoice.accounts_receivable) {
+        await tx.paymentInstallment.deleteMany({
+          where: { accounts_receivable_id: invoice.accounts_receivable.id },
+        });
+
+        // 3. Exclui a conta a receber
+        await tx.accountsReceivable.delete({
+          where: { id: invoice.accounts_receivable.id },
+        });
+      }
+
+      // 4. Exclui parcelas das contas a pagar (se houver)
+      const payableIds = invoice.accounts_payable.map((p) => p.id);
+      if (payableIds.length > 0) {
+        await tx.paymentPayableInstallment.deleteMany({
+          where: { accounts_payable_id: { in: payableIds } },
+        });
+
+        // 5. Exclui as contas a pagar
+        await tx.accountsPayable.deleteMany({
+          where: { id: { in: payableIds } },
+        });
+      }
+
+      // 6. Exclui itens de serviço da nota
+      await tx.invoiceServiceItem.deleteMany({
+        where: { invoice_id: id },
+      });
+
+      // 7. Exclui retenções
+      await tx.retentions.deleteMany({
+        where: { invoice_id: id },
+      });
+
+      // 8. Exclui a própria invoice
+      await tx.invoice.delete({
+        where: { id },
+      });
     });
 
     return NextResponse.json({
-      message: "Invoice deletada com sucesso",
+      message: "Invoice e suas dependências excluídas com sucesso",
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("DELETE /invoice/[id] error:", error);
     return NextResponse.json(
-      { error: "Erro ao deletar invoice" },
+      { error: error.message || "Erro ao deletar invoice e suas dependências" },
       { status: 500 }
     );
   }

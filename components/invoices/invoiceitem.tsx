@@ -7,7 +7,7 @@ import { Company } from "@/src/types/company";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Lock, FileText, UserCheck, Calendar, Building2, Receipt } from "lucide-react";
+import { Edit, Lock, FileText, UserCheck, Calendar, Building2, Receipt, Trash2 } from "lucide-react";
 import { formatDate, toBRLDecimal } from "@/lib/utils";
 import InvoicePrintMulti from "./invoiceprint";
 import StatusUpdater from "./statusupdater";
@@ -18,6 +18,7 @@ interface InvoiceItemProps {
   company: Company | null;
   onEdit: (invoice: Invoice) => void;
   onStatusChange: (invoiceId: string, status: string) => void;
+  onDelete?: (invoice: Invoice) => void;
 }
 
 function InvoiceItemComponent({
@@ -26,6 +27,7 @@ function InvoiceItemComponent({
   company,
   onEdit,
   onStatusChange,
+  onDelete,
 }: InvoiceItemProps) {
   const totalRetentions = invoice.total_retentions || 0;
   const baseAmount = invoice.base_amount || invoice.total_amount || 0;
@@ -122,6 +124,18 @@ function InvoiceItemComponent({
             >
               <Edit className="w-3.5 h-3.5 mr-1.5" /> Editar
             </Button>
+
+            {onDelete && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onDelete(invoice)}
+                className="bg-secondary hover:bg-destructive hover:text-white text-destructive border-border rounded-xl text-xs font-semibold px-3 h-9 flex-1 sm:flex-initial transition-colors"
+                title="Excluir Nota Fiscal"
+              >
+                <Trash2 className="w-3.5 h-3.5 mr-1.5" /> Excluir
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>
@@ -141,7 +155,8 @@ const InvoiceItem = React.memo(
       prev.invoice.invoice_number === next.invoice.invoice_number &&
       prev.invoice.client?.name === next.invoice.client?.name &&
       prev.professionals === next.professionals &&
-      prev.company === next.company
+      prev.company === next.company &&
+      prev.onDelete === next.onDelete
     );
   }
 );
