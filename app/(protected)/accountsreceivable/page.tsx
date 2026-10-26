@@ -47,7 +47,6 @@ export default function AccountsReceivablePage() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showBatchPayDialog, setShowBatchPayDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<AccountsReceivable | null>(null);
   const [batchPaymentDate, setBatchPaymentDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [batchObservations, setBatchObservations] = useState("");
   const [isBatchProcessing, setIsBatchProcessing] = useState(false);
@@ -63,7 +62,7 @@ export default function AccountsReceivablePage() {
     []
   );
 
-  const loadReceivable = useCallback(async () => {
+  const loadReceivable = useCallback(async (start?: string, end?: string) => {
     setIsLoading(true);
     try {
       const companyId = localStorage.getItem("selectedCompanyId");
@@ -76,8 +75,12 @@ export default function AccountsReceivablePage() {
         return;
       }
 
+      const params = new URLSearchParams({ companyId });
+      if (start) params.set("startDate", start);
+      if (end) params.set("endDate", end);
+
       const [resReceivable, resClients] = await Promise.all([
-        fetch(`/api/accountsreceivable?companyId=${companyId}`).then((r) => r.json()),
+        fetch(`/api/accountsreceivable?${params.toString()}`).then((r) => r.json()),
         fetch(`/api/clients?companyId=${companyId}`).then((r) => r.json()),
       ]);
 
@@ -103,8 +106,8 @@ export default function AccountsReceivablePage() {
   }, []);
 
   useEffect(() => {
-    loadReceivable();
-  }, [loadReceivable]);
+    loadReceivable(startDate, endDate);
+  }, [loadReceivable, startDate, endDate]);
 
   const handleOpenPayment = (receivable: AccountsReceivable) => {
     setSelectedReceivable(receivable);
@@ -236,9 +239,43 @@ export default function AccountsReceivablePage() {
     [selectedReceivables]
   );
 
+  // Abertura e Validação de Ações em Lote
+  const handleOpenBatchPay = () => {
+    if (selectedIds.length === 0) return;
+    const hasInvalid = selectedReceivables.some(
+      (r) => r.status !== "pending" || (r.installments && r.installments.length > 0)
+    );
+    if (hasInvalid) {
+      toast.error("Selecione a penas Contas em aberto.");
+      return;
+    }
+    setShowBatchPayDialog(true);
+  };
+
+  const handleOpenBatchDelete = () => {
+    if (selectedIds.length === 0) return;
+    const hasInvalid = selectedReceivables.some(
+      (r) => r.status !== "paid" || !r.installments || r.installments.length === 0
+    );
+    if (hasInvalid) {
+      toast.error("Você está tentando excluir contas que não possuem baixas.");
+      return;
+    }
+    setShowDeleteDialog(true);
+  };
+
   // Ações em Lote: Baixar
   const handleConfirmBatchPay = async () => {
     if (selectedIds.length === 0) return;
+    const hasInvalid = selectedReceivables.some(
+      (r) => r.status !== "pending" || (r.installments && r.installments.length > 0)
+    );
+    if (hasInvalid) {
+      toast.error("Selecione a penas Contas em aberto.");
+      setShowBatchPayDialog(false);
+      return;
+    }
+
     setIsBatchProcessing(true);
     try {
       const res = await fetch("/api/accountsreceivable/batch", {
@@ -258,7 +295,7 @@ export default function AccountsReceivablePage() {
       toast.success(`${data.count} conta(s) a receber baixada(s) com sucesso!`);
       setShowBatchPayDialog(false);
       setSelectedIds([]);
-      await loadReceivable();
+      await loadReceivable(startDate, endDate);
     } catch (err: any) {
       console.error("Erro ao baixar em lote:", err);
       toast.error(err.message || "Falha na baixa em lote");
@@ -267,43 +304,39 @@ export default function AccountsReceivablePage() {
     }
   };
 
-  // Ações em Lote / Unitária: Excluir
-  const handleDeleteSingle = useCallback((receivable: AccountsReceivable) => {
-    setItemToDelete(receivable);
-    setShowDeleteDialog(true);
-  }, []);
+  // Ações em Lote: Excluir Baixas
+  const handleConfirmDeleteInstallments = async () => {
+    if (selectedIds.length === 0) return;
+    const hasInvalid = selectedReceivables.some(
+      (r) => r.status !== "paid" || !r.installments || r.installments.length === 0
+    );
+    if (hasInvalid) {
+      toast.error("Você está tentando excluir contas que não possuem baixas.");
+      setShowDeleteDialog(false);
+      return;
+    }
 
-  const handleOpenBatchDelete = () => {
-    setItemToDelete(null);
-    setShowDeleteDialog(true);
-  };
-
-  const handleConfirmDelete = async () => {
     setIsBatchProcessing(true);
     try {
-      const idsToDelete = itemToDelete ? [itemToDelete.id] : selectedIds;
-      if (idsToDelete.length === 0) return;
-
       const res = await fetch("/api/accountsreceivable/batch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          action: "delete",
-          ids: idsToDelete,
+          action: "delete_installments",
+          ids: selectedIds,
         }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao excluir conta(s)");
+      if (!res.ok) throw new Error(data.error || "Erro ao excluir baixas");
 
-      toast.success(`${idsToDelete.length} conta(s) a receber excluída(s) com sucesso!`);
-      setReceivable((prev) => prev.filter((r) => !idsToDelete.includes(r.id)));
-      setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
+      toast.success(`Baixas de ${selectedIds.length} conta(s) a receber excluídas com sucesso!`);
       setShowDeleteDialog(false);
-      setItemToDelete(null);
+      setSelectedIds([]);
+      await loadReceivable(startDate, endDate);
     } catch (err: any) {
-      console.error("Erro ao excluir:", err);
-      toast.error(err.message || "Falha ao excluir contas");
+      console.error("Erro ao excluir baixas:", err);
+      toast.error(err.message || "Falha ao excluir baixas");
     } finally {
       setIsBatchProcessing(false);
     }
@@ -487,7 +520,7 @@ export default function AccountsReceivablePage() {
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
             <Button
               size="sm"
-              onClick={() => setShowBatchPayDialog(true)}
+              onClick={handleOpenBatchPay}
               className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold h-8 shadow-sm"
             >
               <CheckCheck className="w-3.5 h-3.5 mr-1.5" />
@@ -501,7 +534,7 @@ export default function AccountsReceivablePage() {
               className="rounded-xl text-xs font-semibold h-8 shadow-sm"
             >
               <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-              Excluir ({selectedIds.length})
+              Excluir baixas ({selectedIds.length})
             </Button>
 
             <Button
@@ -541,7 +574,6 @@ export default function AccountsReceivablePage() {
               onOpenHistory={handleOpenHistory}
               isSelected={Boolean(acc.id && selectedIds.includes(acc.id))}
               onToggleSelect={handleToggleSelect}
-              onDeleteSingle={handleDeleteSingle}
             />
           ))
         )}
@@ -630,18 +662,16 @@ export default function AccountsReceivablePage() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog de Confirmação de Exclusão (Lote ou Individual) */}
+      {/* Dialog de Confirmação de Exclusão de Baixas */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent className="sm:max-w-md bg-card border-border text-foreground rounded-2xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-destructive flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-destructive" />
-              Confirmar Exclusão
+              Excluir Baixas
             </DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground pt-1">
-              {itemToDelete
-                ? `Tem certeza que deseja excluir a conta a receber NFS-e #${itemToDelete.document}? Todas as parcelas vinculadas a esta conta serão removidas permanentemente.`
-                : `Tem certeza que deseja excluir as ${selectedIds.length} contas a receber selecionadas? Todas as parcelas vinculadas a essas contas serão excluídas permanentemente.`}
+              Tem certeza que deseja excluir todas as baixas (parcelas) das {selectedIds.length} conta(s) a receber selecionada(s)? As contas retornarão ao status Pendente.
             </DialogDescription>
           </DialogHeader>
 
@@ -650,10 +680,7 @@ export default function AccountsReceivablePage() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => {
-                setShowDeleteDialog(false);
-                setItemToDelete(null);
-              }}
+              onClick={() => setShowDeleteDialog(false)}
               disabled={isBatchProcessing}
               className="rounded-xl text-xs"
             >
@@ -663,17 +690,17 @@ export default function AccountsReceivablePage() {
               type="button"
               variant="destructive"
               size="sm"
-              onClick={handleConfirmDelete}
+              onClick={handleConfirmDeleteInstallments}
               disabled={isBatchProcessing}
               className="rounded-xl text-xs font-semibold"
             >
               {isBatchProcessing ? (
                 <>
                   <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                  Excluindo...
+                  Excluindo baixas...
                 </>
               ) : (
-                "Confirmar Exclusão"
+                "Confirmar Exclusão de Baixas"
               )}
             </Button>
           </DialogFooter>

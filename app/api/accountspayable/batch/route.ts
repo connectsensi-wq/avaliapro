@@ -21,23 +21,28 @@ export async function POST(req: Request) {
       const paymentDate = payment_date ? new Date(payment_date) : now;
 
       const result = await db.$transaction(async (tx) => {
-        // Busca as contas a pagar
+        // Busca as contas a pagar com suas parcelas
         const payables = await tx.accountsPayable.findMany({
           where: { id: { in: ids } },
+          include: { installments: true },
         });
 
         if (payables.length === 0) {
           throw new Error("Nenhuma conta encontrada");
         }
 
+        // Validação: Todas as contas devem estar totalmente em aberto
+        const hasInvalidForPay = payables.some(
+          (p) => p.status !== "pending" || (p.installments && p.installments.length > 0)
+        );
+
+        if (hasInvalidForPay) {
+          throw new Error("Selecione a penas Contas em aberto.");
+        }
+
         const updatedAccounts = [];
 
         for (const payable of payables) {
-          // Exclui parcelas anteriores para que a baixa seja total e limpa
-          await tx.paymentPayableInstallment.deleteMany({
-            where: { accounts_payable_id: payable.id },
-          });
-
           // Cria parcela única com o valor completo da conta
           const installment = await tx.paymentPayableInstallment.create({
             data: {
@@ -87,21 +92,43 @@ export async function POST(req: Request) {
       );
     }
 
-    if (action === "delete") {
+    if (action === "delete" || action === "delete_installments") {
       await db.$transaction(async (tx) => {
+        const payables = await tx.accountsPayable.findMany({
+          where: { id: { in: ids } },
+          include: { installments: true },
+        });
+
+        if (payables.length === 0) {
+          throw new Error("Nenhuma conta encontrada");
+        }
+
+        // Validação: Todas as contas devem estar totalmente baixadas (possuir baixas)
+        const hasInvalidForDelete = payables.some(
+          (p) => p.status !== "paid" || !p.installments || p.installments.length === 0
+        );
+
+        if (hasInvalidForDelete) {
+          throw new Error("Você está tentando excluir contas que não possuem baixas.");
+        }
+
         // Exclui todas as parcelas das contas selecionadas
         await tx.paymentPayableInstallment.deleteMany({
           where: { accounts_payable_id: { in: ids } },
         });
 
-        // Exclui as contas a pagar
-        await tx.accountsPayable.deleteMany({
+        // Reseta o status das contas para pendente e limpa payment_date
+        await tx.accountsPayable.updateMany({
           where: { id: { in: ids } },
+          data: {
+            status: "pending",
+            payment_date: null,
+          },
         });
       });
 
       return NextResponse.json(
-        { success: true, count: ids.length, deletedIds: ids },
+        { success: true, count: ids.length, affectedIds: ids },
         { status: 200 }
       );
     }
@@ -114,7 +141,7 @@ export async function POST(req: Request) {
     console.error("POST /api/accountspayable/batch error:", err);
     return NextResponse.json(
       { error: err.message || "Erro ao processar operação em lote de contas a pagar" },
-      { status: 500 }
+      { status: 400 }
     );
   }
 }
@@ -126,32 +153,54 @@ export async function DELETE(req: Request) {
 
     if (!Array.isArray(ids) || ids.length === 0) {
       return NextResponse.json(
-        { error: "Nenhuma conta informada para exclusão" },
+        { error: "Nenhuma conta informada para exclusão de baixas" },
         { status: 400 }
       );
     }
 
     await db.$transaction(async (tx) => {
+      const payables = await tx.accountsPayable.findMany({
+        where: { id: { in: ids } },
+        include: { installments: true },
+      });
+
+      if (payables.length === 0) {
+        throw new Error("Nenhuma conta encontrada");
+      }
+
+      // Validação: Todas as contas devem estar totalmente baixadas
+      const hasInvalidForDelete = payables.some(
+        (p) => p.status !== "paid" || !p.installments || p.installments.length === 0
+      );
+
+      if (hasInvalidForDelete) {
+        throw new Error("Você está tentando excluir contas que não possuem baixas.");
+      }
+
       // Exclui todas as parcelas das contas selecionadas
       await tx.paymentPayableInstallment.deleteMany({
         where: { accounts_payable_id: { in: ids } },
       });
 
-      // Exclui as contas a pagar
-      await tx.accountsPayable.deleteMany({
+      // Reseta o status das contas para pendente e limpa payment_date
+      await tx.accountsPayable.updateMany({
         where: { id: { in: ids } },
+        data: {
+          status: "pending",
+          payment_date: null,
+        },
       });
     });
 
     return NextResponse.json(
-      { success: true, count: ids.length, deletedIds: ids },
+      { success: true, count: ids.length, affectedIds: ids },
       { status: 200 }
     );
   } catch (err: any) {
     console.error("DELETE /api/accountspayable/batch error:", err);
     return NextResponse.json(
-      { error: err.message || "Erro ao excluir contas a pagar em lote" },
-      { status: 500 }
+      { error: err.message || "Erro ao excluir baixas em lote" },
+      { status: 400 }
     );
   }
 }

@@ -47,7 +47,6 @@ export default function AccountsPayablePage() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showBatchPayDialog, setShowBatchPayDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<AccountsPayable | null>(null);
   const [batchPaymentDate, setBatchPaymentDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [batchObservations, setBatchObservations] = useState("");
   const [isBatchProcessing, setIsBatchProcessing] = useState(false);
@@ -63,7 +62,7 @@ export default function AccountsPayablePage() {
     []
   );
 
-  const loadPayable = useCallback(async () => {
+  const loadPayable = useCallback(async (start?: string, end?: string) => {
     setIsLoading(true);
     try {
       const companyId = localStorage.getItem("selectedCompanyId");
@@ -75,7 +74,11 @@ export default function AccountsPayablePage() {
         return;
       }
 
-      const res = await fetch(`/api/accountspayable?companyId=${companyId}`);
+      const params = new URLSearchParams({ companyId });
+      if (start) params.set("startDate", start);
+      if (end) params.set("endDate", end);
+
+      const res = await fetch(`/api/accountspayable?${params.toString()}`);
       const data = await res.json();
 
       const resPayables: AccountsPayable[] = data.accounts || [];
@@ -96,8 +99,8 @@ export default function AccountsPayablePage() {
   }, []);
 
   useEffect(() => {
-    loadPayable();
-  }, [loadPayable]);
+    loadPayable(startDate, endDate);
+  }, [loadPayable, startDate, endDate]);
 
   const handleOpenPayment = useCallback((payable: AccountsPayable) => {
     setSelectedPayable(payable);
@@ -243,9 +246,43 @@ export default function AccountsPayablePage() {
     [selectedPayables]
   );
 
+  // Abertura e Validação de Ações em Lote
+  const handleOpenBatchPay = () => {
+    if (selectedIds.length === 0) return;
+    const hasInvalid = selectedPayables.some(
+      (p) => p.status !== "pending" || (p.installments && p.installments.length > 0)
+    );
+    if (hasInvalid) {
+      toast.error("Selecione a penas Contas em aberto.");
+      return;
+    }
+    setShowBatchPayDialog(true);
+  };
+
+  const handleOpenBatchDelete = () => {
+    if (selectedIds.length === 0) return;
+    const hasInvalid = selectedPayables.some(
+      (p) => p.status !== "paid" || !p.installments || p.installments.length === 0
+    );
+    if (hasInvalid) {
+      toast.error("Você está tentando excluir contas que não possuem baixas.");
+      return;
+    }
+    setShowDeleteDialog(true);
+  };
+
   // Ações em Lote: Baixar
   const handleConfirmBatchPay = async () => {
     if (selectedIds.length === 0) return;
+    const hasInvalid = selectedPayables.some(
+      (p) => p.status !== "pending" || (p.installments && p.installments.length > 0)
+    );
+    if (hasInvalid) {
+      toast.error("Selecione a penas Contas em aberto.");
+      setShowBatchPayDialog(false);
+      return;
+    }
+
     setIsBatchProcessing(true);
     try {
       const res = await fetch("/api/accountspayable/batch", {
@@ -265,7 +302,7 @@ export default function AccountsPayablePage() {
       toast.success(`${data.count} conta(s) a pagar baixada(s) com sucesso!`);
       setShowBatchPayDialog(false);
       setSelectedIds([]);
-      await loadPayable();
+      await loadPayable(startDate, endDate);
     } catch (err: any) {
       console.error("Erro ao baixar em lote:", err);
       toast.error(err.message || "Falha na baixa em lote");
@@ -274,43 +311,39 @@ export default function AccountsPayablePage() {
     }
   };
 
-  // Ações em Lote / Unitária: Excluir
-  const handleDeleteSingle = useCallback((payable: AccountsPayable) => {
-    setItemToDelete(payable);
-    setShowDeleteDialog(true);
-  }, []);
+  // Ações em Lote: Excluir Baixas
+  const handleConfirmDeleteInstallments = async () => {
+    if (selectedIds.length === 0) return;
+    const hasInvalid = selectedPayables.some(
+      (p) => p.status !== "paid" || !p.installments || p.installments.length === 0
+    );
+    if (hasInvalid) {
+      toast.error("Você está tentando excluir contas que não possuem baixas.");
+      setShowDeleteDialog(false);
+      return;
+    }
 
-  const handleOpenBatchDelete = () => {
-    setItemToDelete(null);
-    setShowDeleteDialog(true);
-  };
-
-  const handleConfirmDelete = async () => {
     setIsBatchProcessing(true);
     try {
-      const idsToDelete = itemToDelete ? [itemToDelete.id] : selectedIds;
-      if (idsToDelete.length === 0) return;
-
       const res = await fetch("/api/accountspayable/batch", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          action: "delete",
-          ids: idsToDelete,
+          action: "delete_installments",
+          ids: selectedIds,
         }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao excluir conta(s)");
+      if (!res.ok) throw new Error(data.error || "Erro ao excluir baixas");
 
-      toast.success(`${idsToDelete.length} conta(s) a pagar excluída(s) com sucesso!`);
-      setPayables((prev) => prev.filter((p) => !idsToDelete.includes(p.id)));
-      setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
+      toast.success(`Baixas de ${selectedIds.length} conta(s) a pagar excluídas com sucesso!`);
       setShowDeleteDialog(false);
-      setItemToDelete(null);
+      setSelectedIds([]);
+      await loadPayable(startDate, endDate);
     } catch (err: any) {
-      console.error("Erro ao excluir:", err);
-      toast.error(err.message || "Falha ao excluir contas");
+      console.error("Erro ao excluir baixas:", err);
+      toast.error(err.message || "Falha ao excluir baixas");
     } finally {
       setIsBatchProcessing(false);
     }
@@ -532,7 +565,7 @@ export default function AccountsPayablePage() {
               <>
                 <Button
                   size="sm"
-                  onClick={() => setShowBatchPayDialog(true)}
+                  onClick={handleOpenBatchPay}
                   className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold h-8 shadow-sm"
                 >
                   <CheckCheck className="w-3.5 h-3.5 mr-1.5" />
@@ -546,7 +579,7 @@ export default function AccountsPayablePage() {
                   className="rounded-xl text-xs font-semibold h-8 shadow-sm"
                 >
                   <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                  Excluir ({selectedIds.length})
+                  Excluir baixas ({selectedIds.length})
                 </Button>
               </>
             )}
@@ -590,7 +623,6 @@ export default function AccountsPayablePage() {
               onOpenHistory={handleOpenHistory}
               isSelected={Boolean(acc.id && selectedIds.includes(acc.id))}
               onToggleSelect={handleToggleSelect}
-              onDeleteSingle={handleDeleteSingle}
             />
           ))
         )}
@@ -679,18 +711,16 @@ export default function AccountsPayablePage() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog de Confirmação de Exclusão (Lote ou Individual) */}
+      {/* Dialog de Confirmação de Exclusão de Baixas */}
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent className="sm:max-w-md bg-card border-border text-foreground rounded-2xl p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold text-destructive flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-destructive" />
-              Confirmar Exclusão
+              Excluir Baixas
             </DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground pt-1">
-              {itemToDelete
-                ? `Tem certeza que deseja excluir a conta a pagar NFS-e #${itemToDelete.document}? Todas as parcelas associadas a esta conta serão removidas permanentemente.`
-                : `Tem certeza que deseja excluir as ${selectedIds.length} contas a pagar selecionadas? Todas as parcelas vinculadas a essas contas serão excluídas permanentemente.`}
+              Tem certeza que deseja excluir todas as baixas (parcelas) das {selectedIds.length} conta(s) a pagar selecionada(s)? As contas retornarão ao status Pendente.
             </DialogDescription>
           </DialogHeader>
 
@@ -699,10 +729,7 @@ export default function AccountsPayablePage() {
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => {
-                setShowDeleteDialog(false);
-                setItemToDelete(null);
-              }}
+              onClick={() => setShowDeleteDialog(false)}
               disabled={isBatchProcessing}
               className="rounded-xl text-xs"
             >
@@ -712,17 +739,17 @@ export default function AccountsPayablePage() {
               type="button"
               variant="destructive"
               size="sm"
-              onClick={handleConfirmDelete}
+              onClick={handleConfirmDeleteInstallments}
               disabled={isBatchProcessing}
               className="rounded-xl text-xs font-semibold"
             >
               {isBatchProcessing ? (
                 <>
                   <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                  Excluindo...
+                  Excluindo baixas...
                 </>
               ) : (
-                "Confirmar Exclusão"
+                "Confirmar Exclusão de Baixas"
               )}
             </Button>
           </DialogFooter>

@@ -23,7 +23,6 @@ interface PayableItemProps {
   onOpenHistory: (acc: AccountsPayable) => void;
   isSelected?: boolean;
   onToggleSelect?: (id: string) => void;
-  onDeleteSingle?: (acc: AccountsPayable) => void;
 }
 
 function PayableItemComponent({
@@ -35,7 +34,6 @@ function PayableItemComponent({
   onOpenHistory,
   isSelected = false,
   onToggleSelect,
-  onDeleteSingle,
 }: PayableItemProps) {
   const { receivableStatus, totalPaid, totalDiscount, remainingAmount } = calculated;
 
@@ -47,9 +45,8 @@ function PayableItemComponent({
 
   return (
     <Card
-      className={`bg-card py-0 border transition-all duration-200 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:-translate-y-0.5 ${
-        isSelected ? "border-primary/60 ring-2 ring-primary/20 bg-card/95" : "border-border/40"
-      }`}
+      className={`bg-card py-0 border transition-all duration-200 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:-translate-y-0.5 ${isSelected ? "border-primary/60 ring-2 ring-primary/20 bg-card/95" : "border-border/40"
+        }`}
     >
       <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         {/* Checkbox de seleção */}
@@ -127,50 +124,35 @@ function PayableItemComponent({
           </div>
         </div>
 
-        <div className="flex flex-row sm:flex-col items-center sm:items-stretch gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+        <div className="flex flex-row sm:flex-col items-center sm:items-stretch gap-2.5 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
           <Button
-            size="sm"
             onClick={() => onOpenPayment(acc)}
             disabled={acc.status === "paid" || role !== "admin"}
             className={
               acc.status === "paid"
-                ? "bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs flex-1 sm:w-28"
-                : "bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs shadow-md border-none flex-1 sm:w-28"
+                ? "h-10 bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs sm:text-sm font-semibold flex-1 sm:w-28"
+                : "h-10 bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs sm:text-sm shadow-md border-none flex-1 sm:w-28"
             }
           >
             {acc.status === "paid" ? (
               <>
-                <Lock className="w-3.5 h-3.5 mr-1.5" /> Pago
+                <Lock className="w-4 h-4 mr-1.5" /> Pago
               </>
             ) : (
               <>
-                <DollarSign className="w-3.5 h-3.5 mr-1.5 stroke-[3]" /> Pagar
+                <DollarSign className="w-4 h-4 mr-1.5 stroke-[3]" /> Pagar
               </>
             )}
           </Button>
 
           <Button
             variant="outline"
-            size="sm"
             onClick={() => onOpenHistory(acc)}
-            className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold flex-1 sm:w-28"
+            className="h-10 bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs sm:text-sm font-semibold flex-1 sm:w-28"
           >
-            <History className="w-3.5 h-3.5 mr-1.5" />
+            <History className="w-4 h-4 mr-1.5" />
             Histórico
           </Button>
-
-          {role === "admin" && onDeleteSingle && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDeleteSingle(acc)}
-              title="Excluir conta a pagar"
-              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl text-xs px-2 sm:w-28 h-8 transition-colors"
-            >
-              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-              Excluir
-            </Button>
-          )}
         </div>
       </CardContent>
     </Card>

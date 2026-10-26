@@ -14,15 +14,42 @@ export async function GET(req: Request) {
       );
     }
 
+    const startDateParam = searchParams.get("startDate");
+    const endDateParam = searchParams.get("endDate");
+
+    const now = new Date();
+    // Início de 4 meses atrás (primeiro dia do mês, 00:00:00.000 UTC)
+    const defaultStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 4, 1, 0, 0, 0, 0));
+    // Fim da data corrente (23:59:59.999 UTC)
+    const defaultEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
+
+    const dueDateFilter: { gte?: Date; lte?: Date } = {};
+
+    if (!startDateParam && !endDateParam) {
+      // Padrão: últimos 4 meses até a data corrente
+      dueDateFilter.gte = defaultStart;
+      dueDateFilter.lte = defaultEnd;
+    } else {
+      if (startDateParam) {
+        dueDateFilter.gte = new Date(startDateParam + "T00:00:00.000Z");
+      }
+      if (endDateParam) {
+        dueDateFilter.lte = new Date(endDateParam + "T23:59:59.999Z");
+      }
+    }
+
     const accounts_receivable = await db.accountsReceivable.findMany({
-      where: { companyId },
+      where: { 
+        companyId,
+        due_date: dueDateFilter,
+      },
       include: {
         client: true,
         company: true,
         invoice: true,
         installments: true,
       },
-        orderBy: { due_date: "desc" }
+      orderBy: { due_date: "desc" }
     });
     
     return NextResponse.json(accounts_receivable);

@@ -16,10 +16,35 @@ export async function GET(req: Request) {
       );
     }
 
+    const startDateParam = searchParams.get("startDate");
+    const endDateParam = searchParams.get("endDate");
+
+    const now = new Date();
+    // Início de 4 meses atrás (primeiro dia do mês, 00:00:00.000 UTC)
+    const defaultStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 4, 1, 0, 0, 0, 0));
+    // Fim da data corrente (23:59:59.999 UTC)
+    const defaultEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 999));
+
+    const dueDateFilter: { gte?: Date; lte?: Date } = {};
+
+    if (!startDateParam && !endDateParam) {
+      // Padrão: últimos 4 meses até a data corrente
+      dueDateFilter.gte = defaultStart;
+      dueDateFilter.lte = defaultEnd;
+    } else {
+      if (startDateParam) {
+        dueDateFilter.gte = new Date(startDateParam + "T00:00:00.000Z");
+      }
+      if (endDateParam) {
+        dueDateFilter.lte = new Date(endDateParam + "T23:59:59.999Z");
+      }
+    }
+
     // 1️⃣ contas pendentes onde o cliente já pagou
     const paidClientAccounts = await db.accountsPayable.findMany({
       where: {
         companyId,
+        due_date: dueDateFilter,
         status: "pending",
         invoice: {
           accounts_receivable: {
@@ -43,6 +68,9 @@ export async function GET(req: Request) {
         },
         installments: true,
         professional: true,
+      },
+      orderBy: {
+        due_date: "desc"
       }
     });
 
@@ -50,6 +78,7 @@ export async function GET(req: Request) {
     const otherAccounts = await db.accountsPayable.findMany({
       where: {
         companyId,
+        due_date: dueDateFilter,
         id: {
           notIn: paidClientAccounts.map(acc => acc.id)
         }

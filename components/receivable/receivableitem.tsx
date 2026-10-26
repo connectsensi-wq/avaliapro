@@ -16,7 +16,6 @@ interface Props {
   onOpenHistory: (acc: AccountsReceivable) => void;
   isSelected?: boolean;
   onToggleSelect?: (id: string) => void;
-  onDeleteSingle?: (acc: AccountsReceivable) => void;
 }
 
 function ReceivableItemComponent({
@@ -26,7 +25,6 @@ function ReceivableItemComponent({
   onOpenHistory,
   isSelected = false,
   onToggleSelect,
-  onDeleteSingle,
 }: Props) {
   const totalPaid = acc.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0;
   const totalDiscount = acc.installments?.reduce((sum, i) => sum + (i.discount || 0), 0) || 0;
@@ -94,50 +92,35 @@ function ReceivableItemComponent({
           </div>
         </div>
 
-        <div className="flex flex-row sm:flex-col items-center sm:items-stretch gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+        <div className="flex flex-row sm:flex-col items-center sm:items-stretch gap-2.5 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
           <Button
-            size="sm"
             onClick={() => onOpenPayment(acc)}
             disabled={acc.status === "paid"}
             className={
               acc.status === "paid"
-                ? "bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs flex-1 sm:w-28"
-                : "bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs shadow-md border-none flex-1 sm:w-28"
+                ? "h-10 bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs sm:text-sm font-semibold flex-1 sm:w-28"
+                : "h-10 bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs sm:text-sm shadow-md border-none flex-1 sm:w-28"
             }
           >
             {acc.status === "paid" ? (
               <>
-                <Lock className="w-3.5 h-3.5 mr-1.5" /> Recebido
+                <Lock className="w-4 h-4 mr-1.5" /> Recebido
               </>
             ) : (
               <>
-                <DollarSign className="w-3.5 h-3.5 mr-1.5 stroke-[3]" /> Receber
+                <DollarSign className="w-4 h-4 mr-1.5 stroke-[3]" /> Receber
               </>
             )}
           </Button>
 
           <Button
             variant="outline"
-            size="sm"
             onClick={() => onOpenHistory(acc)}
-            className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold flex-1 sm:w-28"
+            className="h-10 bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs sm:text-sm font-semibold flex-1 sm:w-28"
           >
-            <History className="w-3.5 h-3.5 mr-1.5" />
+            <History className="w-4 h-4 mr-1.5" />
             Histórico
           </Button>
-
-          {onDeleteSingle && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDeleteSingle(acc)}
-              title="Excluir conta a receber"
-              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl text-xs px-2 sm:w-28 h-8 transition-colors"
-            >
-              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-              Excluir
-            </Button>
-          )}
         </div>
       </CardContent>
     </Card>
