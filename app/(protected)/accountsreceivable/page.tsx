@@ -1,20 +1,33 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useDeferredValue } from "react";
 import ReceivableForm from "@/components/receivable/receivableform";
 import HistoryDialog from "@/components/receivable/historydialog";
 import ReceivableItem from "@/components/receivable/receivableitem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Search, RotateCcw, ArrowDownFromLine, TrendingUp, Wallet, BanknoteArrowUp } from "lucide-react";
+import {
+  Search,
+  RotateCcw,
+  ArrowDownFromLine,
+  TrendingUp,
+  Wallet,
+  BanknoteArrowUp,
+  CheckCheck,
+  Trash2,
+  AlertTriangle,
+  Loader2,
+  Calendar as CalendarIcon,
+} from "lucide-react";
 import { format } from "date-fns";
 import { AccountsReceivable } from "@/src/types/payment";
 import { Client } from "@/src/types/client";
 import { AccountsReceivableStatus } from "@/src/types/enums";
 import { formatDate, toBRLDecimal } from "@/lib/utils";
-import { useDeferredValue } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
 export default function AccountsReceivablePage() {
   const [receivables, setReceivable] = useState<AccountsReceivable[]>([]);
@@ -28,6 +41,16 @@ export default function AccountsReceivablePage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const deferredSearch = useDeferredValue(inputValue);
+
+  // Estados para seleção múltipla e ações em lote
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [showBatchPayDialog, setShowBatchPayDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<AccountsReceivable | null>(null);
+  const [batchPaymentDate, setBatchPaymentDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [batchObservations, setBatchObservations] = useState("");
+  const [isBatchProcessing, setIsBatchProcessing] = useState(false);
 
   const statusConfig = useMemo(
     () => ({
@@ -58,9 +81,9 @@ export default function AccountsReceivablePage() {
         fetch(`/api/clients?companyId=${companyId}`).then((r) => r.json()),
       ]);
 
-      const clientsData: Client[] = resClients;
+      const clientsData: Client[] = resClients || [];
 
-      const receivablesWithName: AccountsReceivable[] = resReceivable.map((r: AccountsReceivable) => {
+      const receivablesWithName: AccountsReceivable[] = (resReceivable || []).map((r: AccountsReceivable) => {
         const client = clientsData.find((c) => c.id === r.client_id);
         return {
           ...r,
@@ -190,6 +213,100 @@ export default function AccountsReceivablePage() {
     setSearchTerm("");
     setStartDate("");
     setEndDate("");
+  };
+
+  // Funções de Seleção Múltipla
+  const handleToggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  }, []);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedIds([]);
+  }, []);
+
+  const selectedReceivables = useMemo(
+    () => receivables.filter((r) => Boolean(r.id && selectedIds.includes(r.id))),
+    [receivables, selectedIds]
+  );
+
+  const totalSelectedAmount = useMemo(
+    () => selectedReceivables.reduce((sum, r) => sum + r.amount, 0),
+    [selectedReceivables]
+  );
+
+  // Ações em Lote: Baixar
+  const handleConfirmBatchPay = async () => {
+    if (selectedIds.length === 0) return;
+    setIsBatchProcessing(true);
+    try {
+      const res = await fetch("/api/accountsreceivable/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "pay",
+          ids: selectedIds,
+          payment_date: batchPaymentDate,
+          observations: batchObservations,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao baixar contas a receber em lote");
+
+      toast.success(`${data.count} conta(s) a receber baixada(s) com sucesso!`);
+      setShowBatchPayDialog(false);
+      setSelectedIds([]);
+      await loadReceivable();
+    } catch (err: any) {
+      console.error("Erro ao baixar em lote:", err);
+      toast.error(err.message || "Falha na baixa em lote");
+    } finally {
+      setIsBatchProcessing(false);
+    }
+  };
+
+  // Ações em Lote / Unitária: Excluir
+  const handleDeleteSingle = useCallback((receivable: AccountsReceivable) => {
+    setItemToDelete(receivable);
+    setShowDeleteDialog(true);
+  }, []);
+
+  const handleOpenBatchDelete = () => {
+    setItemToDelete(null);
+    setShowDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setIsBatchProcessing(true);
+    try {
+      const idsToDelete = itemToDelete ? [itemToDelete.id] : selectedIds;
+      if (idsToDelete.length === 0) return;
+
+      const res = await fetch("/api/accountsreceivable/batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "delete",
+          ids: idsToDelete,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao excluir conta(s)");
+
+      toast.success(`${idsToDelete.length} conta(s) a receber excluída(s) com sucesso!`);
+      setReceivable((prev) => prev.filter((r) => !idsToDelete.includes(r.id)));
+      setSelectedIds((prev) => prev.filter((id) => !idsToDelete.includes(id)));
+      setShowDeleteDialog(false);
+      setItemToDelete(null);
+    } catch (err: any) {
+      console.error("Erro ao excluir:", err);
+      toast.error(err.message || "Falha ao excluir contas");
+    } finally {
+      setIsBatchProcessing(false);
+    }
   };
 
   const exportToCSV = () => {
@@ -354,6 +471,51 @@ export default function AccountsReceivablePage() {
         </Button>
       </div>
 
+      {/* Barra de Ações em Lote */}
+      {selectedIds.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-card/90 border border-primary/30 p-3.5 rounded-2xl shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center gap-2">
+            <span className="text-xs sm:text-sm font-semibold text-foreground">
+              {selectedIds.length} conta(s) selecionada(s)
+            </span>
+            <span className="text-border">|</span>
+            <span className="text-xs sm:text-sm text-muted-foreground font-mono">
+              Total: <strong className="text-foreground font-bold">R$ {toBRLDecimal(totalSelectedAmount.toFixed(2))}</strong>
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+            <Button
+              size="sm"
+              onClick={() => setShowBatchPayDialog(true)}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold h-8 shadow-sm"
+            >
+              <CheckCheck className="w-3.5 h-3.5 mr-1.5" />
+              Baixar Selecionadas ({selectedIds.length})
+            </Button>
+
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleOpenBatchDelete}
+              className="rounded-xl text-xs font-semibold h-8 shadow-sm"
+            >
+              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+              Excluir ({selectedIds.length})
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearSelection}
+              className="text-muted-foreground hover:text-foreground rounded-xl text-xs h-8"
+            >
+              Limpar Seleção
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Receivable Items List */}
       <div className="space-y-4">
         {isLoading ? (
@@ -377,10 +539,146 @@ export default function AccountsReceivablePage() {
               status={status}
               onOpenPayment={handleOpenPayment}
               onOpenHistory={handleOpenHistory}
+              isSelected={Boolean(acc.id && selectedIds.includes(acc.id))}
+              onToggleSelect={handleToggleSelect}
+              onDeleteSingle={handleDeleteSingle}
             />
           ))
         )}
       </div>
+
+      {/* Dialog de Confirmação de Baixa em Lote */}
+      <Dialog open={showBatchPayDialog} onOpenChange={setShowBatchPayDialog}>
+        <DialogContent className="sm:max-w-md bg-card border-border text-foreground rounded-2xl p-6">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold flex items-center gap-2">
+              <CheckCheck className="w-5 h-5 text-emerald-500" />
+              Baixar Contas em Lote
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground pt-1">
+              Você está prestes a registrar o recebimento integral das contas selecionadas. Uma parcela com o valor total será criada para cada uma e qualquer parcela parcial anterior será ajustada.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-3">
+            <div className="p-3.5 rounded-xl bg-secondary/50 border border-border/50 text-xs space-y-1.5">
+              <div className="flex justify-between text-muted-foreground">
+                <span>Contas selecionadas:</span>
+                <strong className="text-foreground">{selectedIds.length}</strong>
+              </div>
+              <div className="flex justify-between text-muted-foreground">
+                <span>Valor total a receber:</span>
+                <strong className="text-emerald-400 font-bold text-sm">
+                  R$ {toBRLDecimal(totalSelectedAmount.toFixed(2))}
+                </strong>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
+                <CalendarIcon className="w-3.5 h-3.5" /> Data do Recebimento
+              </label>
+              <Input
+                type="date"
+                value={batchPaymentDate}
+                onChange={(e) => setBatchPaymentDate(e.target.value)}
+                className="border-border rounded-xl text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-muted-foreground">
+                Observações (Opcional)
+              </label>
+              <Input
+                placeholder="Ex: Baixa completa em lote..."
+                value={batchObservations}
+                onChange={(e) => setBatchObservations(e.target.value)}
+                className="border-border rounded-xl text-xs"
+              />
+            </div>
+          </div>
+
+          <DialogFooter className="flex gap-2 sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowBatchPayDialog(false)}
+              disabled={isBatchProcessing}
+              className="rounded-xl text-xs"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={handleConfirmBatchPay}
+              disabled={isBatchProcessing}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold"
+            >
+              {isBatchProcessing ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                  Processando...
+                </>
+              ) : (
+                `Confirmar Baixa (${selectedIds.length})`
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog de Confirmação de Exclusão (Lote ou Individual) */}
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent className="sm:max-w-md bg-card border-border text-foreground rounded-2xl p-6">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold text-destructive flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Confirmar Exclusão
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground pt-1">
+              {itemToDelete
+                ? `Tem certeza que deseja excluir a conta a receber NFS-e #${itemToDelete.document}? Todas as parcelas vinculadas a esta conta serão removidas permanentemente.`
+                : `Tem certeza que deseja excluir as ${selectedIds.length} contas a receber selecionadas? Todas as parcelas vinculadas a essas contas serão excluídas permanentemente.`}
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="flex gap-2 sm:justify-end pt-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setShowDeleteDialog(false);
+                setItemToDelete(null);
+              }}
+              disabled={isBatchProcessing}
+              className="rounded-xl text-xs"
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              onClick={handleConfirmDelete}
+              disabled={isBatchProcessing}
+              className="rounded-xl text-xs font-semibold"
+            >
+              {isBatchProcessing ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                  Excluindo...
+                </>
+              ) : (
+                "Confirmar Exclusão"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Payment Form Dialog */}
       {showPaymentForm && selectedReceivable && (

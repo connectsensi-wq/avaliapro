@@ -37,8 +37,14 @@ export async function DELETE(
   const { params } = context;
 
   try {
-    await db.accountsPayable.delete({
-      where: { id: params.id },
+    await db.$transaction(async (tx) => {
+      await tx.paymentPayableInstallment.deleteMany({
+        where: { accounts_payable_id: params.id },
+      });
+
+      await tx.accountsPayable.delete({
+        where: { id: params.id },
+      });
     });
 
     return NextResponse.json({ success: true });

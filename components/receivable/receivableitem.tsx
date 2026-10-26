@@ -5,14 +5,18 @@ import { AccountsReceivable } from "@/src/types/payment";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
-import { DollarSign, History, Lock, Building2, Calendar, FileText } from "lucide-react";
+import { DollarSign, History, Lock, Building2, Calendar, FileText, Trash2 } from "lucide-react";
 import { formatDate, toBRLDecimal } from "@/lib/utils";
+import { Checkbox } from "../ui/checkbox";
 
 interface Props {
   acc: AccountsReceivable;
   status: { label: string; color: string };
   onOpenPayment: (acc: AccountsReceivable) => void;
   onOpenHistory: (acc: AccountsReceivable) => void;
+  isSelected?: boolean;
+  onToggleSelect?: (id: string) => void;
+  onDeleteSingle?: (acc: AccountsReceivable) => void;
 }
 
 function ReceivableItemComponent({
@@ -20,6 +24,9 @@ function ReceivableItemComponent({
   status,
   onOpenPayment,
   onOpenHistory,
+  isSelected = false,
+  onToggleSelect,
+  onDeleteSingle,
 }: Props) {
   const totalPaid = acc.installments?.reduce((sum, i) => sum + i.amount_paid, 0) || 0;
   const totalDiscount = acc.installments?.reduce((sum, i) => sum + (i.discount || 0), 0) || 0;
@@ -27,10 +34,26 @@ function ReceivableItemComponent({
   const remainingAmount = round(round(acc.amount) - round(totalPaid) - round(totalDiscount));
 
   return (
-    <Card className="bg-card py-0 border-none hover:shadow-2xl hover:-translate-y-1 transition-all duration-200 rounded-2xl shadow-xl overflow-hidden">
+    <Card
+      className={`bg-card py-0 border transition-all duration-200 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl hover:-translate-y-0.5 ${
+        isSelected ? "border-primary/60 ring-2 ring-primary/20 bg-card/95" : "border-border/40"
+      }`}
+    >
       <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Checkbox de seleção */}
+        <div className="flex items-center self-start sm:self-center pt-1 sm:pt-0">
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={() => {
+              if (acc.id) onToggleSelect?.(acc.id);
+            }}
+            aria-label={`Selecionar conta #${acc.document}`}
+            className="data-[state=checked]:bg-sidebar-primary data-[state=checked]:border-sidebar-primary border-muted-foreground/40 rounded-md h-5 w-5 cursor-pointer"
+          />
+        </div>
+
         <div className="flex-1 min-w-0 space-y-2 w-full">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-300 pb-2.5">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/40 pb-2.5">
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground font-mono">
               <span className="inline-flex items-center gap-1 font-bold text-primary bg-secondary px-2 py-0.5 rounded border border-border">
                 <FileText className="w-3.5 h-3.5" /> NFS-e #{acc.document}
@@ -71,15 +94,15 @@ function ReceivableItemComponent({
           </div>
         </div>
 
-        <div className="flex flex-col items-stretch gap-2 sm:gap-4 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
+        <div className="flex flex-row sm:flex-col items-center sm:items-stretch gap-2 shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border">
           <Button
             size="sm"
             onClick={() => onOpenPayment(acc)}
             disabled={acc.status === "paid"}
             className={
               acc.status === "paid"
-                ? "bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs w-full sm:w-28"
-                : "bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs shadow-md border-none w-full sm:w-28"
+                ? "bg-secondary text-muted-foreground border border-border cursor-not-allowed rounded-xl text-xs flex-1 sm:w-28"
+                : "bg-sidebar-primary hover:bg-cyan-800 text-primary-foreground hover:text-white font-bold rounded-xl text-xs shadow-md border-none flex-1 sm:w-28"
             }
           >
             {acc.status === "paid" ? (
@@ -97,11 +120,24 @@ function ReceivableItemComponent({
             variant="outline"
             size="sm"
             onClick={() => onOpenHistory(acc)}
-            className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold w-full sm:w-28"
+            className="bg-secondary hover:bg-secondary/80 text-foreground border-border rounded-xl text-xs font-semibold flex-1 sm:w-28"
           >
             <History className="w-3.5 h-3.5 mr-1.5" />
             Histórico
           </Button>
+
+          {onDeleteSingle && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onDeleteSingle(acc)}
+              title="Excluir conta a receber"
+              className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl text-xs px-2 sm:w-28 h-8 transition-colors"
+            >
+              <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+              Excluir
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -111,7 +147,11 @@ function ReceivableItemComponent({
 const ReceivableItem = React.memo(
   ReceivableItemComponent,
   (prev, next) => {
-    return prev.acc === next.acc;
+    return (
+      prev.acc === next.acc &&
+      prev.status === next.status &&
+      prev.isSelected === next.isSelected
+    );
   }
 );
 

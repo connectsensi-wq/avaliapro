@@ -34,8 +34,14 @@ export async function DELETE(
   const { id } = params;
 
   try {
-    await db.accountsReceivable.delete({
-      where: { id },
+    await db.$transaction(async (tx) => {
+      await tx.paymentInstallment.deleteMany({
+        where: { accounts_receivable_id: id },
+      });
+
+      await tx.accountsReceivable.delete({
+        where: { id },
+      });
     });
 
     return NextResponse.json(
