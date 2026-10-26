@@ -100,6 +100,32 @@ export async function GET(req: Request) {
             other_retentions: true,
           },
         },
+
+        accounts_receivable: {
+          select: {
+            id: true,
+            status: true,
+            installments: {
+              select: {
+                id: true,
+                amount_paid: true,
+              },
+            },
+          },
+        },
+
+        accounts_payable: {
+          select: {
+            id: true,
+            status: true,
+            installments: {
+              select: {
+                id: true,
+                amount_paid: true,
+              },
+            },
+          },
+        },
       },
     });
 

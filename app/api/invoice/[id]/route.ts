@@ -229,21 +229,42 @@ export async function DELETE(
 
   try {
     await db.$transaction(async (tx) => {
-      // 1. Busca a invoice e as contas vinculadas
+      // 1. Busca a invoice e as contas vinculadas com suas parcelas
       const invoice = await tx.invoice.findUnique({
         where: { id },
         include: {
           accounts_receivable: {
-            select: { id: true },
+            include: {
+              installments: true,
+            },
           },
           accounts_payable: {
-            select: { id: true },
+            include: {
+              installments: true,
+            },
           },
         },
       });
 
       if (!invoice) {
         throw new Error("Nota fiscal não encontrada");
+      }
+
+      // Validação: não permitir excluir se possuir baixa ou pagamento
+      const hasReceivablePayment =
+        (invoice.accounts_receivable?.installments && invoice.accounts_receivable.installments.length > 0) ||
+        invoice.accounts_receivable?.status === "paid" ||
+        invoice.accounts_receivable?.status === "partially_paid";
+
+      const hasPayablePayment = invoice.accounts_payable.some(
+        (p) =>
+          (p.installments && p.installments.length > 0) ||
+          p.status === "paid" ||
+          p.status === "partially_paid"
+      );
+
+      if (invoice.locked || hasReceivablePayment || hasPayablePayment) {
+        throw new Error("Não é possível excluir uma nota fiscal que possui baixa ou pagamento realizado.");
       }
 
       // 2. Exclui parcelas da conta a receber (se houver)

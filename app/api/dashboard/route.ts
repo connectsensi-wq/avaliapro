@@ -87,6 +87,22 @@ export async function GET(req: Request) {
 
     const pendingInvoices = invoices.filter(i => i.status === "regular").length;
 
+    // Invoices e Payables consolidados de todas as empresas
+    const consolidatedInvoices = await db.invoice.findMany({
+      select: {
+        issue_date: true,
+        total_amount: true,
+        base_amount: true,
+      },
+    });
+
+    const consolidatedPayables = await db.accountsPayable.findMany({
+      select: {
+        due_date: true,
+        admin_fee_amount: true,
+      },
+    });
+
     return NextResponse.json({
       companies,
       financialData: {
@@ -101,6 +117,8 @@ export async function GET(req: Request) {
       receivables: receivables,
       invoices: invoices,
       payables: payables,
+      consolidatedInvoices,
+      consolidatedPayables,
     });
   } catch (error) {
     console.error(error);

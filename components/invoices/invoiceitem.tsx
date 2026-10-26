@@ -32,6 +32,19 @@ function InvoiceItemComponent({
   const totalRetentions = invoice.total_retentions || 0;
   const baseAmount = invoice.base_amount || invoice.total_amount || 0;
 
+  const hasPaymentsOrInstallments = Boolean(
+    invoice.locked ||
+    (invoice.accounts_receivable?.installments && invoice.accounts_receivable.installments.length > 0) ||
+    invoice.accounts_receivable?.status === "paid" ||
+    invoice.accounts_receivable?.status === "partially_paid" ||
+    invoice.accounts_payable?.some(
+      (p) =>
+        (p.installments && p.installments.length > 0) ||
+        p.status === "paid" ||
+        p.status === "partially_paid"
+    )
+  );
+
   return (
     <Card className="bg-card py-0 border-none hover:shadow-2xl hover:-translate-y-1 transition-all duration-200 rounded-2xl shadow-xl overflow-hidden">
       <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -129,9 +142,18 @@ function InvoiceItemComponent({
               <Button
                 variant="outline"
                 size="sm"
+                disabled={hasPaymentsOrInstallments}
                 onClick={() => onDelete(invoice)}
-                className="bg-secondary hover:bg-destructive hover:text-white text-destructive border-border rounded-xl text-xs font-semibold px-3 h-9 flex-1 sm:flex-initial transition-colors"
-                title="Excluir Nota Fiscal"
+                className={
+                  hasPaymentsOrInstallments
+                    ? "bg-secondary text-muted-foreground border-border cursor-not-allowed opacity-50 rounded-xl text-xs font-semibold px-3 h-9 flex-1 sm:flex-initial"
+                    : "bg-secondary hover:bg-destructive hover:text-white text-destructive border-border rounded-xl text-xs font-semibold px-3 h-9 flex-1 sm:flex-initial transition-colors"
+                }
+                title={
+                  hasPaymentsOrInstallments
+                    ? "Esta nota fiscal possui baixas ou pagamentos e não pode ser excluída"
+                    : "Excluir Nota Fiscal"
+                }
               >
                 <Trash2 className="w-3.5 h-3.5 mr-1.5" /> Excluir
               </Button>
@@ -156,7 +178,9 @@ const InvoiceItem = React.memo(
       prev.invoice.client?.name === next.invoice.client?.name &&
       prev.professionals === next.professionals &&
       prev.company === next.company &&
-      prev.onDelete === next.onDelete
+      prev.onDelete === next.onDelete &&
+      prev.invoice.accounts_receivable === next.invoice.accounts_receivable &&
+      prev.invoice.accounts_payable === next.invoice.accounts_payable
     );
   }
 );

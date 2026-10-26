@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart2, Calendar, Filter, Info } from "lucide-react";
+import { BarChart2, Calendar, Filter } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -32,18 +32,22 @@ interface AccountsPayable {
 interface ChartDataItem {
   month: string;
   receita: number;
-  invoiceLastYear: number;
   payable: number;
-  payableLastYear: number;
+  receitaConsolidada: number;
+  payableConsolidada: number;
 }
+
+type ViewMode =
+  | "receita"
+  | "taxa_admin"
+  | "receita_consolidada"
+  | "taxa_admin_consolidada";
 
 export default function MonthlyChart({ companyId }: MonthlyChartProps) {
   const [chartData, setChartData] = useState<ChartDataItem[]>([]);
   const [availableYears, setAvailableYears] = useState<number[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [viewMode, setViewMode] = useState<
-    "receita" | "comparativo_receita" | "taxa_admin" | "comparativo_taxa_admin"
-  >("receita");
+  const [viewMode, setViewMode] = useState<ViewMode>("receita");
 
   useEffect(() => {
     if (!companyId) return;
@@ -51,15 +55,29 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
     const loadChartData = async () => {
       try {
         const res = await fetch(`/api/dashboard?companyId=${companyId}`);
-        const data: { invoices: Invoice[]; payables: AccountsPayable[] } = await res.json();
+        const data: {
+          invoices: Invoice[];
+          payables: AccountsPayable[];
+          consolidatedInvoices?: Invoice[];
+          consolidatedPayables?: AccountsPayable[];
+        } = await res.json();
 
-        // Extrair anos disponíveis das faturas e pagamentos
-        const invoiceYears = (data.invoices ?? []).map((i) => {
+        // Extrair anos disponíveis de todas as faturas e pagamentos
+        const allInvoices = [
+          ...(data.invoices ?? []),
+          ...(data.consolidatedInvoices ?? []),
+        ];
+        const allPayables = [
+          ...(data.payables ?? []),
+          ...(data.consolidatedPayables ?? []),
+        ];
+
+        const invoiceYears = allInvoices.map((i) => {
           const d = new Date(i.issue_date);
           return isNaN(d.getTime()) ? new Date().getFullYear() : d.getUTCFullYear();
         });
 
-        const payableYears = (data.payables ?? []).map((p) => {
+        const payableYears = allPayables.map((p) => {
           const d = new Date(p.due_date);
           return isNaN(d.getTime()) ? new Date().getFullYear() : d.getUTCFullYear();
         });
@@ -82,11 +100,12 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
         const monthlyData: ChartDataItem[] = months.map((month) => ({
           month,
           receita: 0,
-          invoiceLastYear: 0,
           payable: 0,
-          payableLastYear: 0,
+          receitaConsolidada: 0,
+          payableConsolidada: 0,
         }));
 
+        // Dados da empresa atual
         (data.invoices || []).forEach((invoice) => {
           if (!invoice.issue_date) return;
           const d = new Date(invoice.issue_date);
@@ -98,8 +117,6 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
 
           if (year === activeYear) {
             monthlyData[monthIndex].receita += amount;
-          } else if (year === activeYear - 1) {
-            monthlyData[monthIndex].invoiceLastYear += amount;
           }
         });
 
@@ -114,8 +131,35 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
 
           if (year === activeYear) {
             monthlyData[monthIndex].payable += feeAmount;
-          } else if (year === activeYear - 1) {
-            monthlyData[monthIndex].payableLastYear += feeAmount;
+          }
+        });
+
+        // Dados consolidados de todas as empresas
+        (data.consolidatedInvoices || []).forEach((invoice) => {
+          if (!invoice.issue_date) return;
+          const d = new Date(invoice.issue_date);
+          if (isNaN(d.getTime())) return;
+
+          const year = d.getUTCFullYear();
+          const monthIndex = d.getUTCMonth();
+          const amount = Number(invoice.total_amount || invoice.base_amount || 0);
+
+          if (year === activeYear) {
+            monthlyData[monthIndex].receitaConsolidada += amount;
+          }
+        });
+
+        (data.consolidatedPayables || []).forEach((payable) => {
+          if (!payable.due_date) return;
+          const d = new Date(payable.due_date);
+          if (isNaN(d.getTime())) return;
+
+          const year = d.getUTCFullYear();
+          const monthIndex = d.getUTCMonth();
+          const feeAmount = Number(payable.admin_fee_amount || 0);
+
+          if (year === activeYear) {
+            monthlyData[monthIndex].payableConsolidada += feeAmount;
           }
         });
 
@@ -129,9 +173,17 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
   }, [companyId, selectedYear]);
 
   const activeYear = selectedYear ?? (availableYears[0] || new Date().getFullYear());
-  const lastYear = activeYear - 1;
 
-  const isComparative = viewMode === "comparativo_receita" || viewMode === "comparativo_taxa_admin";
+  // Somatório do ano para a visão selecionada
+  const totalAmountSelected = useMemo(() => {
+    return chartData.reduce((acc, curr) => {
+      if (viewMode === "receita") return acc + curr.receita;
+      if (viewMode === "taxa_admin") return acc + curr.payable;
+      if (viewMode === "receita_consolidada") return acc + curr.receitaConsolidada;
+      if (viewMode === "taxa_admin_consolidada") return acc + curr.payableConsolidada;
+      return acc;
+    }, 0);
+  }, [chartData, viewMode]);
 
   return (
     <Card className="bg-transparent backdrop-blur-2xl border border-white/60 rounded-3xl shadow-xl overflow-hidden py-8 px-4 transition-all duration-300">
@@ -143,16 +195,10 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
             </div>
             Desempenho Operacional Mensal
           </CardTitle>
-          {isComparative && (
-            <p className="text-xs text-[#00F5A0] flex items-center gap-1.5 font-medium">
-              <Info className="w-3.5 h-3.5" />
-              Comparando ano base <span className="font-bold underline">{activeYear}</span> com ano anterior <span className="font-bold underline">{lastYear}</span>
-            </p>
-          )}
         </div>
 
         {/* Filtros em Lado a Lado */}
-        <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-2.5 w-full">
           {/* Select de Ano */}
           <div className="flex items-center gap-1.5 bg-[#001715] border border-[#00453F] px-3 py-1.5 rounded-xl text-xs">
             <Calendar className="h-3.5 w-3.5 text-[#00F5A0]" />
@@ -180,14 +226,14 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
               <option value="receita" className="bg-[#002623] text-white">
                 Receita
               </option>
-              <option value="comparativo_receita" className="bg-[#002623] text-white">
-                Comparativo de Receita
-              </option>
               <option value="taxa_admin" className="bg-[#002623] text-white">
                 Taxa Administrativa
               </option>
-              <option value="comparativo_taxa_admin" className="bg-[#002623] text-white">
-                Comparativo de Taxa Adm
+              <option value="receita_consolidada" className="bg-[#002623] text-white">
+                Receita Consolidada (Todas as Empresas)
+              </option>
+              <option value="taxa_admin_consolidada" className="bg-[#002623] text-white">
+                Taxa Administrativa Consolidada (Todas as Empresas)
               </option>
             </select>
           </div>
@@ -197,45 +243,48 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
       <CardContent className="pt-6 px-0">
         <ResponsiveContainer width="100%" height={305}>
           <BarChart
-            // 1. Removido o layout="vertical"
             data={chartData}
             barCategoryGap="18%"
             barGap={3}
             margin={{ top: 10, right: -20, left: -10, bottom: 10 }}
           >
             <defs>
-              {/* 5. Gradientes ajustados para baixo -> cima (y1="1" y2="0") */}
+              {/* Receita da empresa */}
               <linearGradient id="barPrimary" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.1} />
                 <stop offset="100%" stopColor="#00F5A0" stopOpacity={1} />
               </linearGradient>
-              <linearGradient id="barSecondary" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
-                <stop offset="100%" stopColor="#96a09eff" stopOpacity={1} />
-              </linearGradient>
+
+              {/* Taxa Admin da empresa */}
               <linearGradient id="barSky" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.1} />
                 <stop offset="100%" stopColor="#38bdf8" stopOpacity={1} />
               </linearGradient>
-              <linearGradient id="barPurple" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.100} />
-                <stop offset="100%" stopColor="#96a09eff" stopOpacity={1} />
+
+              {/* Receita Consolidada */}
+              <linearGradient id="barConsolidatedRevenue" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.1} />
+                <stop offset="100%" stopColor="#2dd4bf" stopOpacity={1} />
+              </linearGradient>
+
+              {/* Taxa Admin Consolidada */}
+              <linearGradient id="barConsolidatedFee" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity={0.1} />
+                <stop offset="100%" stopColor="#818cf8" stopOpacity={1} />
               </linearGradient>
             </defs>
 
-            {/* 3. Grid alterado para linhas horizontais */}
             <CartesianGrid strokeDasharray="3 3" stroke="#003D37" vertical={false} />
 
-            {/* 2. Eixos Invertidos */}
             <XAxis
-              dataKey="month" // Meses vieram pro eixo X
+              dataKey="month"
               stroke="#94a3b8"
               tick={{ fill: "#94a3b8", fontSize: 12, fontWeight: "bold" }}
             />
             <YAxis
               stroke="#94a3b8"
               tick={{ fill: "#94a3b8", fontSize: 11 }}
-              tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`} // Valores foram pro eixo Y
+              tickFormatter={(v) => `R$${(v / 1000).toFixed(0)}k`}
             />
 
             <Tooltip
@@ -256,7 +305,6 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
             />
             <Legend wrapperStyle={{ paddingTop: "12px", fontSize: "12px" }} />
 
-            {/* 4. Radius das barras ajustado para o topo: [6, 6, 0, 0] */}
             {viewMode === "receita" && (
               <Bar
                 dataKey="receita"
@@ -264,25 +312,6 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
                 name={`Receita ${activeYear}`}
                 radius={[10, 10, 0, 0]}
                 barSize={30}
-              />
-            )}
-
-            {viewMode === "comparativo_receita" && (
-              <Bar
-                dataKey="receita"
-                fill="url(#barPrimary)"
-                name={`Receita ${activeYear}`}
-                radius={[10, 10, 0, 0]}
-                barSize={30}
-              />
-            )}
-            {viewMode === "comparativo_receita" && (
-              <Bar
-                dataKey="invoiceLastYear"
-                fill="url(#barSecondary)"
-                name={`Receita ${lastYear}`}
-                radius={[10, 10, 0, 0]}
-                barSize={18}
               />
             )}
 
@@ -296,22 +325,23 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
               />
             )}
 
-            {viewMode === "comparativo_taxa_admin" && (
+            {viewMode === "receita_consolidada" && (
               <Bar
-                dataKey="payable"
-                fill="url(#barSky)"
-                name={`Taxa Admin ${activeYear}`}
+                dataKey="receitaConsolidada"
+                fill="url(#barConsolidatedRevenue)"
+                name={`Receita Consolidada ${activeYear}`}
                 radius={[10, 10, 0, 0]}
-                barSize={18}
+                barSize={30}
               />
             )}
-            {viewMode === "comparativo_taxa_admin" && (
+
+            {viewMode === "taxa_admin_consolidada" && (
               <Bar
-                dataKey="payableLastYear"
-                fill="url(#barPurple)"
-                name={`Taxa Admin ${lastYear}`}
-                radius={[6, 6, 0, 0]}
-                barSize={11}
+                dataKey="payableConsolidada"
+                fill="url(#barConsolidatedFee)"
+                name={`Taxa Admin Consolidada ${activeYear}`}
+                radius={[10, 10, 0, 0]}
+                barSize={30}
               />
             )}
           </BarChart>
@@ -320,6 +350,3 @@ export default function MonthlyChart({ companyId }: MonthlyChartProps) {
     </Card>
   );
 }
-
-
-
